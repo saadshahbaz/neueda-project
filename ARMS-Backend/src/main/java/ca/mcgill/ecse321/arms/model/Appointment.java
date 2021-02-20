@@ -4,8 +4,12 @@
 package ca.mcgill.ecse321.arms.model;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Set;
+
+import javax.persistence.*;
 
 // line 83 "../../../../../ARMS.ump"
+@Entity
 public class Appointment
 {
 
@@ -14,15 +18,59 @@ public class Appointment
   //------------------------
 
   //Appointment Associations
-  private Car car;
-  private Service services;
-  private TimeSlot timeSlot;
-  private ARMS aRMS;
+	private int id;
+
+	public void setId(int value) {
+	this.id = value;
+	    }
+	@Id
+	public int getId() {
+	return this.id;
+	       }
+	
+    private Car car;
+    
+    @ManyToOne(cascade = {CascadeType.ALL})
+    public Car getCar()
+    {
+      return car;
+    }
+    
+    private Service services;
+    /* Code from template association_GetOne */
+    @ManyToOne(cascade = {CascadeType.ALL})
+    public Service getServices()
+    {
+      return services;
+    }
+    
+
+public void setServices(Service service) {
+   this.services = service;
+}
+    
+    private TimeSlot timeSlot;
+    @OneToOne(cascade = {CascadeType.ALL})
+    public TimeSlot getTimeSlot()
+    {
+      return timeSlot;
+    }
+    
+    private Set<ARMS> Arms;
+
+    @ManyToMany
+    public Set<ARMS> getARMS() {
+       return this.Arms;
+    }
+
+    public void setARMS(Set<ARMS> Armss) {
+       this.Arms = Armss;
+    }
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
-
+/*
   public Appointment(Car aCar, Service aServices, TimeSlot aTimeSlot, ARMS aARMS)
   {
     boolean didAddCar = setCar(aCar);
@@ -44,69 +92,21 @@ public class Appointment
     {
       throw new RuntimeException("Unable to create appointment due to aRMS. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-  }
+  }*/
 
   //------------------------
   // INTERFACE
   //------------------------
   /* Code from template association_GetOne */
-  public Car getCar()
-  {
-    return car;
-  }
-  /* Code from template association_GetOne */
-  public Service getServices()
-  {
-    return services;
-  }
-  /* Code from template association_GetOne */
-  public TimeSlot getTimeSlot()
-  {
-    return timeSlot;
-  }
-  /* Code from template association_GetOne */
-  public ARMS getARMS()
-  {
-    return aRMS;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setCar(Car aCar)
-  {
-    boolean wasSet = false;
-    if (aCar == null)
-    {
-      return wasSet;
-    }
+  
+  
+  
+  
+  public void setCar(Car car) {
+	   this.car = car;
+	}
 
-    Car existingCar = car;
-    car = aCar;
-    if (existingCar != null && !existingCar.equals(aCar))
-    {
-      existingCar.removeAppointment(this);
-    }
-    car.addAppointment(this);
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setServices(Service aServices)
-  {
-    boolean wasSet = false;
-    if (aServices == null)
-    {
-      return wasSet;
-    }
-
-    Service existingServices = services;
-    services = aServices;
-    if (existingServices != null && !existingServices.equals(aServices))
-    {
-      existingServices.removeAppointment(this);
-    }
-    services.addAppointment(this);
-    wasSet = true;
-    return wasSet;
-  }
+  
   /* Code from template association_SetUnidirectionalOne */
   public boolean setTimeSlot(TimeSlot aNewTimeSlot)
   {
@@ -118,47 +118,8 @@ public class Appointment
     }
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setARMS(ARMS aARMS)
-  {
-    boolean wasSet = false;
-    if (aARMS == null)
-    {
-      return wasSet;
-    }
+  
 
-    ARMS existingARMS = aRMS;
-    aRMS = aARMS;
-    if (existingARMS != null && !existingARMS.equals(aARMS))
-    {
-      existingARMS.removeAppointment(this);
-    }
-    aRMS.addAppointment(this);
-    wasSet = true;
-    return wasSet;
-  }
-
-  public void delete()
-  {
-    Car placeholderCar = car;
-    this.car = null;
-    if(placeholderCar != null)
-    {
-      placeholderCar.removeAppointment(this);
-    }
-    Service placeholderServices = services;
-    this.services = null;
-    if(placeholderServices != null)
-    {
-      placeholderServices.removeAppointment(this);
-    }
-    timeSlot = null;
-    ARMS placeholderARMS = aRMS;
-    this.aRMS = null;
-    if(placeholderARMS != null)
-    {
-      placeholderARMS.removeAppointment(this);
-    }
-  }
+  
 
 }

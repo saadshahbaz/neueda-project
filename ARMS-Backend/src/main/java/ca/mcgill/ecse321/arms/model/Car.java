@@ -4,7 +4,10 @@
 package ca.mcgill.ecse321.arms.model;
 import java.util.*;
 
+import javax.persistence.*;
+
 // line 75 "../../../../../ARMS.ump"
+@Entity
 public class Car
 {
 
@@ -20,14 +23,40 @@ public class Car
 
   //Car Associations
   private Customer customer;
-  private ARMS aRMS;
-  private List<Appointment> appointments;
+  private ARMS arms;
+
+  @ManyToOne(optional=false)
+  public ARMS getArms() {
+     return this.arms;
+  }
+
+  public void setArms(ARMS arms) {
+     this.arms = arms;
+  }
+  private Set<Appointment> appointments;
+  
+  @OneToMany(mappedBy="car")
+  public Set<Appointment> getAppointment() {
+     return this.appointments;
+  }
+
+  public void setAppointment(Set<Appointment> appointments) {
+     this.appointments = appointments;
+  }
+  private int carNo;
+
+  public void setCarNo(int value) {
+  this.carNo = value;
+      }
+  @Id
+  public int getCarNo() {
+  return this.carNo;}
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Car(String aModel, String aManufacturer, String aPlateNo, String aYear, Customer aCustomer, ARMS aARMS)
+  /*public Car(String aModel, String aManufacturer, String aPlateNo, String aYear, Customer aCustomer, ARMS aARMS)
   {
     model = aModel;
     manufacturer = aManufacturer;
@@ -43,8 +72,8 @@ public class Car
     {
       throw new RuntimeException("Unable to create car due to aRMS. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    appointments = new ArrayList<Appointment>();
-  }
+    appointments = new Set<Appointment>();
+  }*/
 
   //------------------------
   // INTERFACE
@@ -102,45 +131,14 @@ public class Car
     return year;
   }
   /* Code from template association_GetOne */
+  @ManyToOne(cascade = {CascadeType.ALL})
   public Customer getCustomer()
   {
     return customer;
   }
-  /* Code from template association_GetOne */
-  public ARMS getARMS()
-  {
-    return aRMS;
-  }
-  /* Code from template association_GetMany */
-  public Appointment getAppointment(int index)
-  {
-    Appointment aAppointment = appointments.get(index);
-    return aAppointment;
-  }
+  
+ 
 
-  public List<Appointment> getAppointments()
-  {
-    List<Appointment> newAppointments = Collections.unmodifiableList(appointments);
-    return newAppointments;
-  }
-
-  public int numberOfAppointments()
-  {
-    int number = appointments.size();
-    return number;
-  }
-
-  public boolean hasAppointments()
-  {
-    boolean has = appointments.size() > 0;
-    return has;
-  }
-
-  public int indexOfAppointment(Appointment aAppointment)
-  {
-    int index = appointments.indexOf(aAppointment);
-    return index;
-  }
   /* Code from template association_SetOneToMany */
   public boolean setCustomer(Customer aCustomer)
   {
@@ -160,118 +158,18 @@ public class Car
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setARMS(ARMS aARMS)
-  {
-    boolean wasSet = false;
-    if (aARMS == null)
-    {
-      return wasSet;
-    }
-
-    ARMS existingARMS = aRMS;
-    aRMS = aARMS;
-    if (existingARMS != null && !existingARMS.equals(aARMS))
-    {
-      existingARMS.removeCar(this);
-    }
-    aRMS.addCar(this);
-    wasSet = true;
-    return wasSet;
-  }
+  
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfAppointments()
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
-  public Appointment addAppointment(Service aServices, TimeSlot aTimeSlot, ARMS aARMS)
-  {
-    return new Appointment(this, aServices, aTimeSlot, aARMS);
-  }
-
-  public boolean addAppointment(Appointment aAppointment)
-  {
-    boolean wasAdded = false;
-    if (appointments.contains(aAppointment)) { return false; }
-    Car existingCar = aAppointment.getCar();
-    boolean isNewCar = existingCar != null && !this.equals(existingCar);
-    if (isNewCar)
-    {
-      aAppointment.setCar(this);
-    }
-    else
-    {
-      appointments.add(aAppointment);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeAppointment(Appointment aAppointment)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aAppointment, as it must always have a car
-    if (!this.equals(aAppointment.getCar()))
-    {
-      appointments.remove(aAppointment);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
+  
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addAppointmentAt(Appointment aAppointment, int index)
-  {  
-    boolean wasAdded = false;
-    if(addAppointment(aAppointment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAppointments()) { index = numberOfAppointments() - 1; }
-      appointments.remove(aAppointment);
-      appointments.add(index, aAppointment);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
+  
 
-  public boolean addOrMoveAppointmentAt(Appointment aAppointment, int index)
-  {
-    boolean wasAdded = false;
-    if(appointments.contains(aAppointment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAppointments()) { index = numberOfAppointments() - 1; }
-      appointments.remove(aAppointment);
-      appointments.add(index, aAppointment);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addAppointmentAt(aAppointment, index);
-    }
-    return wasAdded;
-  }
-
-  public void delete()
-  {
-    Customer placeholderCustomer = customer;
-    this.customer = null;
-    if(placeholderCustomer != null)
-    {
-      placeholderCustomer.removeCar(this);
-    }
-    ARMS placeholderARMS = aRMS;
-    this.aRMS = null;
-    if(placeholderARMS != null)
-    {
-      placeholderARMS.removeCar(this);
-    }
-    for(int i=appointments.size(); i > 0; i--)
-    {
-      Appointment aAppointment = appointments.get(i - 1);
-      aAppointment.delete();
-    }
-  }
+  
+  
 
 
   public String toString()
@@ -282,6 +180,6 @@ public class Car
             "plateNo" + ":" + getPlateNo()+ "," +
             "year" + ":" + getYear()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "aRMS = "+(getARMS()!=null?Integer.toHexString(System.identityHashCode(getARMS())):"null");
+            "  " + "aRMS = "+(getArms()!=null?Integer.toHexString(System.identityHashCode(getArms())):"null");
   }
 }

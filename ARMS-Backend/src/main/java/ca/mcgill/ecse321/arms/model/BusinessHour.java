@@ -4,7 +4,10 @@
 package ca.mcgill.ecse321.arms.model;
 import java.sql.Time;
 
+import javax.persistence.*;
+
 // line 54 "../../../../../ARMS.ump"
+@Entity
 public class BusinessHour
 {
 
@@ -24,12 +27,32 @@ public class BusinessHour
   private Time endTime;
 
   //BusinessHour Associations
-  private ARMS aRMS;
+  /*private ARMS arms;
+
+  @ManyToOne(optional = false)
+  public ARMS getARMS() {
+     return this.arms;
+  }
+
+  public void setARMS(ARMS aRMS) {
+     this.arms = aRMS;
+  }*/
+
+  
+  private int businessHourID;
+  
+  public void setBusinessHourID(int value) {
+this.businessHourID = value;
+   }
+@Id
+public int getBusinessHourID() {
+return this.businessHourID;
+      }
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
-
+/*
   public BusinessHour(DayOfWeek aDayOfWeek, Time aStartTime, Time aEndTime, ARMS aARMS)
   {
     dayOfWeek = aDayOfWeek;
@@ -41,7 +64,7 @@ public class BusinessHour
       throw new RuntimeException("Unable to create hour due to aRMS. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
+*/
   //------------------------
   // INTERFACE
   //------------------------
@@ -84,31 +107,7 @@ public class BusinessHour
   {
     return endTime;
   }
-  /* Code from template association_GetOne */
-  public ARMS getARMS()
-  {
-    return aRMS;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setARMS(ARMS aARMS)
-  {
-    boolean wasSet = false;
-    if (aARMS == null)
-    {
-      return wasSet;
-    }
-
-    ARMS existingARMS = aRMS;
-    aRMS = aARMS;
-    if (existingARMS != null && !existingARMS.equals(aARMS))
-    {
-      existingARMS.removeHour(this);
-    }
-    aRMS.addHour(this);
-    wasSet = true;
-    return wasSet;
-  }
-
+  /*
   public void delete()
   {
     ARMS placeholderARMS = aRMS;
@@ -117,15 +116,15 @@ public class BusinessHour
     {
       placeholderARMS.removeHour(this);
     }
-  }
+  }*/
 
 
-  public String toString()
+  /*public String toString()
   {
     return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "dayOfWeek" + "=" + (getDayOfWeek() != null ? !getDayOfWeek().equals(this)  ? getDayOfWeek().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "aRMS = "+(getARMS()!=null?Integer.toHexString(System.identityHashCode(getARMS())):"null");
-  }
+  }*/
 }

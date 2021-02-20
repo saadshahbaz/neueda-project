@@ -3,7 +3,10 @@
 
 package ca.mcgill.ecse321.arms.model;
 
+import javax.persistence.*;
+
 // line 41 "../../../../../ARMS.ump"
+@Entity
 public class Bill
 {
 
@@ -13,15 +16,38 @@ public class Bill
 
   //Bill Attributes
   private int amount;
+  
+  private int billNo;
+
+  public void setBillNo(int value) {
+  this.billNo = value;
+      }
+  @Id
+  public int getBillNo() {
+  return this.billNo;
+         }
 
   //Bill Associations
   private Customer customer;
-  private ARMS aRMS;
+  @ManyToOne(cascade = {CascadeType.ALL})
+  public Customer getCustomer() {
+     return this.customer;
+  }
+  private ARMS arms;
+
+  @ManyToOne(optional=false)
+  public ARMS getArms() {
+     return this.arms;
+  }
+
+  public void setArms(ARMS arms) {
+     this.arms = arms;
+  }
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
-
+/*
   public Bill(int aAmount, Customer aCustomer, ARMS aARMS)
   {
     amount = aAmount;
@@ -35,7 +61,7 @@ public class Bill
     {
       throw new RuntimeException("Unable to create bill due to aRMS. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-  }
+  }*/
 
   //------------------------
   // INTERFACE
@@ -53,55 +79,13 @@ public class Bill
   {
     return amount;
   }
-  /* Code from template association_GetOne */
-  public Customer getCustomer()
-  {
-    return customer;
-  }
-  /* Code from template association_GetOne */
-  public ARMS getARMS()
-  {
-    return aRMS;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setCustomer(Customer aCustomer)
-  {
-    boolean wasSet = false;
-    if (aCustomer == null)
-    {
-      return wasSet;
-    }
+  
 
-    Customer existingCustomer = customer;
-    customer = aCustomer;
-    if (existingCustomer != null && !existingCustomer.equals(aCustomer))
-    {
-      existingCustomer.removeBill(this);
-    }
-    customer.addBill(this);
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setARMS(ARMS aARMS)
-  {
-    boolean wasSet = false;
-    if (aARMS == null)
-    {
-      return wasSet;
-    }
-
-    ARMS existingARMS = aRMS;
-    aRMS = aARMS;
-    if (existingARMS != null && !existingARMS.equals(aARMS))
-    {
-      existingARMS.removeBill(this);
-    }
-    aRMS.addBill(this);
-    wasSet = true;
-    return wasSet;
-  }
-
+  
+  public void setCustomer(Customer customer) {
+	   this.customer = customer;
+	}
+  /*
   public void delete()
   {
     Customer placeholderCustomer = customer;
@@ -110,20 +94,20 @@ public class Bill
     {
       placeholderCustomer.removeBill(this);
     }
-    ARMS placeholderARMS = aRMS;
-    this.aRMS = null;
+    ARMS placeholderARMS = arms;
+    this.arms = null;
     if(placeholderARMS != null)
     {
       placeholderARMS.removeBill(this);
     }
   }
-
+*/
 
   public String toString()
   {
     return super.toString() + "["+
             "amount" + ":" + getAmount()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "aRMS = "+(getARMS()!=null?Integer.toHexString(System.identityHashCode(getARMS())):"null");
+            "  " + "aRMS = "+(getArms()!=null?Integer.toHexString(System.identityHashCode(getArms())):"null");
   }
 }
