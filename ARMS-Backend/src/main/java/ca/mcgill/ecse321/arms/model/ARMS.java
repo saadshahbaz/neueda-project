@@ -40,7 +40,7 @@ public class ARMS
 	   this.business = business;
 	}
 
-	/*private Assistant assistant;
+	private Assistant assistant;
 
 	@OneToOne(mappedBy="arms")
 	public Assistant getAssistant() {
@@ -61,7 +61,7 @@ public class ARMS
 	public void setCustomer(Set<Customer> customers) {
 	   this.customer = customers;
 	}
-*/
+
 	private Set<Technician> technician;
 
 	@OneToMany(mappedBy="arms")

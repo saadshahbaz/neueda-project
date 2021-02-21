@@ -19,7 +19,7 @@ public class Customer extends User
   private int lastReminder;
 
   //Customer Associations
-  /*private ARMS arms;
+  private ARMS arms;
 
   @ManyToOne(optional=false)
   public ARMS getArms() {
@@ -28,7 +28,7 @@ public class Customer extends User
 
   public void setArms(ARMS arms) {
      this.arms = arms;
-  }*/
+  }
 
   private Set<Bill> bills;
   

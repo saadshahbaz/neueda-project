@@ -16,7 +16,7 @@ public class Assistant extends User
   //------------------------
 
   //Assistant Associations
-	/*private ARMS arms;
+	private ARMS arms;
 
 	@OneToOne(optional=false)
 	public ARMS getArms() {
@@ -25,7 +25,7 @@ public class Assistant extends User
 
 	public void setArms(ARMS arms) {
 	   this.arms = arms;
-	}*/
+	}
   /*private int assistantID;
   
   public void setAssistantID(int value) {
