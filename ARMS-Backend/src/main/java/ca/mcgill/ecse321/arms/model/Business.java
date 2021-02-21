@@ -4,7 +4,10 @@
 package ca.mcgill.ecse321.arms.model;
 import java.util.*;
 
+import javax.persistence.*;
+
 // line 46 "../../../../../ARMS.ump"
+@Entity
 public class Business
 {
 
@@ -18,15 +21,45 @@ public class Business
   private String phoneNumber;
   private String email;
 
+  private int businessID;
+
+  public void setBusinessID(int value) {
+  this.businessID = value;
+      }
+  @Id
+  public int getBusinessID() {
+  return this.businessID;
+         }
   //Business Associations
-  private List<BusinessHour> businessHours;
-  private ARMS aRMS;
+  private Set<BusinessHour> businessHour;
+
+  @OneToMany
+  public Set<BusinessHour> getBussinessHour() {
+     return this.businessHour;
+  }
+  
+  public void setBussinessHour(Set<BusinessHour> bussinessHours) {
+	   this.businessHour = bussinessHours;
+	}
+  
+  
+  private ARMS arms;
+
+  @OneToOne(optional=false)
+  public ARMS getArms() {
+     return this.arms;
+  }
+
+  public void setArms(ARMS arms) {
+     this.arms = arms;
+  }
+
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Business(String aName, String aAddress, String aPhoneNumber, String aEmail, ARMS aARMS)
+  /*public Business(String aName, String aAddress, String aPhoneNumber, String aEmail, ARMS aARMS)
   {
     name = aName;
     address = aAddress;
@@ -38,7 +71,7 @@ public class Business
     {
       throw new RuntimeException("Unable to create business due to aRMS. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-  }
+  }*/
 
   //------------------------
   // INTERFACE
@@ -95,139 +128,10 @@ public class Business
   {
     return email;
   }
-  /* Code from template association_GetMany */
-  public BusinessHour getBusinessHour(int index)
-  {
-    BusinessHour aBusinessHour = businessHours.get(index);
-    return aBusinessHour;
-  }
+  
 
-  public List<BusinessHour> getBusinessHours()
-  {
-    List<BusinessHour> newBusinessHours = Collections.unmodifiableList(businessHours);
-    return newBusinessHours;
-  }
-
-  public int numberOfBusinessHours()
-  {
-    int number = businessHours.size();
-    return number;
-  }
-
-  public boolean hasBusinessHours()
-  {
-    boolean has = businessHours.size() > 0;
-    return has;
-  }
-
-  public int indexOfBusinessHour(BusinessHour aBusinessHour)
-  {
-    int index = businessHours.indexOf(aBusinessHour);
-    return index;
-  }
-  /* Code from template association_GetOne */
-  public ARMS getARMS()
-  {
-    return aRMS;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfBusinessHours()
-  {
-    return 0;
-  }
-  /* Code from template association_AddUnidirectionalMany */
-  public boolean addBusinessHour(BusinessHour aBusinessHour)
-  {
-    boolean wasAdded = false;
-    if (businessHours.contains(aBusinessHour)) { return false; }
-    businessHours.add(aBusinessHour);
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeBusinessHour(BusinessHour aBusinessHour)
-  {
-    boolean wasRemoved = false;
-    if (businessHours.contains(aBusinessHour))
-    {
-      businessHours.remove(aBusinessHour);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addBusinessHourAt(BusinessHour aBusinessHour, int index)
-  {  
-    boolean wasAdded = false;
-    if(addBusinessHour(aBusinessHour))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfBusinessHours()) { index = numberOfBusinessHours() - 1; }
-      businessHours.remove(aBusinessHour);
-      businessHours.add(index, aBusinessHour);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveBusinessHourAt(BusinessHour aBusinessHour, int index)
-  {
-    boolean wasAdded = false;
-    if(businessHours.contains(aBusinessHour))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfBusinessHours()) { index = numberOfBusinessHours() - 1; }
-      businessHours.remove(aBusinessHour);
-      businessHours.add(index, aBusinessHour);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addBusinessHourAt(aBusinessHour, index);
-    }
-    return wasAdded;
-  }
-  /* Code from template association_SetOneToOptionalOne */
-  public boolean setARMS(ARMS aNewARMS)
-  {
-    boolean wasSet = false;
-    if (aNewARMS == null)
-    {
-      //Unable to setARMS to null, as business must always be associated to a aRMS
-      return wasSet;
-    }
-    
-    Business existingBusiness = aNewARMS.getBusiness();
-    if (existingBusiness != null && !equals(existingBusiness))
-    {
-      //Unable to setARMS, the current aRMS already has a business, which would be orphaned if it were re-assigned
-      return wasSet;
-    }
-    
-    ARMS anOldARMS = aRMS;
-    aRMS = aNewARMS;
-    aRMS.setBusiness(this);
-
-    if (anOldARMS != null)
-    {
-      anOldARMS.setBusiness(null);
-    }
-    wasSet = true;
-    return wasSet;
-  }
-
-  public void delete()
-  {
-    businessHours.clear();
-    ARMS existingARMS = aRMS;
-    aRMS = null;
-    if (existingARMS != null)
-    {
-      existingARMS.setBusiness(null);
-    }
-  }
-
-
+  
+  
   public String toString()
   {
     return super.toString() + "["+
@@ -235,6 +139,6 @@ public class Business
             "address" + ":" + getAddress()+ "," +
             "phoneNumber" + ":" + getPhoneNumber()+ "," +
             "email" + ":" + getEmail()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "aRMS = "+(getARMS()!=null?Integer.toHexString(System.identityHashCode(getARMS())):"null");
+            "  " + "aRMS = "+(getArms()!=null?Integer.toHexString(System.identityHashCode(getArms())):"null");
   }
 }

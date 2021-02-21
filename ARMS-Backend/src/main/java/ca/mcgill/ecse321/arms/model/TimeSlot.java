@@ -5,7 +5,10 @@ package ca.mcgill.ecse321.arms.model;
 import java.sql.Date;
 import java.sql.Time;
 
+import javax.persistence.*;
+
 // line 61 "../../../../../ARMS.ump"
+@Entity
 public class TimeSlot
 {
 
@@ -20,14 +23,51 @@ public class TimeSlot
   private Time endTime;
 
   //TimeSlot Associations
-  private ARMS aRMS;
+  private ARMS arms;
+
+@ManyToOne(optional=false)
+public ARMS getArms() {
+   return this.arms;
+}
+
+public void setArms(ARMS arms) {
+   this.arms = arms;
+}
+
   private Technician technician;
+
+  @ManyToOne(cascade = {CascadeType.ALL})
+  public Technician getTechnician() {
+     return this.technician;
+  }
+
+  public void setTechnician(Technician technician) {
+     this.technician = technician;
+  }
   private Space space;
 
+  @ManyToOne(cascade = {CascadeType.ALL})
+  public Space getSpace() {
+     return this.space;
+  }
+
+  public void setSpace(Space space) {
+     this.space = space;
+  }
+  
+  private int timeSlotID;
+
+  public void setTimeSlotID(int value) {
+  this.timeSlotID = value;
+      }
+  @Id
+  public int getTimeSlotID() {
+  return this.timeSlotID;
+         }
   //------------------------
   // CONSTRUCTOR
   //------------------------
-
+/*
   public TimeSlot(Date aStartDate, Time aStartTime, Date aEndDate, Time aEndTime, ARMS aARMS)
   {
     startDate = aStartDate;
@@ -40,7 +80,7 @@ public class TimeSlot
       throw new RuntimeException("Unable to create timeSlot due to aRMS. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
+*/
   //------------------------
   // INTERFACE
   //------------------------
@@ -96,87 +136,8 @@ public class TimeSlot
   {
     return endTime;
   }
-  /* Code from template association_GetOne */
-  public ARMS getARMS()
-  {
-    return aRMS;
-  }
-  /* Code from template association_GetOne */
-  public Technician getTechnician()
-  {
-    return technician;
-  }
-
-  public boolean hasTechnician()
-  {
-    boolean has = technician != null;
-    return has;
-  }
-  /* Code from template association_GetOne */
-  public Space getSpace()
-  {
-    return space;
-  }
-
-  public boolean hasSpace()
-  {
-    boolean has = space != null;
-    return has;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setARMS(ARMS aARMS)
-  {
-    boolean wasSet = false;
-    if (aARMS == null)
-    {
-      return wasSet;
-    }
-
-    ARMS existingARMS = aRMS;
-    aRMS = aARMS;
-    if (existingARMS != null && !existingARMS.equals(aARMS))
-    {
-      existingARMS.removeTimeSlot(this);
-    }
-    aRMS.addTimeSlot(this);
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOptionalOneToMany */
-  public boolean setTechnician(Technician aTechnician)
-  {
-    boolean wasSet = false;
-    Technician existingTechnician = technician;
-    technician = aTechnician;
-    if (existingTechnician != null && !existingTechnician.equals(aTechnician))
-    {
-      existingTechnician.removeWork(this);
-    }
-    if (aTechnician != null)
-    {
-      aTechnician.addWork(this);
-    }
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOptionalOneToMany */
-  public boolean setSpace(Space aSpace)
-  {
-    boolean wasSet = false;
-    Space existingSpace = space;
-    space = aSpace;
-    if (existingSpace != null && !existingSpace.equals(aSpace))
-    {
-      existingSpace.removeTimeslot(this);
-    }
-    if (aSpace != null)
-    {
-      aSpace.addTimeslot(this);
-    }
-    wasSet = true;
-    return wasSet;
-  }
-
+  
+  /*
   public void delete()
   {
     ARMS placeholderARMS = aRMS;
@@ -198,7 +159,7 @@ public class TimeSlot
       placeholderSpace.removeTimeslot(this);
     }
   }
-
+*/
 
   public String toString()
   {
@@ -207,7 +168,7 @@ public class TimeSlot
             "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "endDate" + "=" + (getEndDate() != null ? !getEndDate().equals(this)  ? getEndDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "aRMS = "+(getARMS()!=null?Integer.toHexString(System.identityHashCode(getARMS())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "aRMS = "+(getArms()!=null?Integer.toHexString(System.identityHashCode(getArms())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "technician = "+(getTechnician()!=null?Integer.toHexString(System.identityHashCode(getTechnician())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "space = "+(getSpace()!=null?Integer.toHexString(System.identityHashCode(getSpace())):"null");
   }

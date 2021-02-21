@@ -4,7 +4,11 @@
 package ca.mcgill.ecse321.arms.model;
 import java.util.*;
 
+import javax.persistence.*;
+
 // line 17 "../../../../../ARMS.ump"
+@Entity
+@Table(name="users")
 public abstract class User
 {
 
@@ -12,7 +16,7 @@ public abstract class User
   // STATIC VARIABLES
   //------------------------
 
-  private static Map<String, User> usersByUsername = new HashMap<String, User>();
+  //private static Map<String, User> usersByUsername = new HashMap<String, User>();
 
   //------------------------
   // MEMBER VARIABLES
@@ -20,12 +24,32 @@ public abstract class User
 
   //User Attributes
   private String username;
+  
+  public void setUsername(String value) {
+this.username = value;
+   }
+@Id
+public String getUsername() {
+return this.username;
+   }
+
+
+private ARMS arms;
+
+@ManyToOne(cascade = {CascadeType.ALL})
+public ARMS getArms() {
+   return this.arms;
+}
+
+public void setArms(ARMS arms) {
+   this.arms = arms;
+}
   private String password;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
-
+/*
   public User(String aUsername, String aPassword)
   {
     password = aPassword;
@@ -34,30 +58,12 @@ public abstract class User
       throw new RuntimeException("Cannot create due to duplicate username. See http://manual.umple.org?RE003ViolationofUniqueness.html");
     }
   }
-
+*/
   //------------------------
   // INTERFACE
   //------------------------
 
-  public boolean setUsername(String aUsername)
-  {
-    boolean wasSet = false;
-    String anOldUsername = getUsername();
-    if (anOldUsername != null && anOldUsername.equals(aUsername)) {
-      return true;
-    }
-    if (hasWithUsername(aUsername)) {
-      return wasSet;
-    }
-    username = aUsername;
-    wasSet = true;
-    if (anOldUsername != null) {
-      usersByUsername.remove(anOldUsername);
-    }
-    usersByUsername.put(aUsername, this);
-    return wasSet;
-  }
-
+  
   public boolean setPassword(String aPassword)
   {
     boolean wasSet = false;
@@ -66,32 +72,18 @@ public abstract class User
     return wasSet;
   }
 
-  public String getUsername()
-  {
-    return username;
-  }
-  /* Code from template attribute_GetUnique */
-  public static User getWithUsername(String aUsername)
-  {
-    return usersByUsername.get(aUsername);
-  }
-  /* Code from template attribute_HasUnique */
-  public static boolean hasWithUsername(String aUsername)
-  {
-    return getWithUsername(aUsername) != null;
-  }
-
+  
   public String getPassword()
   {
     return password;
   }
 
-  public void delete()
+  /*public void delete()
   {
     usersByUsername.remove(getUsername());
   }
 
-
+*/
   public String toString()
   {
     return super.toString() + "["+
