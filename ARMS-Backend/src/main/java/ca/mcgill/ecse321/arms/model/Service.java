@@ -1,118 +1,57 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
-
 package ca.mcgill.ecse321.arms.model;
-import java.util.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Set;
+import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
-import javax.persistence.*;
-
-// line 69 "../../../../../ARMS.ump"
 @Entity
-public class Service
-{
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Service Attributes
-  
-  private String name;
-  
-  public void setName(String value) {
+public class Service{
+private String name;
+   
+   public void setName(String value) {
 this.name = value;
-   }
+    }
 @Id
 public String getName() {
 return this.name;
-   }
-  private int duration;
-  private int price;
-
-  //Service Associations
-  private ARMS arms;
-
-  @ManyToOne(cascade = {CascadeType.ALL})
-  public ARMS getArms() {
-     return this.arms;
-  }
-
-  public void setArms(ARMS arms) {
-     this.arms = arms;
-  }
-  private Set<Appointment> appointment;
-
-  @OneToMany(mappedBy="services",cascade = {CascadeType.ALL})
-  public Set<Appointment> getAppointment() {
-     return this.appointment;
-  }
-
-  public void setAppointment(Set<Appointment> appointments) {
-     this.appointment = appointments;
-  }
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-/*
-  public Service(String aName, int aDuration, int aPrice, ARMS aARMS)
-  {
-    name = aName;
-    duration = aDuration;
-    price = aPrice;
-    boolean didAddARMS = setARMS(aARMS);
-    if (!didAddARMS)
-    {
-      throw new RuntimeException("Unable to create service due to aRMS. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    appointments = new ArrayList<Appointment>();
-  }*/
+private int duration;
 
-  //------------------------
-  // INTERFACE
-  //------------------------
+public void setDuration(int value) {
+this.duration = value;
+    }
+public int getDuration() {
+return this.duration;
+    }
+private int price;
 
-  
+public void setPrice(int value) {
+this.price = value;
+    }
+public int getPrice() {
+return this.price;
+    }
+private Set<Appointment> appointment;
 
-  public boolean setDuration(int aDuration)
-  {
-    boolean wasSet = false;
-    duration = aDuration;
-    wasSet = true;
-    return wasSet;
-  }
+@OneToMany(mappedBy="service")
+public Set<Appointment> getAppointment() {
+   return this.appointment;
+}
 
-  public boolean setPrice(int aPrice)
-  {
-    boolean wasSet = false;
-    price = aPrice;
-    wasSet = true;
-    return wasSet;
-  }
+public void setAppointment(Set<Appointment> appointments) {
+   this.appointment = appointments;
+}
 
-  
+private ARMS ARMS;
 
-  public int getDuration()
-  {
-    return duration;
-  }
+@ManyToOne(optional=false)
+public ARMS getARMS() {
+   return this.ARMS;
+}
 
-  public int getPrice()
-  {
-    return price;
-  }
- 
-  
-  
-  
+public void setARMS(ARMS aRMS) {
+   this.ARMS = aRMS;
+}
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "name" + ":" + getName()+ "," +
-            "duration" + ":" + getDuration()+ "," +
-            "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "aRMS = "+(getArms()!=null?Integer.toHexString(System.identityHashCode(getArms())):"null");
-  }
 }

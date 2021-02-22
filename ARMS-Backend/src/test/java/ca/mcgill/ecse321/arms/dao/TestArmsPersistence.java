@@ -70,7 +70,7 @@ public class TestArmsPersistence {
         ARMS arms = new ARMS();
         armsRepository.save(arms);
 
-        customer.setArms(arms);
+        customer.setARMS(arms);
         customer.setUsername(username);
         customer.setPassword(password);
         customerRepository.save(customer);

@@ -2,143 +2,67 @@
 /*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 package ca.mcgill.ecse321.arms.model;
-import java.util.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Set;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-import javax.persistence.*;
-
-// line 46 "../../../../../ARMS.ump"
 @Entity
-public class Business
-{
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Business Attributes
-  private String name;
-  private String address;
-  private String phoneNumber;
-  private String email;
-
-  private int businessID;
-
-  public void setBusinessID(int value) {
-  this.businessID = value;
-      }
-  @Id
-  public int getBusinessID() {
-  return this.businessID;
-         }
-  //Business Associations
-  private Set<BusinessHour> businessHour;
-
-  @OneToMany
-  public Set<BusinessHour> getBussinessHour() {
-     return this.businessHour;
-  }
-  
-  public void setBussinessHour(Set<BusinessHour> bussinessHours) {
-	   this.businessHour = bussinessHours;
-	}
-  
-  
-  private ARMS arms;
-
-  @OneToOne(optional=false)
-  public ARMS getArms() {
-     return this.arms;
-  }
-
-  public void setArms(ARMS arms) {
-     this.arms = arms;
-  }
-
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  /*public Business(String aName, String aAddress, String aPhoneNumber, String aEmail, ARMS aARMS)
-  {
-    name = aName;
-    address = aAddress;
-    phoneNumber = aPhoneNumber;
-    email = aEmail;
-    businessHours = new ArrayList<BusinessHour>();
-    boolean didAddARMS = setARMS(aARMS);
-    if (!didAddARMS)
-    {
-      throw new RuntimeException("Unable to create business due to aRMS. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+public class Business{
+private String name;
+   
+   public void setName(String value) {
+this.name = value;
     }
-  }*/
+@Id
+public String getName() {
+return this.name;
+    }
+private String address;
 
-  //------------------------
-  // INTERFACE
-  //------------------------
+public void setAddress(String value) {
+this.address = value;
+    }
+public String getAddress() {
+return this.address;
+    }
+private String phoneNumber;
 
-  public boolean setName(String aName)
-  {
-    boolean wasSet = false;
-    name = aName;
-    wasSet = true;
-    return wasSet;
-  }
+public void setPhoneNumber(String value) {
+this.phoneNumber = value;
+    }
+public String getPhoneNumber() {
+return this.phoneNumber;
+    }
+private String email;
 
-  public boolean setAddress(String aAddress)
-  {
-    boolean wasSet = false;
-    address = aAddress;
-    wasSet = true;
-    return wasSet;
-  }
+public void setEmail(String value) {
+this.email = value;
+    }
+public String getEmail() {
+return this.email;
+    }
+private Set<BusinessHour> businessHour;
 
-  public boolean setPhoneNumber(String aPhoneNumber)
-  {
-    boolean wasSet = false;
-    phoneNumber = aPhoneNumber;
-    wasSet = true;
-    return wasSet;
-  }
+@OneToMany
+public Set<BusinessHour> getBusinessHour() {
+   return this.businessHour;
+}
 
-  public boolean setEmail(String aEmail)
-  {
-    boolean wasSet = false;
-    email = aEmail;
-    wasSet = true;
-    return wasSet;
-  }
+public void setBusinessHour(Set<BusinessHour> businessHours) {
+   this.businessHour = businessHours;
+}
 
-  public String getName()
-  {
-    return name;
-  }
+private ARMS ARMS;
 
-  public String getAddress()
-  {
-    return address;
-  }
+@OneToOne(optional=false)
+public ARMS getARMS() {
+   return this.ARMS;
+}
 
-  public String getPhoneNumber()
-  {
-    return phoneNumber;
-  }
+public void setARMS(ARMS aRMS) {
+   this.ARMS = aRMS;
+}
 
-  public String getEmail()
-  {
-    return email;
-  }
-  
-
-  
-  
-  public String toString()
-  {
-    return super.toString() + "["+
-            "name" + ":" + getName()+ "," +
-            "address" + ":" + getAddress()+ "," +
-            "phoneNumber" + ":" + getPhoneNumber()+ "," +
-            "email" + ":" + getEmail()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "aRMS = "+(getArms()!=null?Integer.toHexString(System.identityHashCode(getArms())):"null");
-  }
 }
