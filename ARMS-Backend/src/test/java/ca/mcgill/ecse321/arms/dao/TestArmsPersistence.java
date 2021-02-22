@@ -7,14 +7,17 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.arms.dao.*;
 import ca.mcgill.ecse321.arms.model.*;
 
 @ExtendWith(SpringExtension.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class TestArmsPersistence {
 
@@ -68,7 +71,6 @@ public class TestArmsPersistence {
         String password="TestPassword";
         Customer customer = new Customer();
         ARMS arms = new ARMS();
-        armsRepository.save(arms);
 
         customer.setARMS(arms);
         customer.setUsername(username);
