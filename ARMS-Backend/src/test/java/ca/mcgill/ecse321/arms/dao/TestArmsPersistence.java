@@ -3,6 +3,9 @@ package ca.mcgill.ecse321.arms.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +21,7 @@ import ca.mcgill.ecse321.arms.model.*;
 @SpringBootTest
 public class TestArmsPersistence {
 
-	//autowired here
+	// autowired here
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 	@Autowired
@@ -43,7 +46,7 @@ public class TestArmsPersistence {
 	private TimeSlotRepository timeSlotRepository;
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@BeforeEach
 	@AfterEach
 	public void clearDB() {
@@ -61,19 +64,66 @@ public class TestArmsPersistence {
 		userRepository.deleteAll();
 	}
 	
+	public Customer createCustomer() {
+		String username = "TestCustomerName";
+		String password = "myPassword123!";
+		int lastReminder = 20200222;
+		
+		Customer customer = new Customer();
+		customer.setUsername(username);
+		customer.setPassword(password);
+		customer.setLastReminder(lastReminder);
+		
+		customerRepository.save(customer);
+		return customer;
+	}
+
+	public Customer createCustomerWithCar() {
+		// create customer
+		String username = "TestCustomerName";
+		String password = "myPassword123!";
+		int lastReminder = 20200222;
+		Customer customer = new Customer();
+		customer.setUsername(username);
+		customer.setPassword(password);
+		customer.setLastReminder(lastReminder);
+		customerRepository.save(customer);
+		
+		String model = "TestModel";
+		String manufacturer = "TestManufacturer";
+		String plateNo = "QC99999";
+		String year = "2021";
+		
+		Set<Car> carSet = new HashSet<Car>();
+		Car car = new Car();
+		car.setModel(model);
+		car.setManufacturer(manufacturer);
+		car.setPlateNo(plateNo);
+		car.setYear(year);
+		carSet.add(car);
+		
+		customer.setCar(carSet);
+		return customer;
+	}
+	
+	public void createARMS() {
+		ARMS sys = new ARMS();
+        armsRepository.save(sys);
+	}
+	
 	@Test
-    public void testPersistAndLoadCustomer() {
+	public void testPersistAndLoadCustomer() {
 
-		String username="TestUserName";
-        String password="TestPassword";
-        Customer customer = new Customer();
-        ARMS arms = new ARMS();
-        armsRepository.save(arms);
+		String username = "TestUserName";
+		String password = "TestPassword";
+		Customer customer = new Customer();
+		ARMS arms = new ARMS();
+		armsRepository.save(arms);
 
-        customer.setARMS(arms);
-        customer.setUsername(username);
-        customer.setPassword(password);
-        customerRepository.save(customer);
+		customer.setARMS(arms);
+		customer.setUsername(username);
+		customer.setPassword(password);
+		customerRepository.save(customer);
 //        Integer id=customer.getUserId;
 //        customer = null;
 //        customer = CustomerRepository.findCustomerByUserId(id);
@@ -82,6 +132,24 @@ public class TestArmsPersistence {
 //        assertEquals(customer.getPhoneNo(), phoneNo);
 //        assertEquals(customer.getHomeAddress(), address);
 
-    }
+	}
+
+	@Test
+	public void testPersistAndLoadService() {
+		createARMS();
+		String name = "TestServiceName";
+		int duration = 60;
+		int price = 100;
+		
+		Service service = new Service();
+		service.setName(name);
+		service.setDuration(duration);
+		service.setPrice(price);
+		this.serviceRepository.save(service);
+		
+		service = null;
+		service = serviceRepository.findServiceByName(name);
+	}
+
 
 }
