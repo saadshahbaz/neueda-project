@@ -5,6 +5,6 @@ import ca.mcgill.ecse321.arms.model.Bill;
 
 
 public interface BillRepository extends CrudRepository<Bill, String> {
-
+    Bill findBillByBillNo(int billNo);
 
 }

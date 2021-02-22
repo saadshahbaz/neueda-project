@@ -7,6 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.arms.model.ARMS;
 
 public interface ArmsRepository extends CrudRepository<ARMS, Integer>{
-	
 
 }
