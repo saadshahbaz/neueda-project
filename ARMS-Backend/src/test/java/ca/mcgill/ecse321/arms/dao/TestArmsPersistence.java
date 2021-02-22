@@ -64,6 +64,9 @@ public class TestArmsPersistence {
 		userRepository.deleteAll();
 	}
 	
+	/**
+	 * @author Cecilia Jiang
+	 */
 	public Customer createCustomer() {
 		String username = "TestCustomerName";
 		String password = "myPassword123!";
@@ -78,6 +81,9 @@ public class TestArmsPersistence {
 		return customer;
 	}
 
+	/**
+	 * @author Cecilia Jiang
+	 */
 	public Customer createCustomerWithCar() {
 		// create customer
 		String username = "TestCustomerName";
@@ -106,6 +112,9 @@ public class TestArmsPersistence {
 		return customer;
 	}
 	
+	/**
+	 * @author Cecilia Jiang
+	 */
 	public void createARMS() {
 		ARMS sys = new ARMS();
         armsRepository.save(sys);
@@ -134,6 +143,9 @@ public class TestArmsPersistence {
 
 	}
 
+	/**
+	 * @author Cecilia Jiang
+	 */
 	@Test
 	public void testPersistAndLoadService() {
 		createARMS();
@@ -149,6 +161,9 @@ public class TestArmsPersistence {
 		
 		service = null;
 		service = serviceRepository.findServiceByName(name);
+		
+		assertNotNull(service);
+        assertEquals(service.getName(), name);
 	}
 
 
