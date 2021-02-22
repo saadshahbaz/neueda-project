@@ -74,13 +74,12 @@ public class TestArmsPersistence {
         customer.setUsername(username);
         customer.setPassword(password);
         customerRepository.save(customer);
-//        Integer id=customer.getUserId;
-//        customer = null;
-//        customer = CustomerRepository.findCustomerByUserId(id);
-//        assertNotNull(customer);
-//        assertEquals(customer.getUserId(), id);
-//        assertEquals(customer.getPhoneNo(), phoneNo);
-//        assertEquals(customer.getHomeAddress(), address);
+        String id = customer.getUsername();
+        customer = null;
+        customer = customerRepository.findCustomerByUsername(id);
+        assertNotNull(customer);
+        assertEquals(customer.getPassword(), password);
+        assertEquals(customer.getUsername(), username);
 
     }
 
