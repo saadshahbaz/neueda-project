@@ -7,13 +7,13 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Car{
-private int plateNo;
+private String plateNo;
    
-   public void setPlateNo(int value) {
+   public void setPlateNo(String value) {
 this.plateNo = value;
     }
 @Id
-public int getPlateNo() {
+public String getPlateNo() {
 return this.plateNo;
     }
 private String model;

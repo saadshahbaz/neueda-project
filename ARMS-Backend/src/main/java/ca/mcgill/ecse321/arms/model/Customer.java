@@ -6,45 +6,62 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Customer extends User{
-private Integer lastReminder;
-   
-   public void setLastReminder(Integer value) {
-this.lastReminder = value;
+    private String lastReminder;
+
+    public void setLastReminder(String value) {
+        this.lastReminder = value;
     }
-public Integer getLastReminder() {
-return this.lastReminder;
+    public String getLastReminder() {
+        return this.lastReminder;
     }
-private Set<Bill> bill;
+    private Set<Bill> bill;
 
-@OneToMany(mappedBy="customer")
-public Set<Bill> getBill() {
-   return this.bill;
-}
+    @OneToMany(mappedBy="customer")
+    public Set<Bill> getBill() {
+        return this.bill;
+    }
 
-public void setBill(Set<Bill> bills) {
-   this.bill = bills;
-}
+    public void setBill(Set<Bill> bills) {
+        this.bill = bills;
+    }
 
-private Set<Car> car;
+    private Set<Car> car;
 
-@OneToMany(mappedBy="customer")
-public Set<Car> getCar() {
-   return this.car;
-}
+    @OneToMany(mappedBy="customer")
+    public Set<Car> getCar() {
+        return this.car;
+    }
 
-public void setCar(Set<Car> cars) {
-   this.car = cars;
-}
+    public void setCar(Set<Car> cars) {
+        this.car = cars;
+    }
 
-private ARMS ARMS;
+    private ARMS ARMS;
 
-@ManyToOne(optional=false)
-public ARMS getARMS() {
-   return this.ARMS;
-}
+    @ManyToOne(optional=false)
+    public ARMS getARMS() {
+        return this.ARMS;
+    }
 
-public void setARMS(ARMS aRMS) {
-   this.ARMS = aRMS;
-}
+    public void setARMS(ARMS aRMS) {
+        this.ARMS = aRMS;
+    }
+
+    private int phonenumber;
+
+    public void setPhonenumber(int value) {
+        this.phonenumber = value;
+    }
+    public int getPhonenumber() {
+        return this.phonenumber;
+    }
+    private String email;
+
+    public void setEmail(String value) {
+        this.email = value;
+    }
+    public String getEmail() {
+        return this.email;
+    }
 
 }

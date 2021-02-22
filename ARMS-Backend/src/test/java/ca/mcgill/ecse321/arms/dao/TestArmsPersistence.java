@@ -46,43 +46,75 @@ public class TestArmsPersistence {
 	private TimeSlotRepository timeSlotRepository;
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@BeforeEach
 	@AfterEach
 	public void clearDB() {
-		appointmentRepository.deleteAll();
-		armsRepository.deleteAll();
+		//appointmentRepository.deleteAll();
 		assistantRepository.deleteAll();
-		billRepository.deleteAll();
-		businessHourRepository.deleteAll();
-		carRepository.deleteAll();
+		//billRepository.deleteAll();
+		//businessHourRepository.deleteAll();
+		//carRepository.deleteAll();
 		customerRepository.deleteAll();
-		serviceRepository.deleteAll();
-		spaceRepository.deleteAll();
-		technicianRepository.deleteAll();
-		timeSlotRepository.deleteAll();
+		//serviceRepository.deleteAll();
+		//spaceRepository.deleteAll();
+		//technicianRepository.deleteAll();
+		//timeSlotRepository.deleteAll();
 		userRepository.deleteAll();
+		armsRepository.deleteAll();
 	}
-	
-	@Test
-    public void testPersistAndLoadCustomer() {
 
+	@Test
+	public void testPersistAndLoadCustomer() {
+		ARMS arms = new ARMS();
+		arms.setArmsID(1);
 		String username="TestUserName";
+<<<<<<< HEAD
         String password="TestPassword";
         Customer customer = new Customer();
         ARMS arms = new ARMS();
+=======
+		String password="TestPassword";
+		Customer customer = new Customer();
+		armsRepository.save(arms);
+		customer.setARMS(arms);
+		customer.setUsername(username);
+		customer.setPassword(password);
+		customerRepository.save(customer);
+		String id = customer.getUsername();
+		customer = null;
+		customer = customerRepository.findCustomerByUsername(id);
+		assertNotNull(customer);
+		assertEquals(customer.getPassword(), password);
+		assertEquals(customer.getUsername(), username);
 
-        customer.setARMS(arms);
-        customer.setUsername(username);
-        customer.setPassword(password);
-        customerRepository.save(customer);
-        String id = customer.getUsername();
-        customer = null;
-        customer = customerRepository.findCustomerByUsername(id);
-        assertNotNull(customer);
-        assertEquals(customer.getPassword(), password);
-        assertEquals(customer.getUsername(), username);
+>>>>>>> 77197df2fd764ce1783fd185d1a18f111433ba27
 
-    }
+	}
+
+	/**
+	 * @author Jianmo Li
+	 */
+	@Test
+	public void testPersistenceAndLoadAssistant() {
+		String username = "tester";
+		String password = "1234";
+		Assistant ass = new Assistant();
+		ARMS arms = new ARMS();
+		arms.setArmsID(2);
+		armsRepository.save(arms);
+		ass.setARMS(arms);
+		ass.setUsername(username);
+		ass.setPassword(password);
+		assistantRepository.save(ass);
+
+		ass = null;
+
+		ass = assistantRepository.findAssistantByUsername(username);
+		assertNotNull(ass);
+		assertEquals(ass.getUsername(),username);
+		assertEquals(ass.getPassword(),password);
+
+	}
 
 }

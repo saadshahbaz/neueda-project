@@ -131,15 +131,16 @@ public void setCustomer(Set<Customer> customers) {
    this.customer = customers;
 }
 
-private Assistant assistant;
 
-@OneToOne(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Assistant getAssistant() {
-   return this.assistant;
-}
+   private Set<Assistant> assistant;
 
-public void setAssistant(Assistant assistant) {
-   this.assistant = assistant;
-}
+   @OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
+   public Set<Assistant> getAssistant() {
+      return this.assistant;
+   }
+
+   public void setAssistant(Set<Assistant> assistants) {
+      this.assistant = assistants;
+   }
 
 }
