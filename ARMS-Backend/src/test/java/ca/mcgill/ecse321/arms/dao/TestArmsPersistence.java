@@ -101,7 +101,7 @@ public class TestArmsPersistence {
 
 		ass = null;
 
-		ass = assistantRepository.findAssistantByName(username);
+		ass = assistantRepository.findAssistantByUsername(username);
 		assertNotNull(ass);
 		assertEquals(ass.getUsername(),username);
 		assertEquals(ass.getPassword(),password);
