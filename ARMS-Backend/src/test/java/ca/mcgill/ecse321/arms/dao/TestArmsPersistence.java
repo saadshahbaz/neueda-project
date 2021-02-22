@@ -70,7 +70,7 @@ public class TestArmsPersistence {
 	public Customer createCustomer() {
 		String username = "TestCustomerName";
 		String password = "myPassword123!";
-		int lastReminder = 20200222;
+		String lastReminder = "2020-02-22";
 		
 		Customer customer = new Customer();
 		customer.setUsername(username);
@@ -88,7 +88,7 @@ public class TestArmsPersistence {
 		// create customer
 		String username = "TestCustomerName";
 		String password = "myPassword123!";
-		int lastReminder = 20200222;
+		String lastReminder = "2020-02-22";
 		Customer customer = new Customer();
 		customer.setUsername(username);
 		customer.setPassword(password);
