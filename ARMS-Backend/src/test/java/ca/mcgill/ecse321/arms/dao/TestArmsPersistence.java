@@ -129,17 +129,17 @@ public class TestArmsPersistence {
 		ARMS arms = new ARMS();
 		armsRepository.save(arms);
 
-		customer.setARMS(arms);
-		customer.setUsername(username);
-		customer.setPassword(password);
-		customerRepository.save(customer);
-//        Integer id=customer.getUserId;
-//        customer = null;
-//        customer = CustomerRepository.findCustomerByUserId(id);
-//        assertNotNull(customer);
-//        assertEquals(customer.getUserId(), id);
-//        assertEquals(customer.getPhoneNo(), phoneNo);
-//        assertEquals(customer.getHomeAddress(), address);
+
+    customer.setARMS(arms);
+    customer.setUsername(username);
+    customer.setPassword(password);
+    customerRepository.save(customer);
+    String id = customer.getUsername();
+    customer = null;
+    customer = customerRepository.findCustomerByUsername(id);
+    assertNotNull(customer);
+    assertEquals(customer.getPassword(), password);
+    assertEquals(customer.getUsername(), username);
 
 	}
 
@@ -167,4 +167,36 @@ public class TestArmsPersistence {
 	}
 
 
+	/**
+	 * @author Jianmo Li
+	 */
+	@Test
+	public void testPersistenceAndLoadAssistant() {
+		String username = "tester";
+		String password = "1234";
+		Assistant ass = new Assistant();
+		ARMS arms = new ARMS();
+		armsRepository.save(arms);
+
+		ass.setARMS(arms);
+		ass.setUsername(username);
+		ass.setPassword(password);
+		assistantRepository.save(ass);
+
+		ass = null;
+
+		ass = assistantRepository.findAssistantByUsername(username);
+		assertNotNull(ass);
+		assertEquals(ass.getUsername(),username);
+		assertEquals(ass.getPassword(),password);
+
+	}
+
+	/**
+	 * @author Jianmo Li
+	 */
+	@Test
+	public void testPersistenceAndLoadBill(){
+
+	}
 }
