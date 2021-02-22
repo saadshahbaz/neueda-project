@@ -84,4 +84,36 @@ public class TestArmsPersistence {
 
     }
 
+	/**
+	 * @author Jianmo Li
+	 */
+	@Test
+	public void testPersistenceAndLoadAssistant() {
+		String username = "tester";
+		String password = "1234";
+		Assistant ass = new Assistant();
+		ARMS arms = new ARMS();
+		armsRepository.save(arms);
+
+		ass.setARMS(arms);
+		ass.setUsername(username);
+		ass.setPassword(password);
+		assistantRepository.save(ass);
+
+		ass = null;
+
+		ass = assistantRepository.findAssistantByName(username);
+		assertNotNull(ass);
+		assertEquals(ass.getUsername(),username);
+		assertEquals(ass.getPassword(),password);
+
+	}
+
+	/**
+	 * @author Jianmo Li
+	 */
+	@Test
+	public void testPersistenceAndLoadBill(){
+
+	}
 }
