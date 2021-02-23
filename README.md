@@ -21,7 +21,7 @@ Ruixin Su
 | :-------: | :-------------: | :-: |
 | Jianmo Li | Domain model and use cases | 20 |
 | Grey Yuan | Domain model and use cases | 20 |
-| Zhiwei Li | Domain model and report | 20 |
+| Zhiwei Li | Domain model and report | 21 |
 | Cecilia Jiang | Domain model and build system | 20 |
 | Ruixin Su | Domain model and requirements | 20 |
 
