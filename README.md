@@ -25,4 +25,4 @@ Ruixin Su
 | Grey Yuan | Domain model, persistence and persistence tester, Travis CI build, and use cases, detailed use cases description | 20 |
 | Zhiwei Li | Domain model description, detailed use cases description, meeting documentation | 20 |
 | Cecilia Jiang |Domain model, UML lab Creation, system build, and persistence tester | 20 |
-| Ruixin Su | Domain model, UML lab Creation and persistence tester, and persistence tester | 20 |
+| Ruixin Su | Domain model, UML lab Creation and persistence layer, and persistence tester | 20 |
