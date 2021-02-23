@@ -149,7 +149,7 @@ public class TestArmsPersistence {
 	  bill.setAmount(price);
 	  bill.setBillNo(billnum);
 	  bill.setCustomer(customer);
-	  bill.setIsPaied(payornot);
+	  bill.setIsPaied(payornot);  //test
 	  billRepository.save(bill);
 
 	  bill=null;
