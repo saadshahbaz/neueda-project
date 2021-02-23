@@ -72,6 +72,9 @@ public class TestArmsPersistence {
 	}
 
 
+	/**
+	  * @author Linwei Yuan
+	  */
 	@Test
 	public void testPersistAndLoadCustomer() {
 		ARMS arms = new ARMS();
@@ -229,6 +232,9 @@ public class TestArmsPersistence {
 //	      assertEquals(tech.getTimeSlot().iterator().next(),timeslot);
 		}
 	
+	/**
+	  * @author Linwei Yuan
+	  */	
 	@Test
     public void testPersistenceAndLoadSpace() {
 
@@ -255,9 +261,8 @@ public class TestArmsPersistence {
         
         this.timeSlotRepository.save(timeslot);
         Set<TimeSlot> ts = new HashSet<>();
-		// ts.add(timeslot1);
-		ts.add(timeslot);
-		int id = 1;
+	ts.add(timeslot);
+	int id = 1;
         Space space = new Space();
         space.setARMS(arms);
         space.setTimeSlot(ts);
