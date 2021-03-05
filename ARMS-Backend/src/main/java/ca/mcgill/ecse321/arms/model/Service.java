@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.arms.model;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Set;
@@ -6,52 +7,58 @@ import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Service{
-private String name;
-   
-   public void setName(String value) {
-this.name = value;
+public class Service {
+    private String name;
+
+    public void setName(String value) {
+        this.name = value;
     }
-@Id
-public String getName() {
-return this.name;
+
+    @Id
+    public String getName() {
+        return this.name;
     }
-private int duration;
 
-public void setDuration(int value) {
-this.duration = value;
+    private int duration;
+
+    public void setDuration(int value) {
+        this.duration = value;
     }
-public int getDuration() {
-return this.duration;
+
+    public int getDuration() {
+        return this.duration;
     }
-private int price;
 
-public void setPrice(int value) {
-this.price = value;
+    private int price;
+
+    public void setPrice(int value) {
+        this.price = value;
     }
-public int getPrice() {
-return this.price;
+
+    public int getPrice() {
+        return this.price;
     }
-private Set<Appointment> appointment;
 
-@OneToMany(mappedBy="service")
-public Set<Appointment> getAppointment() {
-   return this.appointment;
-}
+    private Set<Appointment> appointment;
 
-public void setAppointment(Set<Appointment> appointments) {
-   this.appointment = appointments;
-}
+    @OneToMany(mappedBy = "service")
+    public Set<Appointment> getAppointment() {
+        return this.appointment;
+    }
 
-private ARMS ARMS;
+    public void setAppointment(Set<Appointment> appointments) {
+        this.appointment = appointments;
+    }
 
-@ManyToOne(optional=false)
-public ARMS getARMS() {
-   return this.ARMS;
-}
+    private ARMS ARMS;
 
-public void setARMS(ARMS aRMS) {
-   this.ARMS = aRMS;
-}
+    @ManyToOne(optional = false)
+    public ARMS getARMS() {
+        return this.ARMS;
+    }
+
+    public void setARMS(ARMS aRMS) {
+        this.ARMS = aRMS;
+    }
 
 }

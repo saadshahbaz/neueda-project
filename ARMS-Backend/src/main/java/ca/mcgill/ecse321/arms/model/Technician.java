@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.arms.model;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Set;
@@ -6,44 +7,48 @@ import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Technician{
-private String name;
-   
-   public void setName(String value) {
-this.name = value;
+public class Technician {
+    private String name;
+
+    public void setName(String value) {
+        this.name = value;
     }
-public String getName() {
-return this.name;
+
+    public String getName() {
+        return this.name;
     }
-private int technicianID;
 
-public void setTechnicianID(int value) {
-this.technicianID = value;
+    private int technicianID;
+
+    public void setTechnicianID(int value) {
+        this.technicianID = value;
     }
-@Id
-public int getTechnicianID() {
-return this.technicianID;
+
+    @Id
+    public int getTechnicianID() {
+        return this.technicianID;
     }
-private Set<TimeSlot> timeSlot;
 
-@OneToMany(mappedBy="technician")
-public Set<TimeSlot> getTimeSlot() {
-   return this.timeSlot;
-}
+    private Set<TimeSlot> timeSlot;
 
-public void setTimeSlot(Set<TimeSlot> timeSlots) {
-   this.timeSlot = timeSlots;
-}
+    @OneToMany(mappedBy = "technician")
+    public Set<TimeSlot> getTimeSlot() {
+        return this.timeSlot;
+    }
 
-private ARMS ARMS;
+    public void setTimeSlot(Set<TimeSlot> timeSlots) {
+        this.timeSlot = timeSlots;
+    }
 
-@ManyToOne(optional=false)
-public ARMS getARMS() {
-   return this.ARMS;
-}
+    private ARMS ARMS;
 
-public void setARMS(ARMS aRMS) {
-   this.ARMS = aRMS;
-}
+    @ManyToOne(optional = false)
+    public ARMS getARMS() {
+        return this.ARMS;
+    }
+
+    public void setARMS(ARMS aRMS) {
+        this.ARMS = aRMS;
+    }
 
 }

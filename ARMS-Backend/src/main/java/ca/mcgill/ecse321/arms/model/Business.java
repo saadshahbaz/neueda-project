@@ -1,7 +1,5 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
-
 package ca.mcgill.ecse321.arms.model;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Set;
@@ -9,60 +7,68 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Business{
-private String name;
-   
-   public void setName(String value) {
-this.name = value;
-    }
-@Id
-public String getName() {
-return this.name;
-    }
-private String address;
+public class Business {
+    private String name;
 
-public void setAddress(String value) {
-this.address = value;
+    public void setName(String value) {
+        this.name = value;
     }
-public String getAddress() {
-return this.address;
+
+    @Id
+    public String getName() {
+        return this.name;
     }
-private String phoneNumber;
 
-public void setPhoneNumber(String value) {
-this.phoneNumber = value;
+    private String address;
+
+    public void setAddress(String value) {
+        this.address = value;
     }
-public String getPhoneNumber() {
-return this.phoneNumber;
+
+    public String getAddress() {
+        return this.address;
     }
-private String email;
 
-public void setEmail(String value) {
-this.email = value;
+    private String phoneNumber;
+
+    public void setPhoneNumber(String value) {
+        this.phoneNumber = value;
     }
-public String getEmail() {
-return this.email;
+
+    public String getPhoneNumber() {
+        return this.phoneNumber;
     }
-private Set<BusinessHour> businessHour;
 
-@OneToMany
-public Set<BusinessHour> getBusinessHour() {
-   return this.businessHour;
-}
+    private String email;
 
-public void setBusinessHour(Set<BusinessHour> businessHours) {
-   this.businessHour = businessHours;
-}
+    public void setEmail(String value) {
+        this.email = value;
+    }
 
-private ARMS ARMS;
+    public String getEmail() {
+        return this.email;
+    }
 
-@OneToOne(optional=false)
-public ARMS getARMS() {
-   return this.ARMS;
-}
+    private Set<BusinessHour> businessHour;
 
-public void setARMS(ARMS aRMS) {
-   this.ARMS = aRMS;
-}
+    @OneToMany
+    public Set<BusinessHour> getBusinessHour() {
+        return this.businessHour;
+    }
+
+    public void setBusinessHour(Set<BusinessHour> businessHours) {
+        this.businessHour = businessHours;
+    }
+
+    private ARMS ARMS;
+
+    @OneToOne(optional = false)
+    public ARMS getARMS() {
+        return this.ARMS;
+    }
+
+    public void setARMS(ARMS aRMS) {
+        this.ARMS = aRMS;
+    }
 
 }
