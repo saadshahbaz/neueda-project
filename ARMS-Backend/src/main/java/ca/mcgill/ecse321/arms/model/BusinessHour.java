@@ -57,8 +57,17 @@ public class BusinessHour {
         return this.ARMS;
     }
 
+    private Business business;
+    @ManyToOne(optional = false)
+    public Business getBusiness() {
+        return this.business;
+    }
+
     public void setARMS(ARMS aRMS) {
         this.ARMS = aRMS;
+    }
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 
 }
