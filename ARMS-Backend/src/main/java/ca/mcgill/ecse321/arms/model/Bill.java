@@ -1,129 +1,62 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
-
 package ca.mcgill.ecse321.arms.model;
 
-// line 41 "../../../../../ARMS.ump"
-public class Bill
-{
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
+@Entity
+public class Bill {
+    private int billNo;
 
-  //Bill Attributes
-  private int amount;
-
-  //Bill Associations
-  private Customer customer;
-  private ARMS aRMS;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  public Bill(int aAmount, Customer aCustomer, ARMS aARMS)
-  {
-    amount = aAmount;
-    boolean didAddCustomer = setCustomer(aCustomer);
-    if (!didAddCustomer)
-    {
-      throw new RuntimeException("Unable to create bill due to customer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    boolean didAddARMS = setARMS(aARMS);
-    if (!didAddARMS)
-    {
-      throw new RuntimeException("Unable to create bill due to aRMS. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-  }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-
-  public boolean setAmount(int aAmount)
-  {
-    boolean wasSet = false;
-    amount = aAmount;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public int getAmount()
-  {
-    return amount;
-  }
-  /* Code from template association_GetOne */
-  public Customer getCustomer()
-  {
-    return customer;
-  }
-  /* Code from template association_GetOne */
-  public ARMS getARMS()
-  {
-    return aRMS;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setCustomer(Customer aCustomer)
-  {
-    boolean wasSet = false;
-    if (aCustomer == null)
-    {
-      return wasSet;
+    public void setBillNo(int value) {
+        this.billNo = value;
     }
 
-    Customer existingCustomer = customer;
-    customer = aCustomer;
-    if (existingCustomer != null && !existingCustomer.equals(aCustomer))
-    {
-      existingCustomer.removeBill(this);
-    }
-    customer.addBill(this);
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setARMS(ARMS aARMS)
-  {
-    boolean wasSet = false;
-    if (aARMS == null)
-    {
-      return wasSet;
+    @Id
+    public int getBillNo() {
+        return this.billNo;
     }
 
-    ARMS existingARMS = aRMS;
-    aRMS = aARMS;
-    if (existingARMS != null && !existingARMS.equals(aARMS))
-    {
-      existingARMS.removeBill(this);
-    }
-    aRMS.addBill(this);
-    wasSet = true;
-    return wasSet;
-  }
+    private int amount;
 
-  public void delete()
-  {
-    Customer placeholderCustomer = customer;
-    this.customer = null;
-    if(placeholderCustomer != null)
-    {
-      placeholderCustomer.removeBill(this);
+    public void setAmount(int value) {
+        this.amount = value;
     }
-    ARMS placeholderARMS = aRMS;
-    this.aRMS = null;
-    if(placeholderARMS != null)
-    {
-      placeholderARMS.removeBill(this);
+
+    public int getAmount() {
+        return this.amount;
     }
-  }
 
+    private Customer customer;
 
-  public String toString()
-  {
-    return super.toString() + "["+
-            "amount" + ":" + getAmount()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "aRMS = "+(getARMS()!=null?Integer.toHexString(System.identityHashCode(getARMS())):"null");
-  }
+    @ManyToOne(optional = false)
+    public Customer getCustomer() {
+        return this.customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    private ARMS ARMS;
+
+    @ManyToOne(optional = false)
+    public ARMS getARMS() {
+        return this.ARMS;
+    }
+
+    public void setARMS(ARMS aRMS) {
+        this.ARMS = aRMS;
+    }
+
+    private boolean isPaid;
+
+    public void setIsPaid(boolean value) {
+        this.isPaid = value;
+    }
+
+    public boolean isIsPaid() {
+        return this.isPaid;
+    }
+
 }
