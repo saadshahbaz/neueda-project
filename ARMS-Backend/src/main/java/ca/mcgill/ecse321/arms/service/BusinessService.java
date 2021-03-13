@@ -17,8 +17,6 @@ import static org.hibernate.internal.util.collections.ArrayHelper.toList;
 
 @Service
 public class BusinessService {
-
-
     @Autowired
     private BusinessHourRepository businessHourRepository;
 

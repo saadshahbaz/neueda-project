@@ -78,15 +78,5 @@ public class Business {
         this.businessHour = businessHours;
     }
 
-    private ARMS ARMS;
-
-    @OneToOne(optional = false)
-    public ARMS getARMS() {
-        return this.ARMS;
-    }
-
-    public void setARMS(ARMS aRMS) {
-        this.ARMS = aRMS;
-    }
 
 }

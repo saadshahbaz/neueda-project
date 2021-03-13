@@ -48,15 +48,4 @@ public class Appointment {
         this.timeSlot = timeSlot;
     }
 
-    private ARMS ARMS;
-
-    @ManyToOne(optional = false)
-    public ARMS getARMS() {
-        return this.ARMS;
-    }
-
-    public void setARMS(ARMS aRMS) {
-        this.ARMS = aRMS;
-    }
-
 }

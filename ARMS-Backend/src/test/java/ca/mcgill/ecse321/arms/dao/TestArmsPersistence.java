@@ -29,8 +29,6 @@ public class TestArmsPersistence {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 	@Autowired
-	private ArmsRepository armsRepository;
-	@Autowired
 	private AssistantRepository assistantRepository;
 	@Autowired
 	private BillRepository billRepository;
@@ -68,7 +66,6 @@ public class TestArmsPersistence {
 		technicianRepository.deleteAll();
 		timeSlotRepository.deleteAll();
 		userRepository.deleteAll();
-		armsRepository.deleteAll();
 	}
 
 
@@ -77,13 +74,9 @@ public class TestArmsPersistence {
 	  */
 	@Test
 	public void testPersistAndLoadCustomer() {
-		ARMS arms = new ARMS();
-		arms.setArmsID(1);
-		armsRepository.save(arms);
 		String username="TestUserName";
 		String password="TestPassword";
 		Customer customer = new Customer();
-		customer.setARMS(arms);
 		customer.setUsername(username);
 		customer.setPassword(password);
 		customerRepository.save(customer);
@@ -101,13 +94,9 @@ public class TestArmsPersistence {
 	  */
 	 @Test
 	 public void testPersistAndLoadCar() {
-	  ARMS arms = new ARMS();
-	  arms.setArmsID(1);
 	  String username="TestUserName";
 	  String password="TestPassword";
 	  Customer customer = new Customer();
-	  armsRepository.save(arms);
-	  customer.setARMS(arms);
 	  customer.setUsername(username);
 	  customer.setPassword(password);
 	  customerRepository.save(customer);
@@ -118,7 +107,6 @@ public class TestArmsPersistence {
 	  Car car = new Car();
 	  car.setPlateNo(plateNo);
 	  car.setManufacturer(manufactor);
-	  car.setARMS(arms);
 	  car.setCustomer(customer);
 	  carRepository.save(car);
 	  car = null;
@@ -129,13 +117,9 @@ public class TestArmsPersistence {
 	 
 	 @Test
 	 public void testPersistAndLoadBill() {
-	  ARMS arms = new ARMS();
-	  arms.setArmsID(1);
 	  String username="TestUserName";
 	  String password="TestPassword";
 	  Customer customer = new Customer();
-	  armsRepository.save(arms);
-	  customer.setARMS(arms);
 	  customer.setUsername(username);
 	  customer.setPassword(password);
 	  customerRepository.save(customer);
@@ -145,7 +129,6 @@ public class TestArmsPersistence {
 	  int price = 100;
 	  Bill bill = new Bill();
 	  boolean payornot = false;
-	  bill.setARMS(arms);
 	  bill.setAmount(price);
 	  bill.setBillNo(billnum);
 	  bill.setCustomer(customer);
@@ -167,10 +150,6 @@ public class TestArmsPersistence {
 	  String username = "tester";
 	  String password = "1234";
 	  Assistant ass = new Assistant();
-	  ARMS arms = new ARMS();
-	  arms.setArmsID(2);
-	  armsRepository.save(arms);
-	  ass.setARMS(arms);
 	  ass.setUsername(username);
 	  ass.setPassword(password);
 	  assistantRepository.save(ass);
@@ -189,10 +168,6 @@ public class TestArmsPersistence {
 		 */
 		@Test
 		public void testPersistenceAndLoadTechnician() {
-			ARMS arms = new ARMS();
-			arms.setArmsID(5);
-			armsRepository.save(arms);
-
 			String sd = "2010-01-03";
 			java.sql.Date startd = Date.valueOf(sd);
 			String ed = "2020-02-11";
@@ -209,7 +184,6 @@ public class TestArmsPersistence {
 			timeslot.setStartDate(startd);
 			timeslot.setStartTime(startt);
 			timeslot.setTimeslotID(timeslotid);
-			timeslot.setARMS(arms);
 			timeSlotRepository.save(timeslot);
 
 			Set<TimeSlot> ts = new HashSet<>();
@@ -219,7 +193,6 @@ public class TestArmsPersistence {
 			String tname = "technician1";
 			int tid = 137;
 			Technician tech = new Technician();
-			tech.setARMS(arms);
 			tech.setName(tname);
 			tech.setTechnicianID(tid);
 			tech.setTimeSlot(ts);
@@ -237,11 +210,6 @@ public class TestArmsPersistence {
 	  */	
 	@Test
     public void testPersistenceAndLoadSpace() {
-
-        ARMS arms = new ARMS();
-        arms.setArmsID(3);
-        armsRepository.save(arms);
-
         String sd = "2010-01-03";
         Date startd = Date.valueOf(sd);
         String ed = "2020-02-11";
@@ -257,14 +225,12 @@ public class TestArmsPersistence {
         timeslot.setStartDate(startd);
         timeslot.setStartTime(startt);
         timeslot.setTimeslotID(timeslotid);
-        timeslot.setARMS(arms);
         
         this.timeSlotRepository.save(timeslot);
         Set<TimeSlot> ts = new HashSet<>();
 	ts.add(timeslot);
 	int id = 1;
         Space space = new Space();
-        space.setARMS(arms);
         space.setTimeSlot(ts);
         space.setSpaceID(id);
         spaceRepository.save(space);
@@ -280,32 +246,32 @@ public class TestArmsPersistence {
 	/**
 	 * @author Cecilia Jiang
 	 */
-	@Test
-	public void testPersistenceAndLoadBusinessHour() {
-		String name = "TestBusinessName";
-		String address = "TestAddress, QC, CA";
-		String phoneNumber = "88888888";
-		String email = "test@mail.mcgill.ca";
-		Business business = new Business();
-
-		ARMS arms = new ARMS();
-		arms.setArmsID(2);
-		armsRepository.save(arms);
-
-		java.sql.Time startTime1 = java.sql.Time.valueOf("10:00:00");
-		java.sql.Time endTime1 = java.sql.Time.valueOf("17:00:00");
-		BusinessHour businessHour1 = new BusinessHour();
-		businessHour1.setStartTime(startTime1);
-		businessHour1.setEndTime(endTime1);
-		businessHour1.setBusinessHourID(1);
-		businessHour1.setARMS(arms);
-
-		businessHourRepository.save(businessHour1);
-
-		assertNotNull(businessHour1);
-		assertEquals(businessHour1.getStartTime().toString(), startTime1.toString());
-
-	}
+//	@Test
+//	public void testPersistenceAndLoadBusinessHour() {
+//		String name = "TestBusinessName";
+//		String address = "TestAddress, QC, CA";
+//		String phoneNumber = "88888888";
+//		String email = "test@mail.mcgill.ca";
+//		Business business = new Business();
+//
+//		ARMS arms = new ARMS();
+//		arms.setArmsID(2);
+//		armsRepository.save(arms);
+//
+//		java.sql.Time startTime1 = java.sql.Time.valueOf("10:00:00");
+//		java.sql.Time endTime1 = java.sql.Time.valueOf("17:00:00");
+//		BusinessHour businessHour1 = new BusinessHour();
+//		businessHour1.setStartTime(startTime1);
+//		businessHour1.setEndTime(endTime1);
+//		businessHour1.setBusinessHourID(1);
+//		businessHour1.setARMS(arms);
+//
+//		businessHourRepository.save(businessHour1);
+//
+//		assertNotNull(businessHour1);
+//		assertEquals(businessHour1.getStartTime().toString(), startTime1.toString());
+//
+//	}
 	
 	/**
 	  * @author Cecilia Jiang
@@ -316,12 +282,6 @@ public class TestArmsPersistence {
 	  int duration = 60;
 	  int price = 100;
 	  Service service = new Service();
-
-	  ARMS arms = new ARMS();
-	  arms.setArmsID(2);
-	  armsRepository.save(arms);
-
-	  service.setARMS(arms);
 	  service.setName(name);
 	  service.setDuration(duration);
 	  service.setPrice(price);
@@ -341,16 +301,11 @@ public class TestArmsPersistence {
 		public void testPersistenceAndLoadAppointment() {
 
 			TimeSlot timeslot = new TimeSlot();
-			ARMS arms = new ARMS();
-			arms.setArmsID(3);
-			this.armsRepository.save(arms);
-
 			String name = "TestServiceName";
 			int duration = 60;
 			int price = 100;
 			Service service = new Service();
 
-			service.setARMS(arms);
 			service.setName(name);
 			service.setDuration(duration);
 			service.setPrice(price);
@@ -359,7 +314,6 @@ public class TestArmsPersistence {
 			String username = "TestUserName";
 			String password = "TestPassword";
 			Customer customer = new Customer();
-			customer.setARMS(arms);
 			customer.setUsername(username);
 			customer.setPassword(password);
 			customerRepository.save(customer);
@@ -370,7 +324,6 @@ public class TestArmsPersistence {
 			Car car = new Car();
 			car.setPlateNo(plateNo);
 			car.setManufacturer(manufactor);
-			car.setARMS(arms);
 			car.setCustomer(customer);
 			carRepository.save(car);
 
@@ -390,7 +343,6 @@ public class TestArmsPersistence {
 			timeslot.setStartDate(startd);
 			timeslot.setStartTime(startt);
 			timeslot.setTimeslotID(timeslotid);
-			timeslot.setARMS(arms);
 			this.timeSlotRepository.save(timeslot);
 
 			Appointment app = new Appointment();
@@ -399,7 +351,6 @@ public class TestArmsPersistence {
 			app.setService(service);
 			app.setTimeSlot(timeslot);
 			app.setAppointmentID(appid);
-			app.setARMS(arms);
 			this.appointmentRepository.save(app);
 
 			app = null;
