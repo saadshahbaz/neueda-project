@@ -1,62 +1,62 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
-
 package ca.mcgill.ecse321.arms.model;
+
 import javax.persistence.*;
 
 @Entity
-public class Appointment{
-private int appointmentID;
-   
-   public void setAppointmentID(int value) {
-this.appointmentID = value;
+public class Appointment {
+    private int appointmentID;
+
+    public void setAppointmentID(int value) {
+        this.appointmentID = value;
     }
-@Id
-public int getAppointmentID() {
-return this.appointmentID;
+
+    @Id
+    public int getAppointmentID() {
+        return this.appointmentID;
     }
-private Car car;
 
-@ManyToOne(optional=false)
-public Car getCar() {
-   return this.car;
-}
+    private Car car;
 
-public void setCar(Car car) {
-   this.car = car;
-}
+    @ManyToOne(optional = false)
+    public Car getCar() {
+        return this.car;
+    }
 
-private Service service;
+    public void setCar(Car car) {
+        this.car = car;
+    }
 
-@ManyToOne(optional=false)
-public Service getService() {
-   return this.service;
-}
+    private Service service;
 
-public void setService(Service service) {
-   this.service = service;
-}
+    @ManyToOne(optional = false)
+    public Service getService() {
+        return this.service;
+    }
 
-private TimeSlot timeSlot;
+    public void setService(Service service) {
+        this.service = service;
+    }
 
-@OneToOne(optional=false)
-public TimeSlot getTimeSlot() {
-   return this.timeSlot;
-}
+    private TimeSlot timeSlot;
 
-public void setTimeSlot(TimeSlot timeSlot) {
-   this.timeSlot = timeSlot;
-}
+    @OneToOne(optional = false)
+    public TimeSlot getTimeSlot() {
+        return this.timeSlot;
+    }
 
-private ARMS ARMS;
+    public void setTimeSlot(TimeSlot timeSlot) {
+        this.timeSlot = timeSlot;
+    }
 
-@ManyToOne(optional=false)
-public ARMS getARMS() {
-   return this.ARMS;
-}
+    private ARMS ARMS;
 
-public void setARMS(ARMS aRMS) {
-   this.ARMS = aRMS;
-}
+    @ManyToOne(optional = false)
+    public ARMS getARMS() {
+        return this.ARMS;
+    }
+
+    public void setARMS(ARMS aRMS) {
+        this.ARMS = aRMS;
+    }
 
 }

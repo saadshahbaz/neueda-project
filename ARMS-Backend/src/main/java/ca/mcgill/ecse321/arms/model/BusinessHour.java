@@ -1,46 +1,73 @@
 package ca.mcgill.ecse321.arms.model;
+
 import javax.persistence.Entity;
 import java.sql.Time;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class BusinessHour{
+public class BusinessHour {
+    @Enumerated
+    private DayOfWeek dayOfWeek;
 
-private Time starttime;
+    public DayOfWeek getDayOfWeek() {
+        return this.dayOfWeek;
+    }
 
-public void setStarttime(Time value) {
-this.starttime = value;
+    public void setDayOfWeek(DayOfWeek value) {
+        this.dayOfWeek = value;
     }
-public Time getStarttime() {
-return this.starttime;
-    }
-private Time endTime;
 
-public void setEndTime(Time value) {
-this.endTime = value;
-    }
-public Time getEndTime() {
-return this.endTime;
-    }
-private int businessHourID;
+    private Time startTime;
 
-public void setBusinessHourID(int value) {
-this.businessHourID = value;
+    public void setStartTime(Time value) {
+        this.startTime = value;
     }
-@Id
-public int getBusinessHourID() {
-return this.businessHourID;
+
+    public Time getStartTime() {
+        return this.startTime;
     }
-private ARMS ARMS;
 
-@ManyToOne(optional=false)
-public ARMS getARMS() {
-   return this.ARMS;
-}
+    private Time endTime;
 
-public void setARMS(ARMS aRMS) {
-   this.ARMS = aRMS;
-}
+    public void setEndTime(Time value) {
+        this.endTime = value;
+    }
+
+    public Time getEndTime() {
+        return this.endTime;
+    }
+
+    private int businessHourID;
+
+    public void setBusinessHourID(int value) {
+        this.businessHourID = value;
+    }
+
+    @Id
+    public int getBusinessHourID() {
+        return this.businessHourID;
+    }
+
+    private ARMS ARMS;
+
+    @ManyToOne(optional = false)
+    public ARMS getARMS() {
+        return this.ARMS;
+    }
+
+    private Business business;
+    @ManyToOne(optional = false)
+    public Business getBusiness() {
+        return this.business;
+    }
+
+    public void setARMS(ARMS aRMS) {
+        this.ARMS = aRMS;
+    }
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
 
 }

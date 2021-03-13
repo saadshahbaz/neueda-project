@@ -1,7 +1,5 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
-
 package ca.mcgill.ecse321.arms.model;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Set;
@@ -11,130 +9,132 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-public class ARMS{
-private int armsID;
-   
+public class ARMS {
+   private int armsID;
+
    public void setArmsID(int value) {
-this.armsID = value;
-    }
-@Id
-public int getArmsID() {
-return this.armsID;
-    }
-private Set<TimeSlot> timeSlot;
+      this.armsID = value;
+   }
 
-@OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Set<TimeSlot> getTimeSlot() {
-   return this.timeSlot;
-}
+   @Id
+   public int getArmsID() {
+      return this.armsID;
+   }
 
-public void setTimeSlot(Set<TimeSlot> timeSlots) {
-   this.timeSlot = timeSlots;
-}
+   private Set<TimeSlot> timeSlot;
 
-private Set<Space> space;
+   @OneToMany(mappedBy = "ARMS", cascade = {CascadeType.ALL})
+   public Set<TimeSlot> getTimeSlot() {
+      return this.timeSlot;
+   }
 
-@OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Set<Space> getSpace() {
-   return this.space;
-}
+   public void setTimeSlot(Set<TimeSlot> timeSlots) {
+      this.timeSlot = timeSlots;
+   }
 
-public void setSpace(Set<Space> spaces) {
-   this.space = spaces;
-}
+   private Set<Space> space;
 
-private Set<Technician> technician;
+   @OneToMany(mappedBy = "ARMS", cascade = {CascadeType.ALL})
+   public Set<Space> getSpace() {
+      return this.space;
+   }
 
-@OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Set<Technician> getTechnician() {
-   return this.technician;
-}
+   public void setSpace(Set<Space> spaces) {
+      this.space = spaces;
+   }
 
-public void setTechnician(Set<Technician> technicians) {
-   this.technician = technicians;
-}
+   private Set<Technician> technician;
 
-private Set<BusinessHour> businessHour;
+   @OneToMany(mappedBy = "ARMS", cascade = {CascadeType.ALL})
+   public Set<Technician> getTechnician() {
+      return this.technician;
+   }
 
-@OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Set<BusinessHour> getBusinessHour() {
-   return this.businessHour;
-}
+   public void setTechnician(Set<Technician> technicians) {
+      this.technician = technicians;
+   }
 
-public void setBusinessHour(Set<BusinessHour> businessHours) {
-   this.businessHour = businessHours;
-}
+   private Set<BusinessHour> businessHour;
 
-private Business business;
+   @OneToMany(mappedBy = "ARMS", cascade = {CascadeType.ALL})
+   public Set<BusinessHour> getBusinessHour() {
+      return this.businessHour;
+   }
 
-@OneToOne(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Business getBusiness() {
-   return this.business;
-}
+   public void setBusinessHour(Set<BusinessHour> businessHours) {
+      this.businessHour = businessHours;
+   }
 
-public void setBusiness(Business business) {
-   this.business = business;
-}
+   private Business business;
 
-private Set<Service> service;
+   @OneToOne(mappedBy = "ARMS", cascade = {CascadeType.ALL})
+   public Business getBusiness() {
+      return this.business;
+   }
 
-@OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Set<Service> getService() {
-   return this.service;
-}
+   public void setBusiness(Business business) {
+      this.business = business;
+   }
 
-public void setService(Set<Service> services) {
-   this.service = services;
-}
+   private Set<Service> service;
 
-private Set<Car> car;
+   @OneToMany(mappedBy = "ARMS", cascade = {CascadeType.ALL})
+   public Set<Service> getService() {
+      return this.service;
+   }
 
-@OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Set<Car> getCar() {
-   return this.car;
-}
+   public void setService(Set<Service> services) {
+      this.service = services;
+   }
 
-public void setCar(Set<Car> cars) {
-   this.car = cars;
-}
+   private Set<Car> car;
 
-private Set<Appointment> appointment;
+   @OneToMany(mappedBy = "ARMS", cascade = {CascadeType.ALL})
+   public Set<Car> getCar() {
+      return this.car;
+   }
 
-@OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Set<Appointment> getAppointment() {
-   return this.appointment;
-}
+   public void setCar(Set<Car> cars) {
+      this.car = cars;
+   }
 
-public void setAppointment(Set<Appointment> appointments) {
-   this.appointment = appointments;
-}
+   private Set<Appointment> appointment;
 
-private Set<Bill> bill;
+   @OneToMany(mappedBy = "ARMS", cascade = {CascadeType.ALL})
+   public Set<Appointment> getAppointment() {
+      return this.appointment;
+   }
 
-@OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Set<Bill> getBill() {
-   return this.bill;
-}
+   public void setAppointment(Set<Appointment> appointments) {
+      this.appointment = appointments;
+   }
 
-public void setBill(Set<Bill> bills) {
-   this.bill = bills;
-}
+   private Set<Bill> bill;
 
-private Set<Customer> customer;
+   @OneToMany(mappedBy = "ARMS", cascade = {CascadeType.ALL})
+   public Set<Bill> getBill() {
+      return this.bill;
+   }
 
-@OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
-public Set<Customer> getCustomer() {
-   return this.customer;
-}
+   public void setBill(Set<Bill> bills) {
+      this.bill = bills;
+   }
 
-public void setCustomer(Set<Customer> customers) {
-   this.customer = customers;
-}
+   private Set<Customer> customer;
+
+   @OneToMany(mappedBy = "ARMS", cascade = {CascadeType.ALL})
+   public Set<Customer> getCustomer() {
+      return this.customer;
+   }
+
+   public void setCustomer(Set<Customer> customers) {
+      this.customer = customers;
+   }
 
 
    private Set<Assistant> assistant;
 
-   @OneToMany(mappedBy="ARMS", cascade={CascadeType.ALL})
+   @OneToMany(mappedBy = "ARMS", cascade = {CascadeType.ALL})
    public Set<Assistant> getAssistant() {
       return this.assistant;
    }

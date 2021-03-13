@@ -72,6 +72,9 @@ public class TestArmsPersistence {
 	}
 
 
+	/**
+	  * @author Linwei Yuan
+	  */
 	@Test
 	public void testPersistAndLoadCustomer() {
 		ARMS arms = new ARMS();
@@ -146,7 +149,7 @@ public class TestArmsPersistence {
 	  bill.setAmount(price);
 	  bill.setBillNo(billnum);
 	  bill.setCustomer(customer);
-	  bill.setIsPaied(payornot);
+	  bill.setIsPaid(payornot);  //test
 	  billRepository.save(bill);
 
 	  bill=null;
@@ -229,6 +232,9 @@ public class TestArmsPersistence {
 //	      assertEquals(tech.getTimeSlot().iterator().next(),timeslot);
 		}
 	
+	/**
+	  * @author Linwei Yuan
+	  */	
 	@Test
     public void testPersistenceAndLoadSpace() {
 
@@ -255,9 +261,8 @@ public class TestArmsPersistence {
         
         this.timeSlotRepository.save(timeslot);
         Set<TimeSlot> ts = new HashSet<>();
-		// ts.add(timeslot1);
-		ts.add(timeslot);
-		int id = 1;
+	ts.add(timeslot);
+	int id = 1;
         Space space = new Space();
         space.setARMS(arms);
         space.setTimeSlot(ts);
@@ -290,7 +295,7 @@ public class TestArmsPersistence {
 		java.sql.Time startTime1 = java.sql.Time.valueOf("10:00:00");
 		java.sql.Time endTime1 = java.sql.Time.valueOf("17:00:00");
 		BusinessHour businessHour1 = new BusinessHour();
-		businessHour1.setStarttime(startTime1);
+		businessHour1.setStartTime(startTime1);
 		businessHour1.setEndTime(endTime1);
 		businessHour1.setBusinessHourID(1);
 		businessHour1.setARMS(arms);
@@ -298,7 +303,7 @@ public class TestArmsPersistence {
 		businessHourRepository.save(businessHour1);
 
 		assertNotNull(businessHour1);
-		assertEquals(businessHour1.getStarttime().toString(), startTime1.toString());
+		assertEquals(businessHour1.getStartTime().toString(), startTime1.toString());
 
 	}
 	

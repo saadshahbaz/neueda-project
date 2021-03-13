@@ -1,16 +1,14 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
-
 package ca.mcgill.ecse321.arms.model;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Assistant extends User{
+public class Assistant extends User {
    private ARMS ARMS;
 
-   @ManyToOne(optional=false)
+   @ManyToOne(optional = false)
    public ARMS getARMS() {
       return this.ARMS;
    }
