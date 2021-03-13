@@ -50,13 +50,13 @@ public class Customer extends User {
         this.ARMS = aRMS;
     }
 
-    private int phoneNumber;
+    private String phoneNumber;
 
-    public void setPhoneNumber(int value) {
+    public void setPhoneNumber(String value) {
         this.phoneNumber = value;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return this.phoneNumber;
     }
 
