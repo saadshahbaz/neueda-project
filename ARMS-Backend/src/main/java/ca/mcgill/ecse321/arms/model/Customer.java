@@ -39,17 +39,6 @@ public class Customer extends User {
         this.car = cars;
     }
 
-    private ARMS ARMS;
-
-    @ManyToOne(optional = false)
-    public ARMS getARMS() {
-        return this.ARMS;
-    }
-
-    public void setARMS(ARMS aRMS) {
-        this.ARMS = aRMS;
-    }
-
     private String phoneNumber;
 
     public void setPhoneNumber(String value) {

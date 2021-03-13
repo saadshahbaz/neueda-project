@@ -6,15 +6,6 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Assistant extends User {
-   private ARMS ARMS;
 
-   @ManyToOne(optional = false)
-   public ARMS getARMS() {
-      return this.ARMS;
-   }
-
-   public void setARMS(ARMS aRMS) {
-      this.ARMS = aRMS;
-   }
 
 }

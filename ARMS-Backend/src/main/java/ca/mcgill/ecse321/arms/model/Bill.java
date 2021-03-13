@@ -38,17 +38,6 @@ public class Bill {
         this.customer = customer;
     }
 
-    private ARMS ARMS;
-
-    @ManyToOne(optional = false)
-    public ARMS getARMS() {
-        return this.ARMS;
-    }
-
-    public void setARMS(ARMS aRMS) {
-        this.ARMS = aRMS;
-    }
-
     private boolean isPaid;
 
     public void setIsPaid(boolean value) {
