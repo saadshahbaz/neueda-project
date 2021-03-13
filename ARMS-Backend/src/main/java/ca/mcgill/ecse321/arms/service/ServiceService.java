@@ -1,0 +1,207 @@
+package ca.mcgill.ecse321.arms.service;
+
+import ca.mcgill.ecse321.arms.ArmsApplication;
+import ca.mcgill.ecse321.arms.dao.AppointmentRepository;
+import ca.mcgill.ecse321.arms.dao.ServiceRepository;
+import ca.mcgill.ecse321.arms.dao.TimeSlotRepository;
+import ca.mcgill.ecse321.arms.model.Appointment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ca.mcgill.ecse321.arms.model.*;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class ServiceService {
+    @Autowired
+    private ServiceRepository serviceRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+    @Autowired
+    private TimeSlotRepository timeSlotRepository;
+    /**
+     * add a service to the ARMS
+     * @param serviceName name of the service
+     * @param duration
+     * @param price
+     * @throws IllegalArgumentException
+     * @return the service that is added to the ARMS
+     * @author Cecilia Jiang
+     */
+    @Transactional
+    public ca.mcgill.ecse321.arms.model.Service createService(String serviceName, int duration, int price) {
+        String error = "";
+        // parameter check
+        if(serviceName.equals("")){
+            error += "You must enter a service name\n";
+        }
+        if(duration<=0){
+            error += "Duration must be positive\n";
+        }
+        if(price<=0){
+            error += "Price must be positive";
+        }
+        if(error.length()>0)    throw new IllegalArgumentException(error);
+
+        // if the service already exists
+        ca.mcgill.ecse321.arms.model.Service service = serviceRepository.findServiceByName(serviceName.trim());
+        if(service!=null){
+            error = "service " + serviceName + " already exists";
+            throw new IllegalArgumentException(error);
+        }
+
+        serviceName = serviceName.trim();
+        ca.mcgill.ecse321.arms.model.Service aService = new ca.mcgill.ecse321.arms.model.Service();
+        aService.setName(serviceName);
+        aService.setDuration(duration);
+        aService.setPrice(price);
+        serviceRepository.save(aService);
+        return aService;
+    }
+
+    /**
+     * update a service by indicating the name of the service
+     * @param curName the service that will be updated
+     * @param newName new name of the service
+     * @param duration new duration
+     * @param price new price
+     * @throws IllegalArgumentException
+     * @return the service that is updated
+     * @author Cecilia Jiang
+     */
+    @Transactional
+    public ca.mcgill.ecse321.arms.model.Service updateService(String curName, String newName, int duration, int price) {
+        String error = "";
+        if(curName.equals("")){
+            error += "You must enter a service name\n";
+        }
+        if(newName.equals("")){
+            error += "You must enter a new service name\n";
+        }
+        if(duration<=0){
+            error += "Duration must be positive\n";
+        }
+        if(price<=0){
+            error += "Price must be positive";
+        }
+        if(error.length()>0)    throw new IllegalArgumentException(error);
+
+        ca.mcgill.ecse321.arms.model.Service aService = serviceRepository.findServiceByName(curName.trim());
+        if(aService==null){
+            throw new IllegalArgumentException("No service was found");
+        }
+        if(curName.equals(newName)){
+            if(aService.getName().equals(newName) && aService.getDuration()==duration && aService.getPrice()==price){
+                throw new IllegalArgumentException("Updated service must be different from the previous one");
+            }
+        }else{
+            ca.mcgill.ecse321.arms.model.Service aService2 = serviceRepository.findServiceByName(newName);
+            if(aService2!=null){
+                error = "Service" + newName + "already exists";
+                throw new IllegalArgumentException(error);
+            }
+        }
+
+        List<Appointment> appointments = appointmentRepository.findAppointmentsByService(curName.trim());
+        Date curDate = ArmsApplication.getCurrentDate();
+        Time curTime = ArmsApplication.getCurrentTime();
+        Boolean hasFutureAppointment = false;
+        if(appointments!=null){
+            for(int i=0; i<appointments.size(); i++){
+                if(appointments.get(i).getTimeSlot().getEndDate().equals(curDate)){
+                    if(appointments.get(i).getTimeSlot().getEndTime().after(curTime)){
+                        hasFutureAppointment = true;
+                    }
+                }else if(appointments.get(i).getTimeSlot().getEndDate().after(curDate)){
+                    hasFutureAppointment = true;
+                }
+            }
+        }
+        if(hasFutureAppointment){
+            error = "You can not update a service contains future appointments";
+            throw new IllegalArgumentException(error);
+        }
+        aService.setName(newName);
+        aService.setDuration(duration);
+        aService.setPrice(price);
+        serviceRepository.save(aService);
+        return aService;
+    }
+
+    /**
+     * delete a service in the ARMS
+     * @param serviceName name of the service that will be deleted
+     * @throws IllegalArgumentException
+     * @author Cecilia Jiang
+     */
+    @Transactional
+    public void deleteService(String serviceName) {
+        String error = "";
+        if(serviceName.equals("")){
+            error += "You must enter a service name.";
+        }
+        if(error.length()>0)    throw new IllegalArgumentException(error);
+        ca.mcgill.ecse321.arms.model.Service aService = serviceRepository.findServiceByName(serviceName.trim());
+        if(aService==null){
+            throw new IllegalArgumentException("No service was found.");
+        }
+
+        List<Appointment> appointments = appointmentRepository.findAppointmentsByService(serviceName.trim());
+        Date curDate = ArmsApplication.getCurrentDate();
+        Time curTime = ArmsApplication.getCurrentTime();
+        Boolean hasFutureAppointment = false;
+        if(appointments!=null){
+            for(int i=0; i<appointments.size(); i++){
+                if(appointments.get(i).getTimeSlot().getEndDate().equals(curDate)){
+                    if(appointments.get(i).getTimeSlot().getEndTime().after(curTime)){
+                        hasFutureAppointment = true;
+                    }
+                }else if(appointments.get(i).getTimeSlot().getEndDate().after(curDate)){
+                    hasFutureAppointment = true;
+                }
+            }
+        }
+        if(hasFutureAppointment){
+            error = "You can not delete a service contains future appointments";
+            throw new IllegalArgumentException(error);
+        }
+        serviceRepository.delete(aService);
+    }
+
+    /**
+     * get a service with its name
+     * @param name
+     * @return the service that was found
+     * @author Cecilia Jiang
+     */
+    @Transactional
+    public ca.mcgill.ecse321.arms.model.Service getService(String name){
+        ca.mcgill.ecse321.arms.model.Service service = serviceRepository.findServiceByName(name);
+        if(service==null){
+            throw new IllegalArgumentException("Service " + name + " does not exist");
+        }
+        return service;
+    }
+
+    /**
+     * @return all the services in the ARMS
+     * @author Cecilia Jiang
+     */
+    @Transactional
+    public List<ca.mcgill.ecse321.arms.model.Service> getAllServices(){
+        return toList(serviceRepository.findAll());
+    }
+
+    private <T> List<T> toList(Iterable<T> iterable){
+        List<T> resultList = new ArrayList<T>();
+        for (T t : iterable) {
+            resultList.add(t);
+        }
+        return resultList;
+    }
+}
