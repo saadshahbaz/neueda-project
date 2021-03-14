@@ -31,11 +31,10 @@ public class ServiceController {
     @PutMapping(value = {"/updateService","/updateService/"})
     public ServiceDto updateService(
             @RequestParam("name") String curName,
-            @RequestParam("newName") String newName,
             @RequestParam("duration") int duration,
             @RequestParam("price") int price
     ){
-        ca.mcgill.ecse321.arms.model.Service service = serviceService.updateService(curName, newName, duration, price);
+        ca.mcgill.ecse321.arms.model.Service service = serviceService.updateService(curName, duration, price);
         return convertToDto(service);
     }
 
