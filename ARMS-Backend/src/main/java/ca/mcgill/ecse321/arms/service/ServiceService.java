@@ -67,7 +67,6 @@ public class ServiceService {
     /**
      * update a service by indicating the name of the service
      * @param curName the service that will be updated
-     * @param newName new name of the service
      * @param duration new duration
      * @param price new price
      * @throws IllegalArgumentException
@@ -75,13 +74,10 @@ public class ServiceService {
      * @author Cecilia Jiang
      */
     @Transactional
-    public ca.mcgill.ecse321.arms.model.Service updateService(String curName, String newName, int duration, int price) {
+    public ca.mcgill.ecse321.arms.model.Service updateService(String curName, int duration, int price) {
         String error = "";
         if(curName.equals("")){
             error += "You must enter a service name\n";
-        }
-        if(newName.equals("")){
-            error += "You must enter a new service name\n";
         }
         if(duration<=0){
             error += "Duration must be positive\n";
@@ -95,19 +91,8 @@ public class ServiceService {
         if(aService==null){
             throw new IllegalArgumentException("No service was found");
         }
-        if(curName.equals(newName)){
-            if(aService.getName().equals(newName) && aService.getDuration()==duration && aService.getPrice()==price){
-                throw new IllegalArgumentException("Updated service must be different from the previous one");
-            }
-        }else{
-            ca.mcgill.ecse321.arms.model.Service aService2 = serviceRepository.findServiceByName(newName);
-            if(aService2!=null){
-                error = "Service" + newName + "already exists";
-                throw new IllegalArgumentException(error);
-            }
-        }
 
-        List<Appointment> appointments = appointmentRepository.findAppointmentsByService(curName.trim());
+        List<Appointment> appointments = appointmentRepository.findAppointmentsByService(aService);
         Date curDate = ArmsApplication.getCurrentDate();
         Time curTime = ArmsApplication.getCurrentTime();
         Boolean hasFutureAppointment = false;
@@ -126,7 +111,7 @@ public class ServiceService {
             error = "You can not update a service contains future appointments";
             throw new IllegalArgumentException(error);
         }
-        aService.setName(newName);
+
         aService.setDuration(duration);
         aService.setPrice(price);
         serviceRepository.save(aService);
@@ -151,7 +136,7 @@ public class ServiceService {
             throw new IllegalArgumentException("No service was found.");
         }
 
-        List<Appointment> appointments = appointmentRepository.findAppointmentsByService(serviceName.trim());
+        List<Appointment> appointments = appointmentRepository.findAppointmentsByService(aService);
         Date curDate = ArmsApplication.getCurrentDate();
         Time curTime = ArmsApplication.getCurrentTime();
         Boolean hasFutureAppointment = false;
