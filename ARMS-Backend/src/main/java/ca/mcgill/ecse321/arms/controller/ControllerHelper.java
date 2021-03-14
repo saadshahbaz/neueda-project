@@ -33,7 +33,7 @@ public class ControllerHelper {
         if (businessHour == null) {
             throw new IllegalArgumentException("There is no such Business!");
         }
-        BusinessHourDto businessHourDto = new BusinessHourDto(businessHour.getBusinessHourID(),businessHour.getDayOfWeek(),businessHour.getStartTime(),businessHour.getEndTime(),convertToDto(businessHour.getBusiness()));
+        BusinessHourDto businessHourDto = new BusinessHourDto(businessHour.getBusinessHourID(),businessHour.getStartDate(),businessHour.getEndDate(),businessHour.getStartTime(),businessHour.getEndTime(),convertToDto(businessHour.getBusiness()));
         return businessHourDto;
     }
 

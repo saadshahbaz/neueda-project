@@ -2,6 +2,8 @@ package ca.mcgill.ecse321.arms.service;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 //import static java.util.stream.Collectors.toList;
 import java.util.List;
@@ -50,7 +52,7 @@ public class BusinessService {
      */
     @Transactional
     public Business getBusiness(String name) {
-        if (name == null || name == "" || name.isBlank()) {
+        if (name == null || name == "") {
             throw new IllegalArgumentException("Business Name cannot be empty");
         }
         Business business = businessRepository.findBusinessByName(name);
@@ -72,19 +74,32 @@ public class BusinessService {
     /**
      * create a businesshour
      * @param id
-     * @param dayOfWeek
-     * @param sTime
-     * @param eTime
+     * @param startDate
+     * @param endDate
+     * @param startTime
+     * @param endTime
      * @param business
      * @return
      */
     @Transactional
-    public BusinessHour createBusinessHour(int id,DayOfWeek dayOfWeek, Time sTime, Time eTime, Business business) {
+    public BusinessHour createBusinessHour(int id,String startDate, String endDate, String startTime, String endTime, Business business) {
         //might need to check if id already exists & parameter validation
+        //DateFormat Dateformatter = new SimpleDateFormat("yyyy-MM-dd");
+        //DateFormat Timeformatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        if(businessHourRepository.findBusinessHourByBusinessHourID(id)!=null){
+            throw new IllegalArgumentException("BusinessHour id already exists");
+        }
         //creating businessHour with given parameters
+        Date sDate = Date.valueOf(startDate);
+        Date eDate = Date.valueOf(endDate);
+        Time sTime = Time.valueOf(startTime);
+        Time eTime = Time.valueOf(endTime);
+
         BusinessHour businessHour = new BusinessHour();
         businessHour.setBusinessHourID(id);
-        businessHour.setDayOfWeek(dayOfWeek);
+        businessHour.setStartDate(sDate);
+        businessHour.setEndDate(eDate);
         businessHour.setStartTime(sTime);
         businessHour.setEndTime(eTime);
         businessHour.setBusiness(business);
@@ -106,6 +121,14 @@ public class BusinessService {
             throw new IllegalArgumentException("BusinessHour doesn't exist");
         }
         return businessHour;
+    }
+
+    /**
+     * delete a businessHour by id
+     * @param id
+     */
+    public void deleteBusinessHour(int id){
+        businessHourRepository.deleteBusinessHourByBusinessHourID(id);
     }
 
     /**

@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.arms.model;
 
 import javax.persistence.Entity;
+import java.sql.Date;
 import java.sql.Time;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
@@ -8,15 +9,24 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class BusinessHour {
-    @Enumerated
-    private DayOfWeek dayOfWeek;
+    private Date startDate;
 
-    public DayOfWeek getDayOfWeek() {
-        return this.dayOfWeek;
+    public void setStartDate(Date value) {
+        this.startDate = value;
     }
 
-    public void setDayOfWeek(DayOfWeek value) {
-        this.dayOfWeek = value;
+    public Date getStartDate() {
+        return this.startDate;
+    }
+
+    private Date endDate;
+
+    public void setEndDate(Date value) {
+        this.endDate = value;
+    }
+
+    public Date getEndDate() {
+        return this.endDate;
     }
 
     private Time startTime;
