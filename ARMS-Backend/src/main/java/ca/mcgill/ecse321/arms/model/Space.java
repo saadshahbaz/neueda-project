@@ -30,15 +30,4 @@ public class Space {
         this.timeSlot = timeSlots;
     }
 
-    private ARMS ARMS;
-
-    @ManyToOne(optional = false)
-    public ARMS getARMS() {
-        return this.ARMS;
-    }
-
-    public void setARMS(ARMS aRMS) {
-        this.ARMS = aRMS;
-    }
-
 }

@@ -18,6 +18,16 @@ public class Technician {
         return this.name;
     }
 
+    private String email;
+
+    public void setEmail(String value){
+        this.email = value;
+    }
+
+    public String getEmail(){
+        return this.email;
+    }
+
     private int technicianID;
 
     public void setTechnicianID(int value) {
@@ -40,15 +50,5 @@ public class Technician {
         this.timeSlot = timeSlots;
     }
 
-    private ARMS ARMS;
-
-    @ManyToOne(optional = false)
-    public ARMS getARMS() {
-        return this.ARMS;
-    }
-
-    public void setARMS(ARMS aRMS) {
-        this.ARMS = aRMS;
-    }
 
 }

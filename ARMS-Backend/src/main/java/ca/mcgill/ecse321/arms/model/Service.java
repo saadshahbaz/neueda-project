@@ -50,15 +50,15 @@ public class Service {
         this.appointment = appointments;
     }
 
-    private ARMS ARMS;
-
-    @ManyToOne(optional = false)
-    public ARMS getARMS() {
-        return this.ARMS;
-    }
-
-    public void setARMS(ARMS aRMS) {
-        this.ARMS = aRMS;
-    }
+//    private ARMS ARMS;
+//
+//    @ManyToOne(optional = false)
+//    public ARMS getARMS() {
+//        return this.ARMS;
+//    }
+//
+//    public void setARMS(ARMS aRMS) {
+//        this.ARMS = aRMS;
+//    }
 
 }
