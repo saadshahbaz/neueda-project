@@ -9,7 +9,7 @@ import ca.mcgill.ecse321.arms.dao.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
+@Service
 public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
@@ -47,6 +47,7 @@ public class CustomerService {
         customer.setUsername(username);
         customer.setEmail(email);
         customer.setPhoneNumber(phonenumber);
+        customerRepository.save(customer);
         return customer;
     }
 
@@ -65,10 +66,14 @@ public class CustomerService {
     }
 
     @Transactional
-    public Customer changePassword(String username,String password) {
+    public Customer updateAccount(String username,String password, String email, String phonenumber) {
         String error = "";
-        if (username == null || username.isEmpty()) {
+        if (username == null ) {
             error = "The user name cannot be empty";
+        } else if (email == null ) {
+            error = "The email cannot be empty";
+        } else if (phonenumber == null ) {
+            error = "The phone number cannot be empty";
         } else if (password.length() <= 8) {
             error = "The password must be longer than 8 characters";
         } else if (customerRepository.findCustomerByUsername(username) == null) {
@@ -79,6 +84,8 @@ public class CustomerService {
         }
         Customer customer = customerRepository.findCustomerByUsername(username);
         customer.setPassword(password);
+        customer.setEmail(email);
+        customer.setPhoneNumber(phonenumber);
         customerRepository.save(customer);
         return customer;
     }

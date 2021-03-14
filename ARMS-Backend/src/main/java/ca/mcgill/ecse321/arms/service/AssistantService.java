@@ -47,7 +47,7 @@ public class AssistantService {
     }
 
     @Transactional
-    public Assistant changePassword(String username,String password){
+    public Assistant updateAccount(String username,String password){
         String error = "";
         if (username == null || username.isEmpty()) {
             error = "The user name cannot be empty";
