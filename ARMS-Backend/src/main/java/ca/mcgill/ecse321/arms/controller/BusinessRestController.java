@@ -81,7 +81,6 @@ public class BusinessRestController {
 
     /**
      * method that create a business hour given id, dayOfWeek, startTime, endTime,business name
-     * @param id
      * @param startDate
      * @param endDate
      * @param startTime
@@ -90,11 +89,11 @@ public class BusinessRestController {
      * @return
      * @throws IllegalArgumentException
      */
-    @PostMapping(value = { "/businessHour/{id}/{startDate}/{endDate}/{startTime}/{endTime}/{businessName}", "/businessHour/{id}/{dayOfWeek}/{startTime}/{endTime}/{businessName}/" })
-    public BusinessHourDto createBusinessHour(@PathVariable("id") int id, @PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate, @PathVariable("startTime") String startTime, @PathVariable("endTime") String endTime, @PathVariable("businessName") String businessName ) throws IllegalArgumentException {
+    @PostMapping(value = { "/businessHour/{startDate}/{endDate}/{startTime}/{endTime}/{businessName}", "/businessHour/{dayOfWeek}/{startTime}/{endTime}/{businessName}/" })
+    public BusinessHourDto createBusinessHour(@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate, @PathVariable("startTime") String startTime, @PathVariable("endTime") String endTime, @PathVariable("businessName") String businessName ) throws IllegalArgumentException {
 
         Business business = businessRepo.findBusinessByName(businessName);
-        BusinessHour businessHour = businessService.createBusinessHour(id,startDate,endDate,startTime,endTime,business);
+        BusinessHour businessHour = businessService.createBusinessHour(startDate,endDate,startTime,endTime,business);
         return helper.convertToDto(businessHour);
     }
 
