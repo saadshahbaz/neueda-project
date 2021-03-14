@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.arms.model.*;
 import ca.mcgill.ecse321.arms.dao.*;
 
-import static org.hibernate.internal.util.collections.ArrayHelper.toList;
 
 @Service
 public class BusinessService {

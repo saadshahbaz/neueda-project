@@ -3,12 +3,12 @@ package ca.mcgill.ecse321.arms.dto;
 import ca.mcgill.ecse321.arms.model.Customer;
 
 public class CarDto {
-    private Customer customer;
+    private String customer;
     private String plateNo;
     private String model;
     private String year;
     private String manufacturer;
-    public CarDto(Customer customer, String plateNo, String manufacturer, String model, String year){
+    public CarDto(String customer, String plateNo, String manufacturer, String model, String year){
         this.customer=customer;
         this.manufacturer=manufacturer;
         this.model=model;
@@ -16,7 +16,7 @@ public class CarDto {
         this.year=year;
     }
 
-    public Customer getCustomer() {
+    public String getCustomer() {
         return customer;
     }
 
