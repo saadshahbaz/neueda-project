@@ -1,14 +1,14 @@
 package ca.mcgill.ecse321.arms.service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.arms.model.*;
 import ca.mcgill.ecse321.arms.dao.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-public class CarServiece {
+@Service
+public class CarService {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
@@ -16,16 +16,42 @@ public class CarServiece {
     @Autowired
     private AppointmentRepository appointmentRepository;
     @Transactional
-    public Car createCar(Customer customer, String manufacturer, String model, String year, String plateN)throws IllegalArgumentException{
+    public Car createCar(String customer, String manufacturer, String model, String year, String plateN) throws IllegalArgumentException{
         String error="";
         if (carRepository.findCarByPlateNo(plateN) != null) {
             error = "The car is already existed";
+        }else if (customerRepository.findCustomerByUsername(customer) == null) {
+            error = "The customer does not exist";
+        }else if (model==null || year==null || plateN==null){
+            error = "The parameter cannot be empty";
         }
         if (error.length() > 0) {
             throw new IllegalArgumentException(error.trim());
         }
         Car car= new Car();
-        car.setCustomer(customer);
+        car.setCustomer(customerRepository.findCustomerByUsername(customer));
+        car.setManufacturer(manufacturer);
+        car.setModel(model);
+        car.setPlateNo(plateN);
+        car.setYear(year);
+        carRepository.save(car);
+        return car;
+    }
+    @Transactional
+    public Car updateCar(String customer, String manufacturer, String model, String year, String plateN) throws IllegalArgumentException{
+        String error="";
+        if (carRepository.findCarByPlateNo(plateN) == null) {
+            error = "The car does not exist";
+        }else if (customerRepository.findCustomerByUsername(customer) == null) {
+            error = "The customer does not exist";
+        }else if (model==null || year==null || plateN==null){
+            error = "The parameter cannot be empty";
+        }
+        if (error.length() > 0) {
+            throw new IllegalArgumentException(error.trim());
+        }
+        Car car= carRepository.findCarByPlateNo(plateN);
+        car.setCustomer(customerRepository.findCustomerByUsername(customer));
         car.setManufacturer(manufacturer);
         car.setModel(model);
         car.setPlateNo(plateN);
@@ -62,8 +88,8 @@ public class CarServiece {
     }
 
     @Transactional
-    public List<Car> getCarsByCustomer(Customer customer){
-        return  carRepository.findCarsByCustomer(customer);
+    public List<Car> getCarsByCustomer(String customer){
+        return  carRepository.findCarsByCustomer(customerRepository.findCustomerByUsername(customer));
     }
     <T> List<T> toList(Iterable<T> iterable) {
         List<T> resultList = new ArrayList<T>();

@@ -6,16 +6,16 @@ public class BillDto {
     private int billNo;
     private int amount;
     private boolean isPaid;
-    private Customer customer;
-    public BillDto(Customer customer,boolean isPaid,int amount,int billNo){
+    private String username;
+    public BillDto(String username,boolean isPaid,int amount,int billNo){
         this.amount=amount;
         this.billNo=billNo;
-        this.customer=customer;
+        this.username=username;
         this.isPaid=isPaid;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public String getCustomer() {
+        return username;
     }
 
     public int getBillNo() {

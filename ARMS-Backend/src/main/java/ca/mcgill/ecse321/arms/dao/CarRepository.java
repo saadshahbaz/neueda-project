@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface CarRepository extends CrudRepository<Car, String> {
         Car findCarByPlateNo(String plateNo);
+
         Car deleteCarByPlateNo(String plateNo);
+
         List<Car> findCarsByCustomer(Customer customer);
 }
+
