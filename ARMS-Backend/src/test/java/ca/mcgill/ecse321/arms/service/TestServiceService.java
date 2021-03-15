@@ -333,7 +333,7 @@ public class TestServiceService {
         try{
             serviceService.deleteService(name);
         }catch (IllegalArgumentException e){
-            fail();
+            error = e.getMessage();
         }
 
         assertEquals(error, "");

@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +38,7 @@ public class TestTechnicianService {
     public void setMockOutput() {
 
         // mock for findServiceByName
-        lenient().when(technicianRepository.findTechnicianByTechnicianID(ID)).thenAnswer((InvocationOnMock invocation) -> {
+        lenient().when(technicianRepository.findTechnicianByTechnicianID(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(ID)) {
                 Technician technician = new Technician();
                 technician.setTechnicianID(ID);
@@ -237,7 +236,7 @@ public class TestTechnicianService {
         try{
             technicianService.deleteTechnician(id);
         }catch (IllegalArgumentException e){
-            fail();
+            error = e.getMessage();
         }
 
         assertEquals(error, "");
