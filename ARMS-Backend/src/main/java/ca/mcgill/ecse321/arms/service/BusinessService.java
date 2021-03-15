@@ -95,18 +95,22 @@ public class BusinessService {
         Date eDate = Date.valueOf(endDate);
         Time sTime = Time.valueOf(startTime);
         Time eTime = Time.valueOf(endTime);
-        int id = transfer(sDate, sTime);
+        long id = transfer(sDate, sTime);
+        System.out.println("the id is "+id);
+
         if(businessHourRepository.findBusinessHourByBusinessHourID(id)!=null){
             throw new IllegalArgumentException("BusinessHour id already exists");
         }
         if(sDate.after(eDate)){
             throw new IllegalArgumentException("Start date ban not be after end date.");
         }
-        for(BusinessHour bh : getBusinessHourByBusiness(business.getName())){
-            if((sDate.after(bh.getStartDate())&&sDate.before(bh.getEndDate()))||(eDate.after(bh.getStartDate())&&eDate.before(bh.getEndDate()))){
-                throw new IllegalArgumentException("BusinessHour time period cannot overlap with existing businessHours.");
-            }
-        }
+
+        if(business.getBusinessHour()!=null){
+            for(BusinessHour bh : business.getBusinessHour()){
+                if((sDate.after(bh.getStartDate())&&sDate.before(bh.getEndDate()))||(eDate.after(bh.getStartDate())&&eDate.before(bh.getEndDate()))){
+                    throw new IllegalArgumentException("BusinessHour time period cannot overlap with existing businessHours.");
+                }
+            }}
 
         BusinessHour businessHour = new BusinessHour();
 
@@ -119,15 +123,20 @@ public class BusinessService {
         business.addBusinessHour(businessHour);
         businessHourRepository.save(businessHour);
         businessRepository.save(business);
+
+
+        System.out.println("the startDate of hour is :"+businessHour.getStartDate());
         return businessHour;
     }
 
-    private int transfer(Date startDate, Time startTime){
+    private long transfer(Date startDate, Time startTime){
+
         String date = startDate.toString();
         String time = startTime.toString();
         String res = date+time;
         res = res.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "");
-        return Integer.parseInt(res);
+
+        return Long.parseLong(res);
     }
 
     /**

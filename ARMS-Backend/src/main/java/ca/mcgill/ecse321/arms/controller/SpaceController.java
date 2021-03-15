@@ -39,7 +39,7 @@ public class SpaceController {
         spaceService.deleteSpace(id);
     }
 
-    private SpaceDto convertToDto(Space space){
+    public static SpaceDto convertToDto(Space space){
         if(space==null){
             throw new IllegalArgumentException("There is no such space");
         }

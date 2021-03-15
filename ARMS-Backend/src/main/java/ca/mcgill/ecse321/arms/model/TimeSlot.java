@@ -48,14 +48,14 @@ public class TimeSlot {
         return this.endTime;
     }
 
-    private int timeslotID;
+    private Long timeslotID;
 
-    public void setTimeslotID(int value) {
+    public void setTimeslotID(Long value) {
         this.timeslotID = value;
     }
 
     @Id
-    public int getTimeslotID() {
+    public Long getTimeslotID() {
         return this.timeslotID;
     }
 

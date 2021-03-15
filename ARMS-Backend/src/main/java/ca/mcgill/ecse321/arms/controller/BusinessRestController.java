@@ -89,11 +89,14 @@ public class BusinessRestController {
      * @return
      * @throws IllegalArgumentException
      */
-    @PostMapping(value = { "/businessHour/{startDate}/{endDate}/{startTime}/{endTime}/{businessName}", "/businessHour/{dayOfWeek}/{startTime}/{endTime}/{businessName}/" })
+
+    @PostMapping(value = { "/businessHour/{startDate}/{endDate}/{startTime}/{endTime}/{businessName}", "/businessHour/{startDate}/{endDate}/{startTime}/{endTime}/{businessName}/" })
     public BusinessHourDto createBusinessHour(@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate, @PathVariable("startTime") String startTime, @PathVariable("endTime") String endTime, @PathVariable("businessName") String businessName ) throws IllegalArgumentException {
 
         Business business = businessRepo.findBusinessByName(businessName);
+        System.out.println(business.getName());
         BusinessHour businessHour = businessService.createBusinessHour(startDate,endDate,startTime,endTime,business);
+        System.out.println(businessHour.getBusinessHourID());
         return helper.convertToDto(businessHour);
     }
 
