@@ -10,7 +10,8 @@ import java.sql.Time;
 
 public class BusinessHourDto {
     private int id;
-    private DayOfWeek dayOfWeek;
+    private Date startDate;
+    private Date endDate;
     private Time startTime;
     private Time endTime;
     private BusinessDto business;
@@ -18,9 +19,10 @@ public class BusinessHourDto {
     public BusinessHourDto() {
     }
 
-    public BusinessHourDto(int id,DayOfWeek dayOfWeek, Time sTime, Time eTime, BusinessDto business) {
+    public BusinessHourDto(int id,Date startDate,Date endDate, Time sTime, Time eTime, BusinessDto business) {
         this.id = id;
-        this.dayOfWeek = dayOfWeek;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.startTime = sTime;
         this.endTime = eTime;
         this.business = business;
@@ -31,8 +33,12 @@ public class BusinessHourDto {
         return id;
     }
 
-    public DayOfWeek getDayOfWeek() {
-        return dayOfWeek;
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
     }
 
     public Time getStartTime() {

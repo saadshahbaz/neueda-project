@@ -6,4 +6,5 @@ import ca.mcgill.ecse321.arms.model.BusinessHour;
 
 public interface BusinessHourRepository extends CrudRepository<BusinessHour, String> {
     BusinessHour findBusinessHourByBusinessHourID(int id);
+    Integer deleteBusinessHourByBusinessHourID(int id);
 }
