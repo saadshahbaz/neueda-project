@@ -34,6 +34,7 @@ public class ControllerHelper {
             throw new IllegalArgumentException("There is no such Business!");
         }
         BusinessHourDto businessHourDto = new BusinessHourDto(businessHour.getBusinessHourID(),businessHour.getStartDate(),businessHour.getEndDate(),businessHour.getStartTime(),businessHour.getEndTime(),convertToDto(businessHour.getBusiness()));
+
         System.out.println(businessHourDto.getID());
         return businessHourDto;
     }

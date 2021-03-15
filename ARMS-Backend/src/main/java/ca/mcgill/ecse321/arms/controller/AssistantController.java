@@ -39,10 +39,10 @@ public class AssistantController {
     }
 
     @DeleteMapping(value = {"/deleteAssistant", "/deleteAssistant/"})
-    public void deleteAssistant(
+    public Integer deleteAssistant(
             @RequestParam("username") String username
     ){
-        assistantService.deleteAccount(username);
+        return assistantService.deleteAccount(username);
     }
 
     public AssistantDto convertToDto(Assistant assistant){

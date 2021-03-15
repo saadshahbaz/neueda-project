@@ -91,7 +91,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public void deleteAccount(String username){
+    public Integer deleteAccount(String username){
         String error = "";
         Customer customer = customerRepository.findCustomerByUsername(username);
         List<Bill> bills=billRepository.findBillsByCustomer(customer);
@@ -104,7 +104,7 @@ public class CustomerService {
         if (error.length() > 0) {
             throw new IllegalArgumentException(error.trim());
         }
-        customerRepository.deleteCustomerByUsername(username);
+        return customerRepository.deleteCustomerByUsername(username);
     }
 
     private static boolean isValidEmailAddress(String email) {
@@ -113,11 +113,5 @@ public class CustomerService {
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
     }
-    <T> List<T> toList(Iterable<T> iterable) {
-        List<T> resultList = new ArrayList<T>();
-        for (T t : iterable) {
-            resultList.add(t);
-        }
-        return resultList;
-    }
+
 }

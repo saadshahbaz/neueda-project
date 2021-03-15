@@ -19,6 +19,7 @@ public class BusinessHourDto {
     //public BusinessHourDto(long businessHourID, Date startDate, Date endDate, Time startTime, Time endTime, BusinessDto business) {
     //}
 
+
     public BusinessHourDto(long id,Date startDate,Date endDate, Time sTime, Time eTime, BusinessDto business) {
         this.id = id;
         this.startDate = startDate;

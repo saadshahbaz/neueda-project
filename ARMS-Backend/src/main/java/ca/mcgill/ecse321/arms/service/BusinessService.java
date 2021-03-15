@@ -104,6 +104,7 @@ public class BusinessService {
         if(sDate.after(eDate)){
             throw new IllegalArgumentException("Start date ban not be after end date.");
         }
+
         if(business.getBusinessHour()!=null){
             for(BusinessHour bh : business.getBusinessHour()){
                 if((sDate.after(bh.getStartDate())&&sDate.before(bh.getEndDate()))||(eDate.after(bh.getStartDate())&&eDate.before(bh.getEndDate()))){
@@ -123,15 +124,18 @@ public class BusinessService {
         businessHourRepository.save(businessHour);
         businessRepository.save(business);
 
+
         System.out.println("the startDate of hour is :"+businessHour.getStartDate());
         return businessHour;
     }
 
     private long transfer(Date startDate, Time startTime){
+
         String date = startDate.toString();
         String time = startTime.toString();
         String res = date+time;
         res = res.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "");
+
         return Long.parseLong(res);
     }
 

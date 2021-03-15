@@ -62,10 +62,10 @@ public class CarController {
     }
 
     @DeleteMapping(value = {"/deleteCar", "/deleteCar/"})
-    public void deleteCar(
+    public Integer deleteCar(
             @RequestParam("plateNo") String plateNo
     ){
-        carService.deleteCar(plateNo);
+        return carService.deleteCar(plateNo);
     }
 
     public CarDto convertToDto(Car car){
