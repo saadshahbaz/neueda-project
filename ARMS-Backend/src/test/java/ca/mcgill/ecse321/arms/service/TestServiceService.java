@@ -36,22 +36,7 @@ public class TestServiceService {
     private ServiceRepository serviceRepository;
 
     @Mock
-    private CustomerRepository customerRepository;
-
-    @Mock
-    private CarRepository carRepository;
-
-    @Mock
-    private TimeSlotRepository timeSlotRepository;
-
-    @Mock
     private AppointmentRepository appointmentRepository;
-
-    @Mock
-    private TechnicianRepository technicianRepository;
-
-    @Mock
-    private SpaceRepository spaceRepository;
 
     @InjectMocks
     private ServiceService serviceService;
@@ -124,7 +109,7 @@ public class TestServiceService {
         int duration = 100;
         int price = 30;
 
-        // initialize account to null, so we can see if account creation was successful
+        // initialize account to null, so we can see if service creation was successful
         Service service = null;
 
         try{
@@ -147,7 +132,7 @@ public class TestServiceService {
         int duration = 100;
         int price = 30;
 
-        // initialize account to null, so we can see if account creation was successful
+        // initialize account to null, so we can see if service creation was successful
         Service service = null;
 
         String error = "";
@@ -168,7 +153,7 @@ public class TestServiceService {
         int duration = -10;
         int price = 30;
 
-        // initialize account to null, so we can see if account creation was successful
+        // initialize account to null, so we can see if service creation was successful
         Service service = null;
 
         String error = "";
@@ -189,7 +174,7 @@ public class TestServiceService {
         int duration = 100;
         int price = -30;
 
-        // initialize account to null, so we can see if account creation was successful
+        // initialize account to null, so we can see if service creation was successful
         Service service = null;
 
         String error = "";
@@ -211,7 +196,7 @@ public class TestServiceService {
         int duration = 30;
         int price = 100;
 
-        // initialize account to null, so we can see if account creation was successful
+        // initialize account to null, so we can see if service creation was successful
         Service service = null;
 
         String error = "";
@@ -348,7 +333,7 @@ public class TestServiceService {
         try{
             serviceService.deleteService(name);
         }catch (IllegalArgumentException e){
-            fail();
+            error = e.getMessage();
         }
 
         assertEquals(error, "");
