@@ -49,7 +49,7 @@ public class BillService {
         return billRepository.findBillByBillNo(billNo);
     }
     @Transactional
-    public void payBill(int billNo){
+    public Bill payBill(int billNo){
         String error = "";
         Bill bill=billRepository.findBillByBillNo(billNo);
         if (bill==null) {
@@ -60,15 +60,7 @@ public class BillService {
         }
         bill.setIsPaid(true);
         billRepository.save(bill);
+        return  bill;
     }
 
-
-
-    <T> List<T> toList(Iterable<T> iterable) {
-        List<T> resultList = new ArrayList<T>();
-        for (T t : iterable) {
-            resultList.add(t);
-        }
-        return resultList;
-    }
 }

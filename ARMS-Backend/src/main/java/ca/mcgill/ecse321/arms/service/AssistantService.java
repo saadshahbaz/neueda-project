@@ -69,12 +69,6 @@ public class AssistantService {
     public Integer deleteAccount(String username){
         return assistantRepository.deleteAssistantByUsername(username);
     }
-    <T> List<T> toList(Iterable<T> iterable) {
-        List<T> resultList = new ArrayList<T>();
-        for (T t : iterable) {
-            resultList.add(t);
-        }
-        return resultList;
-    }
+
 
 }

@@ -113,11 +113,5 @@ public class CustomerService {
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
     }
-    <T> List<T> toList(Iterable<T> iterable) {
-        List<T> resultList = new ArrayList<T>();
-        for (T t : iterable) {
-            resultList.add(t);
-        }
-        return resultList;
-    }
+
 }
