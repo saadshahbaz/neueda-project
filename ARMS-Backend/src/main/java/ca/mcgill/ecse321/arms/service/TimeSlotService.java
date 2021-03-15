@@ -4,8 +4,11 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 //import static java.util.stream.Collectors.toList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.arms.model.*;
 import ca.mcgill.ecse321.arms.dao.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import static org.hibernate.internal.util.collections.ArrayHelper.toList;
 
@@ -76,24 +81,41 @@ public class TimeSlotService {
         Space space = spaceRepository.findSpaceBySpaceID(spaceID);
         Technician technician = technicianRepository.findTechnicianByTechnicianID(technicianID);
 
+        System.out.println("Hi*2");
         //Judge if has conflict with businesshour
         Set<BusinessHour> businessHours = business.getBusinessHour();
         List<BusinessHour> list_businessHour = new ArrayList<>(businessHours);
+        Stream<BusinessHour> sorted1 = list_businessHour.stream().sorted(Comparator.comparing(BusinessHour::getBusinessHourID));
+        List<BusinessHour> list_businessHour_sorted = sorted1.collect(Collectors.toList());
 
+        System.out.println(list_businessHour_sorted.get(0).getBusinessHourID()+"and "+list_businessHour_sorted.get(list_businessHour_sorted.size()-1).getBusinessHourID());
         //O(n)  comp
-        int flag1 = check_hour(list_businessHour,startDate,startTime,endDate,endTime);
+        int flag1 = check_hour(list_businessHour_sorted,startDate,startTime,endDate,endTime);
+
+        if(flag1 != 0){
+            throw new IllegalArgumentException("cannot build such timeSlot since no free businessHour!");
+        }
 
         //Judge if has conflict with space and tech
-        Set<TimeSlot> timeSlots_space = space.getTimeSlot();
-        Set<TimeSlot> timeSlots_tech = technician.getTimeSlot();
-        List<TimeSlot> list_timeSlot_space = new ArrayList<>(timeSlots_space);
-        List<TimeSlot> list_timeSlot_tech = new ArrayList<>(timeSlots_tech);
+        Set<TimeSlot> timeSlots_Space = timeSlotRepository.findTimeSlotsBySpace(space);
+        List<TimeSlot> list_timeSlot_Space = new ArrayList<>(timeSlots_Space);
+        Set<TimeSlot> timeSlots_Tech = timeSlotRepository.findTimeSlotsByTechnician(technician);
+        List<TimeSlot> list_timeSlot_Tech = new ArrayList<>(timeSlots_Tech);
 
-        int flag2 = check_slot(list_timeSlot_space,startDate,startTime,endDate,endTime);
-        int flag3 = check_slot(list_timeSlot_tech,startDate,startTime,endDate,endTime);
+        Stream<TimeSlot> sorted2 = list_timeSlot_Space.stream().sorted(Comparator.comparing(TimeSlot::getTimeslotID));
+        List<TimeSlot> list_timeSlot_Space_sorted = sorted2.collect(Collectors.toList());
 
-        if(flag3+flag2+flag1 != 0){
-            throw new IllegalArgumentException("cannot build such timeSlot!");
+        Stream<TimeSlot> sorted3 = list_timeSlot_Tech.stream().sorted(Comparator.comparing(TimeSlot::getTimeslotID));
+        List<TimeSlot> list_timeSlot_Tech_sorted = sorted3.collect(Collectors.toList());
+
+        int flag2 = check_slot(list_timeSlot_Space_sorted,startDate,startTime,endDate,endTime);
+        int flag3 = check_slot(list_timeSlot_Tech_sorted,startDate,startTime,endDate,endTime);
+
+        if(flag2 != 0){
+            throw new IllegalArgumentException("cannot build such timeSlot since no free space!");
+        }
+        if(flag3 != 0){
+            throw new IllegalArgumentException("cannot build such timeSlot since no free tech !");
         }
 
         TimeSlot timeSlot = new TimeSlot();
@@ -101,9 +123,10 @@ public class TimeSlotService {
         timeSlot.setStartTime(startTime);
         timeSlot.setEndDate(endDate);
         timeSlot.setEndTime(endTime);
-        timeSlot.setTimeslotID(transfer(startDate, startTime));
+        timeSlot.setTimeslotID(transfer(startDate, startTime)*100+spaceID*10+technicianID);
         timeSlot.setSpace(space);
         timeSlot.setTechnician(technician);
+        System.out.println("itmeSlotID is "+timeSlot.getTimeslotID());
 
         timeSlotRepository.save(timeSlot);
         return timeSlot;
@@ -120,74 +143,58 @@ public class TimeSlotService {
         return resultList;
     }
 
+
+    @Transactional
+    public void deleteTimeSlot(Long timeSlotID){
+        TimeSlot target = timeSlotRepository.findTimeSlotByTimeslotID(timeSlotID);
+        timeSlotRepository.delete(target);
+    }
+
     //helper_check
     private int check_hour(List<BusinessHour> list_businessHour,Date startDate,Time startTime,Date endDate,Time endTime){
         //O(n)  comp
         int flag1 = 0; // if has conflict, flag1 = 1
         int i = 0;
-        for (;i<list_businessHour.size();i++){
-            if (!list_businessHour.get(i).getEndDate().before(startDate)){
-                if(list_businessHour.get(i).getStartDate().after(startDate) || list_businessHour.get(i).getEndTime().before(endTime) || list_businessHour.get(i).getStartTime().after(startTime)){
+        int q = 0;
+        for(;i<list_businessHour.size();i++){
+            if (!list_businessHour.get(i).getStartDate().after(startDate) && !list_businessHour.get(i).getEndDate().before(endDate)){
+                q=1;
+                System.out.println("i is "+i+"id is "+list_businessHour.get(i).getBusinessHourID());
+                if(list_businessHour.get(i).getEndTime().before(endTime) || list_businessHour.get(i).getStartTime().after(startTime)){
+                    System.out.println(list_businessHour.get(i).getEndTime().before(endTime)+" and "+list_businessHour.get(i).getStartTime().after(startTime));
                     flag1 = 1;
-                    break;
+                    return flag1;
                 }
-                int j = i;
-                while(list_businessHour.get(j).getEndDate().before(endDate)){
-                    j+=1;
-                    if(j>list_businessHour.size()-1) {// if the final hour's endDate is before than input endDate
-                        flag1 = 1;
-                        break;
-                    }
-                    if(list_businessHour.get(j).getEndTime().before(endTime) || list_businessHour.get(j).getStartTime().after(startTime)){
-                        flag1 = 1;
-                        break;
-                    }
-                }
-                break;
             }
         }
-        if (i == list_businessHour.size()-1){ //visit all hour in hours but the endDate is before than the input startDate
-            flag1 = 1;
-        }
+        if(q == 0){ flag1 = 1;}
         return flag1;
     }
     private int check_slot(List<TimeSlot> list_slot,Date startDate,Time startTime,Date endDate,Time endTime){
         //O(n)  comp
-        int flag1 = 0; // if has conflict, flag1 = 1
+        int flag2 = 0; // if has conflict, flag1 = 1
         int i = 0;
-        for (;i<list_slot.size();i++){
-            if (!list_slot.get(i).getEndDate().before(startDate)){
-                if(list_slot.get(i).getStartDate().after(startDate) || list_slot.get(i).getEndTime().before(endTime) || list_slot.get(i).getStartTime().after(startTime)){
-                    flag1 = 1;
-                    break;
+        for(;i<list_slot.size();i++){
+            if (list_slot.get(i).getStartDate().equals(startDate)){
+                if(list_slot.get(i).getEndTime().before(startTime) || list_slot.get(i).getStartTime().after(endTime)){
+                    flag2 = 0;
                 }
-                int j = i;
-                while(list_slot.get(j).getEndDate().before(endDate)){
-                    j+=1;
-                    if(j>list_slot.size()-1) {// if the final hour's endDate is before than input endDate
-                        flag1 = 1;
-                        break;
-                    }
-                    if(list_slot.get(j).getEndTime().before(endTime) || list_slot.get(j).getStartTime().after(startTime)){
-                        flag1 = 1;
-                        break;
-                    }
+                else {
+                    flag2 = 1;
+                    return flag2;
                 }
-                break;
             }
         }
-        if (i == list_slot.size()-1){ //visit all hour in hours but the endDate is before than the input startDate
-            flag1 = 1;
-        }
-        return flag1;
+        return flag2;
     }
 
-    //helper_transferToInt
-    private int transfer(Date startDate, Time startTime){
+
+    //helper_transferToLong
+    private Long transfer(Date startDate, Time startTime){
         String date = startDate.toString();
         String time = startTime.toString();
         String res = date+time;
         res = res.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "");
-        return Integer.parseInt(res);
+        return Long.parseLong(res);
     }
 }
