@@ -44,6 +44,7 @@ public class TechnicianService {
         Technician newTech = new Technician();
         newTech.setName(name);
         newTech.setTechnicianID(ID);
+        newTech.setEmail(email);
         technicianRepository.save(newTech);
         return newTech;
     }
