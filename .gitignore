@@ -1,4 +1,4 @@
 .gradle/
 .settings/
 .idea/
-.out/
+out/

@@ -7,5 +7,5 @@ import ca.mcgill.ecse321.arms.model.Assistant;
 
 public interface AssistantRepository extends CrudRepository<Assistant, String>{
     Assistant findAssistantByUsername(String name);
-    Assistant deleteAssistantByUsername(String name);
+    Integer deleteAssistantByUsername(String name);
 }
