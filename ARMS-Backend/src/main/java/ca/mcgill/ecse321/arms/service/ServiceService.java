@@ -128,12 +128,12 @@ public class ServiceService {
     public void deleteService(String serviceName) {
         String error = "";
         if(serviceName.equals("")){
-            error += "You must enter a service name.";
+            error += "You must enter a service name";
         }
         if(error.length()>0)    throw new IllegalArgumentException(error);
         ca.mcgill.ecse321.arms.model.Service aService = serviceRepository.findServiceByName(serviceName.trim());
         if(aService==null){
-            throw new IllegalArgumentException("No service was found.");
+            throw new IllegalArgumentException("No service was found");
         }
 
         List<Appointment> appointments = appointmentRepository.findAppointmentsByService(aService);

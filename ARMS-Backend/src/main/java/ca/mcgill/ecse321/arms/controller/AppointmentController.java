@@ -10,10 +10,10 @@ import ca.mcgill.ecse321.arms.model.TimeSlot;
 import ca.mcgill.ecse321.arms.service.AppointmentService;
 import org.hibernate.loader.custom.ScalarResultColumnProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -31,6 +31,33 @@ public class AppointmentController {
     ){
         ca.mcgill.ecse321.arms.model.Appointment appointment = appointmentService.createAppointment(service, car, timeSlot);
         return convertToDto(appointment);
+    }
+
+    @PutMapping(value = {"/updateAppointment","/updateAppointment/"})
+    public AppointmentDto updateAppointment(
+            @RequestParam("appointment ID") int appointmentID,
+            @RequestParam("service") Service service,
+            @RequestParam("car") Car car,
+            @RequestParam("time slot") TimeSlot timeSlot
+    ){
+        Appointment appointment = appointmentService.updateService(appointmentID,service,car,timeSlot);
+        return convertToDto(appointment);
+    }
+
+    @GetMapping(value = {"/appointment","/appointment/"})
+    public List<AppointmentDto> getAllAppointments(){
+        List<AppointmentDto> appointmentDtos = new ArrayList<>();
+        for(Appointment appointment : appointmentService.getAllAppointments()){
+            appointmentDtos.add(convertToDto(appointment));
+        }
+        return appointmentDtos;
+    }
+
+    @DeleteMapping(value = {"/deleteAppointment", "/deleteAppointment/"})
+    public void deleteAppointment(
+            @RequestParam("appointment ID") int appointmentID
+    ){
+        appointmentService.deleteAppointment(appointmentID);
     }
 
     private AppointmentDto convertToDto(Appointment appointment){

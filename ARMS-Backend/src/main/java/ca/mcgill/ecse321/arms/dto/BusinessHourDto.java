@@ -9,17 +9,18 @@ import java.sql.Time;
 
 
 public class BusinessHourDto {
-    private int id;
+    private long id;
     private Date startDate;
     private Date endDate;
     private Time startTime;
     private Time endTime;
     private BusinessDto business;
 
-    public BusinessHourDto() {
-    }
+    //public BusinessHourDto(long businessHourID, Date startDate, Date endDate, Time startTime, Time endTime, BusinessDto business) {
+    //}
 
-    public BusinessHourDto(int id,Date startDate,Date endDate, Time sTime, Time eTime, BusinessDto business) {
+
+    public BusinessHourDto(long id,Date startDate,Date endDate, Time sTime, Time eTime, BusinessDto business) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -29,7 +30,7 @@ public class BusinessHourDto {
     }
 
 
-    public int getID() {
+    public long getID() {
         return id;
     }
 

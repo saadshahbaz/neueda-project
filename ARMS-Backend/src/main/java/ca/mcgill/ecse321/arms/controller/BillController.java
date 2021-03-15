@@ -27,10 +27,10 @@ public class BillController {
     }
 
     @PostMapping(value = {"/payBill", "/payBill/"})
-    public void payBill(
+    public Bill payBill(
             @RequestParam("BillNo") int billNo
     ){
-        billService.payBill(billNo);
+        return billService.payBill(billNo);
     }
 
     @GetMapping(value = {"/getBill", "/getBill/"})

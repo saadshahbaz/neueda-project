@@ -43,10 +43,10 @@ public class CustomerController {
     }
 
     @DeleteMapping(value = {"/deleteCustomer", "/deleteCustomer/"})
-    public void deleteCustomer(
+    public Integer deleteCustomer(
             @RequestParam("username") String username
     ){
-        customerService.deleteAccount(username);
+        return customerService.deleteAccount(username);
     }
 
     public CustomerDto convertToDto(Customer customer){

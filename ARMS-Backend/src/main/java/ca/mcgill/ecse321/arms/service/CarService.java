@@ -60,7 +60,7 @@ public class CarService {
         return car;
     }
     @Transactional
-    public void deleteCar(String plateNo)  throws IllegalArgumentException{
+    public Integer deleteCar(String plateNo)  throws IllegalArgumentException{
         String error = "";
         Car car = carRepository.findCarByPlateNo(plateNo);
         if (car==null){
@@ -71,7 +71,7 @@ public class CarService {
         if (error.length() > 0) {
             throw new IllegalArgumentException(error.trim());
         }
-        carRepository.deleteCarByPlateNo(plateNo);
+        return carRepository.deleteCarByPlateNo(plateNo);
     }
     @Transactional
     public Car getCar(String plateNo) throws IllegalArgumentException{
@@ -91,11 +91,5 @@ public class CarService {
     public List<Car> getCarsByCustomer(String customer){
         return  carRepository.findCarsByCustomer(customerRepository.findCustomerByUsername(customer));
     }
-    <T> List<T> toList(Iterable<T> iterable) {
-        List<T> resultList = new ArrayList<T>();
-        for (T t : iterable) {
-            resultList.add(t);
-        }
-        return resultList;
-    }
+
 }

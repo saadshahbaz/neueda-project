@@ -54,7 +54,7 @@ public class TechnicianController {
         technicianService.deleteTechnician(id);
     }
 
-    public TechnicianDto convertToDto(Technician technician){
+    public static TechnicianDto convertToDto(Technician technician){
         if(technician==null){
             throw new IllegalArgumentException("There is no such technician");
         }
