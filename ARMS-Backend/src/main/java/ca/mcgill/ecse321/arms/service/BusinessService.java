@@ -95,18 +95,25 @@ public class BusinessService {
         Date eDate = Date.valueOf(endDate);
         Time sTime = Time.valueOf(startTime);
         Time eTime = Time.valueOf(endTime);
-        int id = transfer(sDate, sTime);
+        long id = transfer(sDate, sTime);
+        System.out.println("the id is "+id);
+
         if(businessHourRepository.findBusinessHourByBusinessHourID(id)!=null){
             throw new IllegalArgumentException("BusinessHour id already exists");
         }
         if(sDate.after(eDate)){
-            throw new IllegalArgumentException("Start date ban not be after end date.");
+            throw new IllegalArgumentException("Start date can not be after end date.");
         }
-        for(BusinessHour bh : getBusinessHourByBusiness(business.getName())){
-            if((sDate.after(bh.getStartDate())&&sDate.before(bh.getEndDate()))||(eDate.after(bh.getStartDate())&&eDate.before(bh.getEndDate()))){
-                throw new IllegalArgumentException("BusinessHour time period cannot overlap with existing businessHours.");
-            }
-        }
+
+        if(business.getBusinessHour()!=null){
+            for(BusinessHour bh : business.getBusinessHour()){
+
+                if((sDate.after(bh.getStartDate())&&sDate.before(bh.getEndDate()))||(eDate.after(bh.getStartDate())&&eDate.before(bh.getEndDate()))){
+                    throw new IllegalArgumentException("BusinessHour time period cannot overlap with existing businessHours.");
+                }
+
+
+            }}
 
         BusinessHour businessHour = new BusinessHour();
 
@@ -119,15 +126,20 @@ public class BusinessService {
         business.addBusinessHour(businessHour);
         businessHourRepository.save(businessHour);
         businessRepository.save(business);
+
+
+        System.out.println("the startDate of hour is :"+businessHour.getStartDate());
         return businessHour;
     }
 
-    private int transfer(Date startDate, Time startTime){
+    private long transfer(Date startDate, Time startTime){
+
         String date = startDate.toString();
         String time = startTime.toString();
         String res = date+time;
         res = res.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "");
-        return Integer.parseInt(res);
+
+        return Long.parseLong(res);
     }
 
     /**
@@ -136,7 +148,7 @@ public class BusinessService {
      * @return business
      */
     @Transactional
-    public BusinessHour getBusinessHour(int id) {
+    public BusinessHour getBusinessHour(long id) {
 
         BusinessHour businessHour = businessHourRepository.findBusinessHourByBusinessHourID(id);
         if(businessHour==null){
@@ -149,8 +161,9 @@ public class BusinessService {
      * delete a businessHour by id
      * @param id
      */
-    public void deleteBusinessHour(int id){
-        businessHourRepository.deleteBusinessHourByBusinessHourID(id);
+    @Transactional
+    public Integer deleteBusinessHour(long id){
+       return businessHourRepository.deleteBusinessHourByBusinessHourID(id);
     }
 
     /**
@@ -162,12 +175,14 @@ public class BusinessService {
         return toList(businessHourRepository.findAll());
     }
 
+    @Transactional
     public List<BusinessHour> getBusinessHourByBusiness(String name){
-        Business business = businessRepository.findBusinessByName(name);
+        Business business = getBusiness(name);
         if(business==null){
-            return null;
+            throw new IllegalArgumentException("Business doesn't exist.");
         } else{
-            return toList(business.getBusinessHour());
+
+            return businessHourRepository.findBusinessHourByBusiness(business);
         }
     }
 

@@ -49,14 +49,14 @@ public class BusinessHour {
         return this.endTime;
     }
 
-    private int businessHourID;
+    private long businessHourID;
 
-    public void setBusinessHourID(int value) {
+    public void setBusinessHourID(long value) {
         this.businessHourID = value;
     }
 
     @Id
-    public int getBusinessHourID() {
+    public long getBusinessHourID() {
         return this.businessHourID;
     }
 

@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class TimeSlotDto {
-    private int id;
+    private Long id;
     private Date startDate;
     private Time startTime;
     private Date endDate;
@@ -17,7 +17,7 @@ public class TimeSlotDto {
 
     }
 
-    public TimeSlotDto(int id, Date startDate, Time startTime, Date endDate, Time endTime,SpaceDto space, TechnicianDto technician){
+    public TimeSlotDto(Long id, Date startDate, Time startTime, Date endDate, Time endTime,SpaceDto space, TechnicianDto technician){
         this.id = id;
         this.startDate = startDate;
         this.startTime = startTime;
@@ -27,7 +27,7 @@ public class TimeSlotDto {
         this.technician = technician;
     }
 
-    public int getID() {return id;}
+    public Long getID() {return id;}
     public Date getStartDate(){ return startDate;}
     public Time getStartTime(){ return startTime;}
     public Date getEndDate(){return endDate;}
@@ -35,7 +35,7 @@ public class TimeSlotDto {
     public SpaceDto getSpace(){return space;}
     public TechnicianDto getTechnician(){return technician;}
 
-    public void setID(int id){ this.id = id;}
+    public void setID(Long id){ this.id = id;}
     public void setStartDate(Date startDate){this.startDate = startDate;}
     public void setStartTime(Time startTime){this.startTime = startTime;}
     public void setEndDate(Date endDate){this.endDate = endDate;}
