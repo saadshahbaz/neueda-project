@@ -143,6 +143,7 @@ public class TestAppointmentService {
         try{
             appointment = appointmentService.createAppointment(service, car, timeSlot);
         }catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
             fail();
         }
 
