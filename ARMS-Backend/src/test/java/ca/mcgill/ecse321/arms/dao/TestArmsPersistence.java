@@ -176,7 +176,7 @@ public class TestArmsPersistence {
 			java.sql.Time startt = new Time(st);
 			long et = 162478332;
 			java.sql.Time endt = new Time(et);
-			int timeslotid = 2347;
+			long timeslotid = 2347;
 
 			TimeSlot timeslot = new TimeSlot();
 			timeslot.setEndDate(endd);
@@ -218,7 +218,7 @@ public class TestArmsPersistence {
         Time startt = new Time(st);
         long et = 162478332;
         Time endt = new Time(et);
-        int timeslotid = 2347;
+        long timeslotid = 2347;
         TimeSlot timeslot = new TimeSlot();
         timeslot.setEndDate(endd);
         timeslot.setEndTime(endt);
@@ -337,7 +337,7 @@ public class TestArmsPersistence {
 			Time startt = new Time(st);
 			long et = 162478432;
 			Time endt = new Time(et);
-			int timeslotid = 2345;
+			long timeslotid = 2345;
 			timeslot.setEndDate(endd);
 			timeslot.setEndTime(endt);
 			timeslot.setStartDate(startd);
