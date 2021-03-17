@@ -183,8 +183,7 @@ public class AppointmentService {
 
         System.out.println("Hi*2");
         //Judge if has conflict with businesshour
-        Set<BusinessHour> businessHours = business.getBusinessHour();
-        List<BusinessHour> list_businessHour = new ArrayList<>(businessHours);
+        List<BusinessHour> list_businessHour = businessHourRepository.findBusinessHourByBusiness(business);
         Stream<BusinessHour> sorted1 = list_businessHour.stream().sorted(Comparator.comparing(BusinessHour::getBusinessHourID));
         List<BusinessHour> list_businessHour_sorted = sorted1.collect(Collectors.toList());
 
