@@ -197,10 +197,8 @@ public class AppointmentService {
         }
 
         //Judge if has conflict with space and tech
-        Set<TimeSlot> timeSlots_Space = timeSlotRepository.findTimeSlotsBySpace(space);
-        List<TimeSlot> list_timeSlot_Space = new ArrayList<>(timeSlots_Space);
-        Set<TimeSlot> timeSlots_Tech = timeSlotRepository.findTimeSlotsByTechnician(technician);
-        List<TimeSlot> list_timeSlot_Tech = new ArrayList<>(timeSlots_Tech);
+        List<TimeSlot> list_timeSlot_Space = timeSlotRepository.findTimeSlotsBySpace(space);
+        List<TimeSlot> list_timeSlot_Tech = timeSlotRepository.findTimeSlotsByTechnician(technician);
 
         Stream<TimeSlot> sorted2 = list_timeSlot_Space.stream().sorted(Comparator.comparing(TimeSlot::getTimeslotID));
         List<TimeSlot> list_timeSlot_Space_sorted = sorted2.collect(Collectors.toList());
