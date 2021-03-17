@@ -118,7 +118,7 @@ public class TestCustomerService {
         customerRepository.deleteAll();
     }
     @Test
-    public void test_create_a_customer_successfully() {
+    public void test_create_a_timeSlot_successfully() {
         String username = "username1";
         String password = "password1";
         String email = "672202408@qq.com";
