@@ -43,10 +43,12 @@ public class TestTimeSlotService {
     private TimeSlotService timeSlotService;
     private BusinessService businessService;
     private SpaceService spaceService;
-    private static int spaceID = 0;
+    private static int spaceID1 = 1;
+    private static int spaceID2 = 2;
 
     private static String NAME = "TestTechnician";
-    private static int technicianID = 0;
+    private static int technicianID1 = 1;
+    private static int technicianID2 = 2;
     private static String EMAIL = "technician@mail.ca";
 
 
@@ -55,19 +57,20 @@ public class TestTimeSlotService {
 
     private static final Long BUSINESSHOUR_KEY = 20020808080808L;
     private static final Long NE_USINESSHOUR_KEY = 20040808080808L;
-    private static final Long TimeSlot_KEY = 2004050710205500L;
+    private static final Long TimeSlot_KEY1 = 2004050710205511L;
+    private static final Long TimeSlot_KEY2 = 2004050710205522L;
     private static Business business;
     @BeforeEach
     public void setMockOutput() {
         lenient().when(timeSlotRepository.findTimeSlotByTimeSlotID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(TimeSlot_KEY)) {
+            if (invocation.getArgument(0).equals(TimeSlot_KEY1)) {
                 TimeSlot timeSlot = new TimeSlot();
-                timeSlot.setTimeslotID(TimeSlot_KEY);
+                timeSlot.setTimeslotID(TimeSlot_KEY1);
                 Business business = new Business();
                 Space space = new Space();
-                space.setSpaceID(spaceID);
+                space.setSpaceID(spaceID1);
                 Technician technician = new Technician();
-                technician.setTechnicianID(technicianID);
+                technician.setTechnicianID(technicianID1);
                 spaceRepository.save(space);
                 technicianRepository.save(technician);
                 timeSlotRepository.save(timeSlot);
@@ -79,11 +82,11 @@ public class TestTimeSlotService {
 
         lenient().when(timeSlotRepository.findTimeSlotsBySpace(any(Space.class)))
                 .thenAnswer((InvocationOnMock invocation) -> {
-                    if (((Space) invocation.getArgument(0)).getSpaceID()==spaceID) {
+                    if (((Space) invocation.getArgument(0)).getSpaceID()==spaceID1) {
                         List<TimeSlot> timeSlots = new ArrayList<>();
                         TimeSlot timeSlot = new TimeSlot();
                         timeSlot.setSpace(((Space) invocation.getArgument(0)));
-                        timeSlot.setTimeslotID(TimeSlot_KEY);
+                        timeSlot.setTimeslotID(TimeSlot_KEY1);
 
                         Date startDate = Date.valueOf("2004-05-07");
                         Time startTime = Time.valueOf("10:20:55");
@@ -93,23 +96,43 @@ public class TestTimeSlotService {
                         timeSlot.setStartTime(startTime);
                         timeSlot.setEndDate(endDate);
                         timeSlot.setEndTime(endTime);
-                        Technician technician = technicianRepository.findTechnicianByTechnicianID(technicianID);
+                        Technician technician = technicianRepository.findTechnicianByTechnicianID(technicianID1);
                         timeSlot.setTechnician(technician);
 
                         timeSlots.add(timeSlot);
                         return timeSlots;
-                    } else {
+                    }
+                    else if (((Space) invocation.getArgument(0)).getSpaceID()==spaceID2) {
+                        List<TimeSlot> timeSlots = new ArrayList<>();
+                        TimeSlot timeSlot = new TimeSlot();
+                        timeSlot.setSpace(((Space) invocation.getArgument(0)));
+                        timeSlot.setTimeslotID(TimeSlot_KEY2);
+
+                        Date startDate = Date.valueOf("2004-05-07");
+                        Time startTime = Time.valueOf("10:20:55");
+                        Date endDate = Date.valueOf("2004-05-07");
+                        Time endTime = Time.valueOf("13:34:32");
+                        timeSlot.setStartDate(startDate);
+                        timeSlot.setStartTime(startTime);
+                        timeSlot.setEndDate(endDate);
+                        timeSlot.setEndTime(endTime);
+                        Technician technician = technicianRepository.findTechnicianByTechnicianID(technicianID2);
+                        timeSlot.setTechnician(technician);
+
+                        timeSlots.add(timeSlot);
+                        return timeSlots;
+                    }else {
                         return null;
                     }
                 });
 
         lenient().when(timeSlotRepository.findTimeSlotsByTechnician(any(Technician.class)))
                 .thenAnswer((InvocationOnMock invocation) -> {
-                    if (((Technician) invocation.getArgument(0)).getTechnicianID()==technicianID) {
+                    if (((Technician) invocation.getArgument(0)).getTechnicianID()==technicianID1) {
                         List<TimeSlot> timeSlots = new ArrayList<>();
                         TimeSlot timeSlot = new TimeSlot();
                         timeSlot.setTechnician(((Technician) invocation.getArgument(0)));
-                        timeSlot.setTimeslotID(TimeSlot_KEY);
+                        timeSlot.setTimeslotID(TimeSlot_KEY1);
                         Date startDate = Date.valueOf("2004-05-07");
                         Time startTime = Time.valueOf("10:20:55");
                         Date endDate = Date.valueOf("2004-05-07");
@@ -118,13 +141,33 @@ public class TestTimeSlotService {
                         timeSlot.setStartTime(startTime);
                         timeSlot.setEndDate(endDate);
                         timeSlot.setEndTime(endTime);
-                        Space space = spaceRepository.findSpaceBySpaceID(spaceID);
+                        Space space = spaceRepository.findSpaceBySpaceID(spaceID1);
                         timeSlot.setSpace(space);
 
 
                         timeSlots.add(timeSlot);
                         return timeSlots;
-                    } else {
+                    }
+                    else if (((Technician) invocation.getArgument(0)).getTechnicianID()==technicianID2) {
+                        List<TimeSlot> timeSlots = new ArrayList<>();
+                        TimeSlot timeSlot = new TimeSlot();
+                        timeSlot.setTechnician(((Technician) invocation.getArgument(0)));
+                        timeSlot.setTimeslotID(TimeSlot_KEY2);
+                        Date startDate = Date.valueOf("2004-05-07");
+                        Time startTime = Time.valueOf("10:20:55");
+                        Date endDate = Date.valueOf("2004-05-07");
+                        Time endTime = Time.valueOf("13:34:32");
+                        timeSlot.setStartDate(startDate);
+                        timeSlot.setStartTime(startTime);
+                        timeSlot.setEndDate(endDate);
+                        timeSlot.setEndTime(endTime);
+                        Space space = spaceRepository.findSpaceBySpaceID(spaceID2);
+                        timeSlot.setSpace(space);
+
+
+                        timeSlots.add(timeSlot);
+                        return timeSlots;
+                    }else {
                         return null;
                     }
                 });
@@ -178,18 +221,18 @@ public class TestTimeSlotService {
                     }
                 });
         lenient().when(spaceRepository.findSpaceBySpaceID(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(spaceID)) {
+            if (invocation.getArgument(0).equals(spaceID1)) {
                 Space space = new Space();
-                space.setSpaceID(spaceID);
+                space.setSpaceID(spaceID1);
                 return space;
             } else {
                 return null;
             }
         });
         lenient().when(technicianRepository.findTechnicianByTechnicianID(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(technicianID)) {
+            if (invocation.getArgument(0).equals(technicianID1)) {
                 Technician technician = new Technician();
-                technician.setTechnicianID(technicianID);
+                technician.setTechnicianID(technicianID1);
                 technician.setEmail(EMAIL);
                 technician.setName(NAME);
                 return technician;
@@ -198,7 +241,7 @@ public class TestTimeSlotService {
             }
         });
         lenient().when(timeSlotRepository.deleteTimeSlotByTimeslotID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(TimeSlot_KEY)) {
+            if (invocation.getArgument(0).equals(TimeSlot_KEY1)) {
                 return 1;
             } else {
                 return 0;
@@ -206,7 +249,7 @@ public class TestTimeSlotService {
         });
         lenient().when(timeSlotRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
             List<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
-            timeSlots.add(timeSlotRepository.findTimeSlotByTimeSlotID(TimeSlot_KEY));
+            timeSlots.add(timeSlotRepository.findTimeSlotByTimeSlotID(TimeSlot_KEY1));
             return timeSlots;
         });
 
@@ -227,14 +270,132 @@ public class TestTimeSlotService {
         TimeSlot timeSlot = null;
 
         try {
-            timeSlot = timeSlotService.createTimeSlot(BUSINESS_KEY,startDate,startTime,endDate,endTime,spaceID,technicianID);
+            timeSlot = timeSlotService.createTimeSlot(BUSINESS_KEY,startDate,startTime,endDate,endTime,spaceID1,technicianID1);
         } catch (IllegalArgumentException e) {
             // Check that no error occurred
             fail();
         }
         assertNotNull(timeSlot);
-        assertEquals(2002090609000000L, timeSlot.getTimeslotID());
+        assertEquals(2002090609000011L, timeSlot.getTimeslotID());
     }
+
+    @Test
+    public void testCreateTimeSlotConflictWithSpace() {
+        //assertEquals(0, service.getAllPersons().size());
+        String error = null;
+
+
+        String startDate1 = "2004-05-07";
+        String endDate1 = "2004-05-07";
+        String startTime1 = "10:00:00";
+        String endTime1 = "14:00:00";
+        Space space1 = new Space();
+        space1.setSpaceID(1);
+        Technician technician1 = new Technician();
+        technician1.setTechnicianID(1);
+        Technician technician2 = new Technician();
+        technician2.setTechnicianID(2);
+        TimeSlot timeSlot1 = null;
+
+        TimeSlot timeSlot2 = null;
+
+
+        try {
+            timeSlot2 = timeSlotService.createTimeSlot(BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,1,2);
+        } catch (IllegalArgumentException e) {
+            // Check that no error occurred
+            error = e.getMessage();
+        }
+        assertNull(timeSlot2);
+        assertEquals("cannot build such timeSlot since no free space!", error);
+    }
+
+    @Test
+    public void testCreateTimeSlotConflictWithTech() {
+        //assertEquals(0, service.getAllPersons().size());
+        String error = null;
+
+
+        String startDate1 = "2004-05-07";
+        String endDate1 = "2004-05-07";
+        String startTime1 = "10:00:00";
+        String endTime1 = "14:00:00";
+        Space space1 = new Space();
+        space1.setSpaceID(1);
+        Space space2 = new Space();
+        space2.setSpaceID(2);
+        Technician technician1 = new Technician();
+        technician1.setTechnicianID(1);
+        Technician technician2 = new Technician();
+        technician2.setTechnicianID(2);
+        TimeSlot timeSlot1 = null;
+
+        TimeSlot timeSlot2 = null;
+
+
+        try {
+            timeSlot2 = timeSlotService.createTimeSlot(BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,2,1);
+        } catch (IllegalArgumentException e) {
+            // Check that no error occurred
+            error = e.getMessage();
+        }
+        assertNull(timeSlot2);
+        assertEquals("cannot build such timeSlot since no free tech !", error);
+    }
+
+    @Test
+    public void testCreateTimeSlotConflictBusinessHour() {
+        //assertEquals(0, service.getAllPersons().size());
+        String error = null;
+
+
+        String startDate1 = "1004-05-07";
+        String endDate1 = "1004-05-07";
+        String startTime1 = "10:00:00";
+        String endTime1 = "14:00:00";
+        Space space1 = new Space();
+        space1.setSpaceID(1);
+        Space space2 = new Space();
+        space2.setSpaceID(2);
+        Technician technician1 = new Technician();
+        technician1.setTechnicianID(1);
+        Technician technician2 = new Technician();
+        technician2.setTechnicianID(2);
+        TimeSlot timeSlot1 = null;
+
+        TimeSlot timeSlot2 = null;
+
+
+        try {
+            timeSlot2 = timeSlotService.createTimeSlot(BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,2,1);
+        } catch (IllegalArgumentException e) {
+            // Check that no error occurred
+            error = e.getMessage();
+        }
+        assertNull(timeSlot2);
+        assertEquals("cannot build such timeSlot since no free businessHour!", error);
+    }
+
+    @Test
+    public void testGetAllTimeSlot() {
+        assertEquals(TimeSlot_KEY1, timeSlotService.getAllTimeSlots().get(0).getTimeslotID());
+    }
+
+    @Test
+    public void testDeleteExistingTimeSlot() {
+        String error = null;
+        Integer i = null;
+
+        try {
+            i = timeSlotService.deleteTimeSlot(TimeSlot_KEY1);
+        } catch (IllegalArgumentException e) {
+            fail();
+        }
+
+        // check if not null and values are as expected
+        assertEquals(1,i);
+    }
+
 
 
 }

@@ -35,41 +35,41 @@ public class TimeSlotService {
     BusinessHourRepository businessHourRepository;
 
 
-    @Transactional
-    public Space createSpace(int ID){
-        Space space = new Space();
-        space.setSpaceID(ID);
-        spaceRepository.save(space);
-        return space;
-    }
-
-    @Transactional
-    public Space getSpace(int ID){
-        Space space = spaceRepository.findSpaceBySpaceID(ID);
-        return space;
-    }
-    @Transactional
-    public List<Space> getAllSpaces(){
-        return toList(spaceRepository.findAll());
-    }
-    @Transactional
-    public Technician createTechnician(int ID,String email, String name){
-        Technician technician = new Technician();
-        technician.setTechnicianID(ID);
-        technician.setEmail(email);
-        technician.setName(name);
-        technicianRepository.save(technician);
-        return technician;
-    }
-    @Transactional
-    public Technician getTechnician(int ID){
-        Technician technician = technicianRepository.findTechnicianByTechnicianID(ID);
-        return technician;
-    }
-    @Transactional
-    public List<Technician> getAllTechnicians(){
-        return toList(technicianRepository.findAll());
-    }
+//    @Transactional
+//    public Space createSpace(int ID){
+//        Space space = new Space();
+//        space.setSpaceID(ID);
+//        spaceRepository.save(space);
+//        return space;
+//    }
+//
+//    @Transactional
+//    public Space getSpace(int ID){
+//        Space space = spaceRepository.findSpaceBySpaceID(ID);
+//        return space;
+//    }
+//    @Transactional
+//    public List<Space> getAllSpaces(){
+//        return toList(spaceRepository.findAll());
+//    }
+//    @Transactional
+//    public Technician createTechnician(int ID,String email, String name){
+//        Technician technician = new Technician();
+//        technician.setTechnicianID(ID);
+//        technician.setEmail(email);
+//        technician.setName(name);
+//        technicianRepository.save(technician);
+//        return technician;
+//    }
+//    @Transactional
+//    public Technician getTechnician(int ID){
+//        Technician technician = technicianRepository.findTechnicianByTechnicianID(ID);
+//        return technician;
+//    }
+//    @Transactional
+//    public List<Technician> getAllTechnicians(){
+//        return toList(technicianRepository.findAll());
+//    }
 
     //appointment1 --> createTimeSLot (ARM,2020-03-23,10:00:00,2020-03-23,12:00:00,3,5)
 
@@ -96,6 +96,7 @@ public class TimeSlotService {
         int flag1 = check_hour(list_businessHour_sorted,startDate,startTime,endDate,endTime);
 
         if(flag1 != 0){
+            System.out.println("Here");
             throw new IllegalArgumentException("cannot build such timeSlot since no free businessHour!");
         }
 
@@ -146,8 +147,8 @@ public class TimeSlotService {
 
 
     @Transactional
-    public void deleteTimeSlot(Long timeSlotID){
-        timeSlotRepository.deleteTimeSlotByTimeslotID(timeSlotID);
+    public Integer deleteTimeSlot(Long timeSlotID){
+        return timeSlotRepository.deleteTimeSlotByTimeslotID(timeSlotID);
     }
 
     //helper_check
