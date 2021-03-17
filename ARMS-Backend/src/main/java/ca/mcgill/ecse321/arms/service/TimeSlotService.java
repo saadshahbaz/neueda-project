@@ -31,43 +31,47 @@ public class TimeSlotService {
     TimeSlotRepository timeSlotRepository;
     @Autowired
     BussinessRepository businessRepository;
+    @Autowired
+    BusinessHourRepository businessHourRepository;
 
 
-    @Transactional
-    public Space createSpace(int ID){
-        Space space = new Space();
-        space.setSpaceID(ID);
-        spaceRepository.save(space);
-        return space;
-    }
+//    @Transactional
+//    public Space createSpace(int ID){
+//        Space space = new Space();
+//        space.setSpaceID(ID);
+//        spaceRepository.save(space);
+//        return space;
+//    }
+//
+//    @Transactional
+//    public Space getSpace(int ID){
+//        Space space = spaceRepository.findSpaceBySpaceID(ID);
+//        return space;
+//    }
+//    @Transactional
+//    public List<Space> getAllSpaces(){
+//        return toList(spaceRepository.findAll());
+//    }
+//    @Transactional
+//    public Technician createTechnician(int ID,String email, String name){
+//        Technician technician = new Technician();
+//        technician.setTechnicianID(ID);
+//        technician.setEmail(email);
+//        technician.setName(name);
+//        technicianRepository.save(technician);
+//        return technician;
+//    }
+//    @Transactional
+//    public Technician getTechnician(int ID){
+//        Technician technician = technicianRepository.findTechnicianByTechnicianID(ID);
+//        return technician;
+//    }
+//    @Transactional
+//    public List<Technician> getAllTechnicians(){
+//        return toList(technicianRepository.findAll());
+//    }
 
-    @Transactional
-    public Space getSpace(int ID){
-        Space space = spaceRepository.findSpaceBySpaceID(ID);
-        return space;
-    }
-    @Transactional
-    public List<Space> getAllSpaces(){
-        return toList(spaceRepository.findAll());
-    }
-    @Transactional
-    public Technician createTechnician(int ID,String email, String name){
-        Technician technician = new Technician();
-        technician.setTechnicianID(ID);
-        technician.setEmail(email);
-        technician.setName(name);
-        technicianRepository.save(technician);
-        return technician;
-    }
-    @Transactional
-    public Technician getTechnician(int ID){
-        Technician technician = technicianRepository.findTechnicianByTechnicianID(ID);
-        return technician;
-    }
-    @Transactional
-    public List<Technician> getAllTechnicians(){
-        return toList(technicianRepository.findAll());
-    }
+    //appointment1 --> createTimeSLot (ARM,2020-03-23,10:00:00,2020-03-23,12:00:00,3,5)
 
     @Transactional
     public TimeSlot createTimeSlot(String businessName,String startDate1, String startTime1, String endDate1, String endTime1,int spaceID,int technicianID){
@@ -83,8 +87,7 @@ public class TimeSlotService {
 
         System.out.println("Hi*2");
         //Judge if has conflict with businesshour
-        Set<BusinessHour> businessHours = business.getBusinessHour();
-        List<BusinessHour> list_businessHour = new ArrayList<>(businessHours);
+        List<BusinessHour> list_businessHour = businessHourRepository.findBusinessHourByBusiness(business);
         Stream<BusinessHour> sorted1 = list_businessHour.stream().sorted(Comparator.comparing(BusinessHour::getBusinessHourID));
         List<BusinessHour> list_businessHour_sorted = sorted1.collect(Collectors.toList());
 
@@ -93,19 +96,18 @@ public class TimeSlotService {
         int flag1 = check_hour(list_businessHour_sorted,startDate,startTime,endDate,endTime);
 
         if(flag1 != 0){
+            System.out.println("Here");
             throw new IllegalArgumentException("cannot build such timeSlot since no free businessHour!");
         }
 
         //Judge if has conflict with space and tech
-        Set<TimeSlot> timeSlots_Space = timeSlotRepository.findTimeSlotsBySpace(space);
-        List<TimeSlot> list_timeSlot_Space = new ArrayList<>(timeSlots_Space);
-        Set<TimeSlot> timeSlots_Tech = timeSlotRepository.findTimeSlotsByTechnician(technician);
-        List<TimeSlot> list_timeSlot_Tech = new ArrayList<>(timeSlots_Tech);
+        List<TimeSlot> list_timeSlots_Space = timeSlotRepository.findTimeSlotsBySpace(space);
+        List<TimeSlot> list_timeSlots_Tech = timeSlotRepository.findTimeSlotsByTechnician(technician);
 
-        Stream<TimeSlot> sorted2 = list_timeSlot_Space.stream().sorted(Comparator.comparing(TimeSlot::getTimeslotID));
+        Stream<TimeSlot> sorted2 = list_timeSlots_Space.stream().sorted(Comparator.comparing(TimeSlot::getTimeslotID));
         List<TimeSlot> list_timeSlot_Space_sorted = sorted2.collect(Collectors.toList());
 
-        Stream<TimeSlot> sorted3 = list_timeSlot_Tech.stream().sorted(Comparator.comparing(TimeSlot::getTimeslotID));
+        Stream<TimeSlot> sorted3 = list_timeSlots_Tech.stream().sorted(Comparator.comparing(TimeSlot::getTimeslotID));
         List<TimeSlot> list_timeSlot_Tech_sorted = sorted3.collect(Collectors.toList());
 
         int flag2 = check_slot(list_timeSlot_Space_sorted,startDate,startTime,endDate,endTime);
@@ -145,9 +147,8 @@ public class TimeSlotService {
 
 
     @Transactional
-    public void deleteTimeSlot(Long timeSlotID){
-        TimeSlot target = timeSlotRepository.findTimeSlotByTimeslotID(timeSlotID);
-        timeSlotRepository.delete(target);
+    public Integer deleteTimeSlot(Long timeSlotID){
+        return timeSlotRepository.deleteTimeSlotByTimeslotID(timeSlotID);
     }
 
     //helper_check
@@ -174,7 +175,9 @@ public class TimeSlotService {
         //O(n)  comp
         int flag2 = 0; // if has conflict, flag1 = 1
         int i = 0;
+        System.out.println(list_slot.size());
         for(;i<list_slot.size();i++){
+            System.out.println(list_slot.get(i));
             if (list_slot.get(i).getStartDate().equals(startDate)){
                 if(list_slot.get(i).getEndTime().before(startTime) || list_slot.get(i).getStartTime().after(endTime)){
                     flag2 = 0;

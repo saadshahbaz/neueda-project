@@ -25,22 +25,36 @@ public class AppointmentController {
 
     @PostMapping(value={"/appointment","/appointment/"})
     public AppointmentDto createAppointment(
-            @RequestParam("service") Service service,
-            @RequestParam("car") Car car,
-            @RequestParam("time slot") TimeSlot timeSlot
+            @RequestParam("service name") String serviceName,
+            @RequestParam("plate number") String plateNO,
+            @RequestParam("business name") String businessName,
+            @RequestParam("start date") String startDate,
+            @RequestParam("start time") String startTime,
+            @RequestParam("end date") String endDate,
+            @RequestParam("end time") String endTime,
+            @RequestParam("technician ID") int technicianID,
+            @RequestParam("space ID") int spaceID
     ){
-        ca.mcgill.ecse321.arms.model.Appointment appointment = appointmentService.createAppointment(service, car, timeSlot);
+        Appointment appointment = appointmentService.createAppointment(serviceName, plateNO, businessName,
+                startDate,startTime,endDate,endTime,spaceID,technicianID);
         return convertToDto(appointment);
     }
 
     @PutMapping(value = {"/updateAppointment","/updateAppointment/"})
     public AppointmentDto updateAppointment(
             @RequestParam("appointment ID") int appointmentID,
-            @RequestParam("service") Service service,
-            @RequestParam("car") Car car,
-            @RequestParam("time slot") TimeSlot timeSlot
+            @RequestParam("service name") String serviceName,
+            @RequestParam("plate number") String plateNO,
+            @RequestParam("business name") String businessName,
+            @RequestParam("start date") String startDate,
+            @RequestParam("start time") String startTime,
+            @RequestParam("end date") String endDate,
+            @RequestParam("end time") String endTime,
+            @RequestParam("technician ID") int technicianID,
+            @RequestParam("space ID") int spaceID
     ){
-        Appointment appointment = appointmentService.updateService(appointmentID,service,car,timeSlot);
+        Appointment appointment = appointmentService.updateAppointment(appointmentID,serviceName, plateNO, businessName,
+                startDate,startTime,endDate,endTime,spaceID,technicianID);
         return convertToDto(appointment);
     }
 
