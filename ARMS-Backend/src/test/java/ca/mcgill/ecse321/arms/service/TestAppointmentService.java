@@ -416,10 +416,10 @@ public class TestAppointmentService {
         String year="2010";
         //time slot param
         String businessName = "Tesla 4s";
-        String startDate = "2020-03-02";
-        String endDate = "2020-03-02";
-        String startTime = "08:00:00";
-        String endTime = "09:00:00";
+        String startDate = "2019-03-02";
+        String endDate = "2019-03-02";
+        String startTime = "09:00:00";
+        String endTime = "13:00:00";
         //create technician parameter
         int technicianID = TECHID;
         String techName = "Mike";
@@ -436,14 +436,10 @@ public class TestAppointmentService {
         // initialize account to null, so we can see if appointment creation was successful
         Appointment appointment = null;
 
-        Service service = createService(serviceName,duration,price);
-        Customer customer = createCustomer(lastReminder, username, password, email, phone);
-        Car car = createCar(customer, model, manu, plateNo, year);
-        Technician technician = createTechnician(technicianID, techName, techEmail);
-        Space space = createSpace(spaceID);
+
 
         try{
-            appointment = appointmentService.createAppointment(serviceName,plateNo,businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
+            appointment = appointmentService.createAppointment(serviceName,plateNo,BUSINESS_KEY,startDate,startTime,endDate,endTime,spaceID,technicianID);
         }catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
             fail();
@@ -453,7 +449,7 @@ public class TestAppointmentService {
         assertNotNull(appointment);
         assertEquals(serviceName, appointment.getService().getName());
         assertEquals(plateNo, appointment.getCar().getPlateNo());
-        assertEquals(2002030208000033L,appointment.getTimeSlot().getTimeslotID());
+        assertEquals(2019030209000033L,appointment.getTimeSlot().getTimeslotID());
 
     }
 

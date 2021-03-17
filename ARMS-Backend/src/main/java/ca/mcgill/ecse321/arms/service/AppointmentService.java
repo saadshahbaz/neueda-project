@@ -82,12 +82,7 @@ public class AppointmentService {
         Car car = carRepository.findCarByPlateNo(plateNo);
         TimeSlot timeSlot = createTimeSlot(businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
 
-        // if the appointment of the customer already exists
-        Appointment appointment = appointmentRepository.findAppointmentByCar(car);
-        if (appointment != null) {
-            error = "appointment of " + car.getCustomer().getUsername() + " already exists";
-            throw new IllegalArgumentException(error);
-        }
+
 
         Appointment anAppointment = new Appointment();
         anAppointment.setService(service);
