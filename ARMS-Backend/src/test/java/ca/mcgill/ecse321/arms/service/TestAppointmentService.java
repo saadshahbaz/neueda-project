@@ -37,6 +37,9 @@ public class TestAppointmentService {
     @InjectMocks
     private AppointmentService appointmentService;
 
+    @InjectMocks
+    private TimeSlotService timeSlotService;
+
     //create service parameter
     private static final String SERVICENAME = "TestService";
     private static final int DURATION = 30;
@@ -93,6 +96,14 @@ public class TestAppointmentService {
                         appointment.setAppointmentID(0);
                         appointment.setCar(((Car) invocation.getArgument(0)));
                         return appointment;
+//                        Service service = createService(SERVICENAME,DURATION,PRICE);
+//                        Customer customer = createCustomer(LASTREMINDER, USERNAME, PASSWORD, EMAIL, PHONENUMBER);
+//                        Car car = createCar(customer, MODEL, MANUFACTURER, PLATENO, YEAR);
+//                        Technician technician = createTechnician(TECHID, TECHNAME, TECHEMAIL);
+//                        Space space = createSpace(SPACEID);
+//                        TimeSlot timeSlot = createTimeSlot(technician, space, STARTDATE, STARTTIME, ENDDATE, ENDTIME);
+//                        Appointment appointment = createAppointment(APPOINTMENTID, car, service, timeSlot);
+//                        return appointment;
                     }
                     else {
                         return null;
@@ -131,17 +142,21 @@ public class TestAppointmentService {
 
     @Test
     public void test_create_an_appointment_successfully(){
-        Service service = createService(SERVICENAME,DURATION,PRICE);
-        Customer customer = createCustomer(LASTREMINDER, USERNAME, PASSWORD, EMAIL, PHONENUMBER);
-        Car car = createCar(customer, MODEL, MANUFACTURER, PLATENO, YEAR);
-        Technician technician = createTechnician(TECHID, TECHNAME, TECHEMAIL);
-        Space space = createSpace(SPACEID);
-        TimeSlot timeSlot = createTimeSlot(technician, space, STARTDATE, STARTTIME, ENDDATE, ENDTIME);
+        String serviceName = "wash";
+        String plateNo = "A23895";
+        String businessName = "Tesla 4s";
+        String startDate = "2002-03-02";
+        String endDate = "2002-03-02";
+        String startTime = "08:00:00";
+        String endTime = "09:00:00";
+        int technicianID = 3;
+        int spaceID = 3;
+
         // initialize account to null, so we can see if appointment creation was successful
         Appointment appointment = null;
 
         try{
-            appointment = appointmentService.createAppointment(service, car, timeSlot);
+            appointment = appointmentService.createAppointment(serviceName,plateNo,businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
         }catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
             fail();
@@ -149,9 +164,9 @@ public class TestAppointmentService {
 
         // check if not null and values are as expected
         assertNotNull(appointment);
-        assertEquals(service, appointment.getService());
-        assertEquals(car, appointment.getCar());
-        assertEquals(timeSlot, appointment.getTimeSlot());
+        assertEquals(serviceName, appointment.getService().getName());
+        assertEquals(plateNo, appointment.getCar().getPlateNo());
+        assertEquals(2002030208000033L,appointment.getTimeSlot().getTimeslotID());
 
     }
 
@@ -239,4 +254,6 @@ public class TestAppointmentService {
         Time st = Time.valueOf(string+":00");
         return st;
     }
+
+
 }
