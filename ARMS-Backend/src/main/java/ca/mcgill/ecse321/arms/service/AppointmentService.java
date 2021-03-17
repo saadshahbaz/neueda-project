@@ -12,10 +12,7 @@ import ca.mcgill.ecse321.arms.model.*;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -101,9 +98,17 @@ public class AppointmentService {
      */
     @Transactional
     public int deleteAppointment(int appointmentID) {
+        String error = "";
         Appointment anAppointment = appointmentRepository.findAppointmentByAppointmentID(appointmentID);
         if(anAppointment==null){
             throw new IllegalArgumentException("No appointment was found.");
+        }
+        //only be able to cancel 24hr before the appointment starts
+        Date appointmentDate = anAppointment.getTimeSlot().getStartDate();
+        Date curDate = ArmsApplication.getCurrentDate();
+        if (appointmentDate.equals(curDate)){
+            error = "You can not delete an appointment happening on the current date";
+            throw new IllegalArgumentException(error);
         }
 
         appointmentRepository.delete(anAppointment);
@@ -270,4 +275,5 @@ public class AppointmentService {
         res = res.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "");
         return Long.parseLong(res);
     }
+
 }

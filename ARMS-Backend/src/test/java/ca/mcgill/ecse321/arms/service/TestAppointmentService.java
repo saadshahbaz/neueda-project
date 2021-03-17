@@ -581,11 +581,12 @@ public class TestAppointmentService {
 
     @Test
     public void testDeleteExistingAppointment() {
-
+        ArmsApplication.setSystemDateAndTime();
         int i = 0;
         try {
             i = appointmentService.deleteAppointment(APPOINTMENTID);
         } catch (IllegalArgumentException e) {
+            System.out.println(e);
             fail();
         }
 
@@ -594,8 +595,33 @@ public class TestAppointmentService {
     }
 
     @Test
+    public void test_delete_non_existing_appointment(){
+        String error = "";
+        try{
+            assertNull(appointmentService.deleteAppointment(2));
+        }catch (IllegalArgumentException e){
+            error = e.getMessage();
+        }
+        assertEquals(error, "No appointment was found.");
+    }
+
+    @Test
+    public void test_delete_an_appointment_within_current_date(){
+        ArmsApplication.setCurrentDate(stringToDate("2021-03-01"));
+        String error = "";
+
+        try{
+            appointmentService.deleteAppointment(APPOINTMENTID);
+        }catch (IllegalArgumentException e){
+            error = e.getMessage();
+        }
+
+        assertEquals(error, "You can not delete an appointment happening on the current date");
+    }
+
+    @Test
     public void test_update_an_appointment_successfully(){
-//        ArmsApplication.setSystemDateAndTime();
+        ArmsApplication.setSystemDateAndTime();
         //service param
         String serviceName = SERVICENAME;
         //car param
