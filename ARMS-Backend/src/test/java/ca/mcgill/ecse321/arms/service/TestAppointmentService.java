@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.arms.service;
 
-import ca.mcgill.ecse321.arms.dao.AppointmentRepository;
-import ca.mcgill.ecse321.arms.dao.ServiceRepository;
+import ca.mcgill.ecse321.arms.dao.*;
 import ca.mcgill.ecse321.arms.model.*;
 import ca.mcgill.ecse321.arms.service.ServiceService;
 import org.junit.jupiter.api.AfterEach;
@@ -34,6 +33,24 @@ public class TestAppointmentService {
     @Mock
     private ServiceRepository serviceRepository;
 
+    @Mock
+    private CarRepository carRepository;
+
+    @Mock
+    private TimeSlotRepository timeSlotRepository;
+
+    @Mock
+    private SpaceRepository spaceRepository;
+
+    @Mock
+    private TechnicianRepository technicianRepository;
+
+    @Mock
+    private BusinessHourRepository businessHourDao;
+
+    @Mock
+    private BussinessRepository businessDao;
+
     @InjectMocks
     private AppointmentService appointmentService;
 
@@ -49,17 +66,38 @@ public class TestAppointmentService {
     private static final String MODEL = "AB";
     private static final String YEAR="1948";
     private static final String PLATENO = "A123B4";
+
+    private static final String TEST_Username1 = "TestUsername1";
+    private static final String TEST_Password1 = "Testpassword1";
+    private static final String Test_Email1 ="6722024081@qq.com";
+    private static final String Test_phone1 ="123456781";
+
+    private static final String Test_manufacturer1="abcd";
+    private static final String Test_model1 = "ABC";
+    private static final String Test_year1="1941";
+    private static final String Test_plateN1 = "A123B9";
     //create time slot parameter
     private static final String STARTDATE = "2021-03-01";
     private static final String STARTTIME = "9:00";
     private static final String ENDDATE = "2021-03-01";
     private static final String ENDTIME = "10:00";
+
+    private static final String BUSINESS_KEY = "TestBusiness";
+    private static final String NONEXISTING_BUSINESS_KEY = "NE_Business";
+    private static final Long BUSINESSHOUR_KEY = 20020808080808L;
+    private static final Long NE_USINESSHOUR_KEY = 20040808080808L;
+    private static final Long TimeSlot_KEY1 = 2004050710205511L;
+    private static final Long TimeSlot_KEY2 = 2004050710205522L;
     //create technician parameter
     private static final int TECHID = 3;
     private static final String TECHNAME = "testName";
     private static final String TECHEMAIL = "testTechnician@mail.ca";
+    private static final int technicianID1 = 1;
+    private static final int technicianID2 = 2;
     //create space parameter
     private static final int SPACEID = 3;
+    private static final int spaceID1 = 1;
+    private static final int spaceID2 = 2;
     //create customer parameter
     private static final String LASTREMINDER = "2021-03-01";
     private static final String USERNAME = "testName";
@@ -124,6 +162,231 @@ public class TestAppointmentService {
             List<Appointment> list = new ArrayList<>();
             list.add(appointment);
             return list;
+        });
+
+        // mock for findCarByplateNo
+        lenient().when(carRepository.findCarByPlateNo(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(PLATENO)) {
+                Customer customer = new Customer();
+                customer.setPassword(PASSWORD);
+                customer.setUsername(USERNAME);
+                customer.setEmail(EMAIL);
+                customer.setPhoneNumber(PHONENUMBER);
+                Car car = new Car();
+                car.setModel(MODEL);
+                car.setYear(YEAR);
+                car.setManufacturer(MANUFACTURER);
+                car.setPlateNo(PLATENO);
+                car.setCustomer(customer);
+                return car;
+            }else if (invocation.getArgument(0).equals(Test_plateN1)) {
+                Customer customer = new Customer();
+                customer.setPassword(TEST_Password1);
+                customer.setUsername(TEST_Username1);
+                customer.setEmail(Test_Email1);
+                customer.setPhoneNumber(Test_phone1);
+                Car car = new Car();
+                car.setModel(Test_model1);
+                car.setYear(Test_year1);
+                car.setManufacturer(Test_manufacturer1);
+                car.setPlateNo(Test_plateN1);
+                car.setCustomer(customer);
+                return car;
+            } else {
+                return null;
+            }
+        });
+
+        // mock for findServiceByName
+        lenient().when(serviceRepository.findServiceByName(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(SERVICENAME)) {
+                Service service = new Service();
+                service.setName(SERVICENAME);
+                service.setDuration(DURATION);
+                service.setPrice(PRICE);
+                return service;
+            } else {
+                return null;
+            }
+        });
+
+        lenient().when(timeSlotRepository.findTimeSlotByTimeSlotID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(TimeSlot_KEY1)) {
+                TimeSlot timeSlot = new TimeSlot();
+                timeSlot.setTimeslotID(TimeSlot_KEY1);
+                Business business = new Business();
+                Space space = new Space();
+                space.setSpaceID(spaceID1);
+                Technician technician = new Technician();
+                technician.setTechnicianID(technicianID1);
+                spaceRepository.save(space);
+                technicianRepository.save(technician);
+                timeSlotRepository.save(timeSlot);
+                return timeSlot;
+            } else {
+                return null;
+            }
+        });
+
+        lenient().when(timeSlotRepository.findTimeSlotsBySpace(any(Space.class)))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                    if (((Space) invocation.getArgument(0)).getSpaceID()==spaceID1) {
+                        List<TimeSlot> timeSlots = new ArrayList<>();
+                        TimeSlot timeSlot = new TimeSlot();
+                        timeSlot.setSpace(((Space) invocation.getArgument(0)));
+                        timeSlot.setTimeslotID(TimeSlot_KEY1);
+
+                        Date startDate = Date.valueOf("2004-05-07");
+                        Time startTime = Time.valueOf("10:20:55");
+                        Date endDate = Date.valueOf("2004-05-07");
+                        Time endTime = Time.valueOf("13:34:32");
+                        timeSlot.setStartDate(startDate);
+                        timeSlot.setStartTime(startTime);
+                        timeSlot.setEndDate(endDate);
+                        timeSlot.setEndTime(endTime);
+                        Technician technician = technicianRepository.findTechnicianByTechnicianID(technicianID1);
+                        timeSlot.setTechnician(technician);
+
+                        timeSlots.add(timeSlot);
+                        return timeSlots;
+                    }
+                    else if (((Space) invocation.getArgument(0)).getSpaceID()==spaceID2) {
+                        List<TimeSlot> timeSlots = new ArrayList<>();
+                        TimeSlot timeSlot = new TimeSlot();
+                        timeSlot.setSpace(((Space) invocation.getArgument(0)));
+                        timeSlot.setTimeslotID(TimeSlot_KEY2);
+
+                        Date startDate = Date.valueOf("2004-05-07");
+                        Time startTime = Time.valueOf("10:20:55");
+                        Date endDate = Date.valueOf("2004-05-07");
+                        Time endTime = Time.valueOf("13:34:32");
+                        timeSlot.setStartDate(startDate);
+                        timeSlot.setStartTime(startTime);
+                        timeSlot.setEndDate(endDate);
+                        timeSlot.setEndTime(endTime);
+                        Technician technician = technicianRepository.findTechnicianByTechnicianID(technicianID2);
+                        timeSlot.setTechnician(technician);
+
+                        timeSlots.add(timeSlot);
+                        return timeSlots;
+                    }else {
+                        return null;
+                    }
+                });
+
+        lenient().when(timeSlotRepository.findTimeSlotsByTechnician(any(Technician.class)))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                    if (((Technician) invocation.getArgument(0)).getTechnicianID()==technicianID1) {
+                        List<TimeSlot> timeSlots = new ArrayList<>();
+                        TimeSlot timeSlot = new TimeSlot();
+                        timeSlot.setTechnician(((Technician) invocation.getArgument(0)));
+                        timeSlot.setTimeslotID(TimeSlot_KEY1);
+                        Date startDate = Date.valueOf("2004-05-07");
+                        Time startTime = Time.valueOf("10:20:55");
+                        Date endDate = Date.valueOf("2004-05-07");
+                        Time endTime = Time.valueOf("13:34:32");
+                        timeSlot.setStartDate(startDate);
+                        timeSlot.setStartTime(startTime);
+                        timeSlot.setEndDate(endDate);
+                        timeSlot.setEndTime(endTime);
+                        Space space = spaceRepository.findSpaceBySpaceID(spaceID1);
+                        timeSlot.setSpace(space);
+
+
+                        timeSlots.add(timeSlot);
+                        return timeSlots;
+                    }
+                    else if (((Technician) invocation.getArgument(0)).getTechnicianID()==technicianID2) {
+                        List<TimeSlot> timeSlots = new ArrayList<>();
+                        TimeSlot timeSlot = new TimeSlot();
+                        timeSlot.setTechnician(((Technician) invocation.getArgument(0)));
+                        timeSlot.setTimeslotID(TimeSlot_KEY2);
+                        Date startDate = Date.valueOf("2004-05-07");
+                        Time startTime = Time.valueOf("10:20:55");
+                        Date endDate = Date.valueOf("2004-05-07");
+                        Time endTime = Time.valueOf("13:34:32");
+                        timeSlot.setStartDate(startDate);
+                        timeSlot.setStartTime(startTime);
+                        timeSlot.setEndDate(endDate);
+                        timeSlot.setEndTime(endTime);
+                        Space space = spaceRepository.findSpaceBySpaceID(spaceID2);
+                        timeSlot.setSpace(space);
+
+
+                        timeSlots.add(timeSlot);
+                        return timeSlots;
+                    }else {
+                        return null;
+                    }
+                });
+
+
+
+        lenient().when(businessDao.findBusinessByName(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(BUSINESS_KEY)) {
+                Business business = new Business();
+                business.setName(BUSINESS_KEY);
+                businessDao.save(business);
+                return business;
+            } else {
+                return null;
+            }
+        });
+        lenient().when(businessHourDao.findBusinessHourByBusinessHourID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(BUSINESSHOUR_KEY)) {
+                BusinessHour businessHour = new BusinessHour();
+                businessHour.setBusinessHourID(BUSINESSHOUR_KEY);
+                Business business = new Business();
+                business.setName(NONEXISTING_BUSINESS_KEY);
+                businessHour.setBusiness(business);
+                businessDao.save(business);
+                businessHourDao.save(businessHour);
+
+                return businessHour;
+            } else {
+                return null;
+            }
+        });
+        lenient().when(businessHourDao.findBusinessHourByBusiness(any(Business.class)))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                    if (((Business) invocation.getArgument(0)).getName().equals(BUSINESS_KEY)) {
+                        ArrayList<BusinessHour> businessHours = new ArrayList<>();
+                        BusinessHour businessHour = new BusinessHour();
+                        businessHour.setBusiness(((Business) invocation.getArgument(0)));
+                        businessHour.setBusinessHourID(BUSINESSHOUR_KEY);
+                        Date startDate = Date.valueOf("2002-08-08");
+                        Time startTime = Time.valueOf("08:08:08");
+                        Date endDate = Date.valueOf("2020-10-23");
+                        Time endTime = Time.valueOf("23:34:32");
+                        businessHour.setStartDate(startDate);
+                        businessHour.setStartTime(startTime);
+                        businessHour.setEndDate(endDate);
+                        businessHour.setEndTime(endTime);
+                        businessHours.add(businessHour);
+                        return businessHours;
+                    } else {
+                        return null;
+                    }
+                });
+        lenient().when(spaceRepository.findSpaceBySpaceID(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(spaceID1)) {
+                Space space = new Space();
+                space.setSpaceID(spaceID1);
+                return space;
+            } else {
+                return null;
+            }
+        });
+        lenient().when(technicianRepository.findTechnicianByTechnicianID(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(technicianID1)) {
+                Technician technician = new Technician();
+                technician.setTechnicianID(technicianID1);
+                technician.setEmail(TECHEMAIL);
+                technician.setName(TECHNAME);
+                return technician;
+            } else {
+                return null;
+            }
         });
 
         // Whenever anything is saved, just return the parameter object
