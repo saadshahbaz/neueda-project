@@ -23,7 +23,7 @@ public class TechnicianController {
             @RequestParam("id") int id,
             @RequestParam("name") String name,
             @RequestParam("email") String email
-    ){
+    ) throws IllegalArgumentException{
         Technician technician = technicianService.createTechnician(name, email, id);
         return convertToDto(technician);
     }
@@ -33,13 +33,13 @@ public class TechnicianController {
             @RequestParam("id") int id,
             @RequestParam("name") String name,
             @RequestParam("email") String email
-    ){
+    ) throws IllegalArgumentException{
         Technician technician = technicianService.updateTechnician(id, name, email);
         return convertToDto(technician);
     }
 
     @GetMapping(value = {"/technicians", "/technicians/"})
-    public List<TechnicianDto> getAllTechnicians(){
+    public List<TechnicianDto> getAllTechnicians() throws IllegalArgumentException{
         List<TechnicianDto> technicianDtos = new ArrayList<>();
         for(Technician technician: technicianService.getAllTechnicians()){
             technicianDtos.add(convertToDto(technician));
@@ -50,7 +50,7 @@ public class TechnicianController {
     @DeleteMapping(value = {"/deleteTechnician", "/deleteTechnician/"})
     public void deleteTechnician(
             @RequestParam("id") int id
-    ){
+    ) throws IllegalArgumentException{
         technicianService.deleteTechnician(id);
     }
 

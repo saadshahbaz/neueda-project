@@ -23,23 +23,23 @@ public class ServiceController {
             @RequestParam("name") String name,
             @RequestParam("duration") int duration,
             @RequestParam("price") int price
-    ){
+    ) throws IllegalArgumentException{
         ca.mcgill.ecse321.arms.model.Service service = serviceService.createService(name, duration, price);
         return convertToDto(service);
     }
 
     @PutMapping(value = {"/updateService","/updateService/"})
-    public ServiceDto updateService(
+    public ServiceDto updateService (
             @RequestParam("name") String curName,
             @RequestParam("duration") int duration,
             @RequestParam("price") int price
-    ){
+    )throws IllegalArgumentException{
         ca.mcgill.ecse321.arms.model.Service service = serviceService.updateService(curName, duration, price);
         return convertToDto(service);
     }
 
     @GetMapping(value = {"/services","/services/"})
-    public List<ServiceDto> getAllServices(){
+    public List<ServiceDto> getAllServices() throws IllegalArgumentException{
         List<ServiceDto> serviceDtos = new ArrayList<>();
         for(ca.mcgill.ecse321.arms.model.Service service : serviceService.getAllServices()){
             serviceDtos.add(convertToDto(service));
@@ -48,9 +48,9 @@ public class ServiceController {
     }
 
     @DeleteMapping(value = {"/deleteService", "/deleteService/"})
-    public void deleteService(
+    public void deleteService (
             @RequestParam("name") String name
-    ){
+    ) throws IllegalArgumentException{
         serviceService.deleteService(name);
     }
 
