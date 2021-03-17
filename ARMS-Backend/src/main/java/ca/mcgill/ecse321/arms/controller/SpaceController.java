@@ -18,13 +18,13 @@ public class SpaceController {
     @PostMapping(value = {"/space", "/space/"})
     public SpaceDto createSpace(
             @RequestParam("id") int id
-    ){
+    ) throws IllegalArgumentException{
         Space space = spaceService.createSpace(id);
         return convertToDto(space);
     }
 
     @GetMapping(value = {"/allSpace", "/allSpace/"})
-    public List<SpaceDto> getAllSpace(){
+    public List<SpaceDto> getAllSpace() throws IllegalArgumentException{
         List<SpaceDto> spaceDtos = new ArrayList<>();
         for(Space space : spaceService.getSpaces()){
             spaceDtos.add(convertToDto(space));
@@ -35,7 +35,7 @@ public class SpaceController {
     @DeleteMapping(value = {"/deleteSpace", "deleteSpace/"})
     public void deleteSpace(
             @RequestParam("id") int id
-    ){
+    ) throws IllegalArgumentException{
         spaceService.deleteSpace(id);
     }
 

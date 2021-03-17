@@ -44,6 +44,12 @@ public class TestServiceService {
     private static final String SERVICENAME = "TestService";
     private static final int DURATION = 30;
     private static final int PRICE = 100;
+    private static final String SERVICENAME2 = "TestService2";
+    private static final int DURATION2 = 30;
+    private static final int PRICE2 = 60;
+    private static final String SERVICENAME3 = "TestService3";
+    private static final int DURATION3 = 30;
+    private static final int PRICE3 = 150;
 
     @BeforeEach
     public void setMockOutput() {
@@ -67,8 +73,18 @@ public class TestServiceService {
             service.setName(SERVICENAME);
             service.setDuration(DURATION);
             service.setPrice(PRICE);
+            Service service2 = new Service();
+            service2.setName(SERVICENAME2);
+            service2.setDuration(DURATION2);
+            service2.setPrice(PRICE2);
+            Service service3 = new Service();
+            service3.setName(SERVICENAME3);
+            service3.setDuration(DURATION3);
+            service3.setPrice(PRICE3);
             List<Service> list = new ArrayList<Service>();
             list.add(service);
+            list.add(service2);
+            list.add(service3);
             return list;
         });
 
@@ -406,6 +422,24 @@ public class TestServiceService {
     public void test_get_all_services(){
         List<ca.mcgill.ecse321.arms.model.Service> services = serviceService.getAllServices();
         assertEquals(services.get(0).getName(), SERVICENAME);
+        assertEquals(services.get(1).getName(), SERVICENAME2);
+        assertEquals(services.get(2).getName(), SERVICENAME3);
+    }
+
+    @Test
+    public void test_sort_services_by_price_low_to_high(){
+        List<ca.mcgill.ecse321.arms.model.Service> services = serviceService.sortServicesByPriceLtoH();
+        assertEquals(services.get(0).getName(), SERVICENAME2);
+        assertEquals(services.get(1).getName(), SERVICENAME);
+        assertEquals(services.get(2).getName(), SERVICENAME3);
+    }
+
+    @Test
+    public void test_sort_services_by_price_high_to_low(){
+        List<ca.mcgill.ecse321.arms.model.Service> services = serviceService.sortServicesByPriceHtoL();
+        assertEquals(services.get(0).getName(), SERVICENAME3);
+        assertEquals(services.get(1).getName(), SERVICENAME);
+        assertEquals(services.get(2).getName(), SERVICENAME2);
     }
 
     public Customer createCustomer(String lastReminder, String username, String password,

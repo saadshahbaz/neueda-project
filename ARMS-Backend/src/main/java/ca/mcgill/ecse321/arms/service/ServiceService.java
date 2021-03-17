@@ -14,6 +14,8 @@ import ca.mcgill.ecse321.arms.model.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -180,6 +182,34 @@ public class ServiceService {
     @Transactional
     public List<ca.mcgill.ecse321.arms.model.Service> getAllServices(){
         return toList(serviceRepository.findAll());
+    }
+
+    @Transactional
+    public List<ca.mcgill.ecse321.arms.model.Service> sortServicesByPriceLtoH(){
+        List<ca.mcgill.ecse321.arms.model.Service> services = toList(serviceRepository.findAll());
+        Collections.sort(services, new CustomComparator1());
+        return services;
+    }
+
+    @Transactional
+    public List<ca.mcgill.ecse321.arms.model.Service> sortServicesByPriceHtoL(){
+        List<ca.mcgill.ecse321.arms.model.Service> services = toList(serviceRepository.findAll());
+        Collections.sort(services, new CustomComparator2());
+        return services;
+    }
+
+    public class CustomComparator1 implements Comparator<ca.mcgill.ecse321.arms.model.Service> {
+        @Override
+        public int compare(ca.mcgill.ecse321.arms.model.Service o1, ca.mcgill.ecse321.arms.model.Service o2) {
+            return Integer.compare(o1.getPrice(), o2.getPrice());
+        }
+    }
+
+    public class CustomComparator2 implements Comparator<ca.mcgill.ecse321.arms.model.Service> {
+        @Override
+        public int compare(ca.mcgill.ecse321.arms.model.Service o1, ca.mcgill.ecse321.arms.model.Service o2) {
+            return Integer.compare(o2.getPrice(), o1.getPrice());
+        }
     }
 
     private <T> List<T> toList(Iterable<T> iterable){
