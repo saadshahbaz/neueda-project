@@ -55,11 +55,11 @@ public class TestAppointmentService {
     private static final String ENDDATE = "2021-03-01";
     private static final String ENDTIME = "10:00";
     //create technician parameter
-    private static final int TECHID = 0;
+    private static final int TECHID = 3;
     private static final String TECHNAME = "testName";
     private static final String TECHEMAIL = "testTechnician@mail.ca";
     //create space parameter
-    private static final int SPACEID = 0;
+    private static final int SPACEID = 3;
     //create customer parameter
     private static final String LASTREMINDER = "2021-03-01";
     private static final String USERNAME = "testName";
@@ -92,18 +92,18 @@ public class TestAppointmentService {
         lenient().when(appointmentRepository.findAppointmentByCar(any(Car.class))).thenAnswer((InvocationOnMock invocation) -> {
                     //case1, customer with paid cars
                     if (((Car) invocation.getArgument(0)).getPlateNo().equals(PLATENO)) {
-                        Appointment appointment=new Appointment();
-                        appointment.setAppointmentID(0);
-                        appointment.setCar(((Car) invocation.getArgument(0)));
-                        return appointment;
-//                        Service service = createService(SERVICENAME,DURATION,PRICE);
-//                        Customer customer = createCustomer(LASTREMINDER, USERNAME, PASSWORD, EMAIL, PHONENUMBER);
-//                        Car car = createCar(customer, MODEL, MANUFACTURER, PLATENO, YEAR);
-//                        Technician technician = createTechnician(TECHID, TECHNAME, TECHEMAIL);
-//                        Space space = createSpace(SPACEID);
-//                        TimeSlot timeSlot = createTimeSlot(technician, space, STARTDATE, STARTTIME, ENDDATE, ENDTIME);
-//                        Appointment appointment = createAppointment(APPOINTMENTID, car, service, timeSlot);
+//                        Appointment appointment=new Appointment();
+//                        appointment.setAppointmentID(0);
+//                        appointment.setCar(((Car) invocation.getArgument(0)));
 //                        return appointment;
+                        Service service = createService(SERVICENAME,DURATION,PRICE);
+                        Customer customer = createCustomer(LASTREMINDER, USERNAME, PASSWORD, EMAIL, PHONENUMBER);
+                        Car car = createCar(customer, MODEL, MANUFACTURER, PLATENO, YEAR);
+                        Technician technician = createTechnician(TECHID, TECHNAME, TECHEMAIL);
+                        Space space = createSpace(SPACEID);
+                        TimeSlot timeSlot = createTimeSlot(technician, space, STARTDATE, STARTTIME, ENDDATE, ENDTIME);
+                        Appointment appointment = createAppointment(APPOINTMENTID, car, service, timeSlot);
+                        return appointment;
                     }
                     else {
                         return null;
@@ -142,18 +142,42 @@ public class TestAppointmentService {
 
     @Test
     public void test_create_an_appointment_successfully(){
-        String serviceName = "wash";
-        String plateNo = "A23895";
+        //service param
+        String serviceName = SERVICENAME;
+        int duration = 50;
+        int price = 100;
+        //car param
+        String plateNo = PLATENO;
+        String manu="Tesla";
+        String model = "AA";
+        String year="2010";
+        //time slot param
         String businessName = "Tesla 4s";
-        String startDate = "2002-03-02";
-        String endDate = "2002-03-02";
+        String startDate = "2020-03-02";
+        String endDate = "2020-03-02";
         String startTime = "08:00:00";
         String endTime = "09:00:00";
-        int technicianID = 3;
-        int spaceID = 3;
+        //create technician parameter
+        int technicianID = TECHID;
+        String techName = "Mike";
+        String techEmail = "mike@mail.ca";
+        //create space parameter
+        int spaceID = SPACEID;
+        //create customer parameter
+        String lastReminder = "2020-03-01";
+        String username = "customerA";
+        String password = "goodpassword";
+        String email = "customera@mail.ca";
+        String phone = "1224343432";
 
         // initialize account to null, so we can see if appointment creation was successful
         Appointment appointment = null;
+
+        Service service = createService(serviceName,duration,price);
+        Customer customer = createCustomer(lastReminder, username, password, email, phone);
+        Car car = createCar(customer, model, manu, plateNo, year);
+        Technician technician = createTechnician(technicianID, techName, techEmail);
+        Space space = createSpace(spaceID);
 
         try{
             appointment = appointmentService.createAppointment(serviceName,plateNo,businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
