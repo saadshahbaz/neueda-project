@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.arms.service;
 
+import ca.mcgill.ecse321.arms.ArmsApplication;
 import ca.mcgill.ecse321.arms.dao.*;
 import ca.mcgill.ecse321.arms.model.*;
 import ca.mcgill.ecse321.arms.service.ServiceService;
@@ -19,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.lenient;
 
@@ -105,7 +106,7 @@ public class TestAppointmentService {
     private static final String EMAIL = "test@mail.ca";
     private static final String PHONENUMBER = "88888888";
 
-    private static final int APPOINTMENTID = 0;
+    private static final int APPOINTMENTID = 1;
 
     @BeforeEach
     public void setMockOutput() {
@@ -159,6 +160,20 @@ public class TestAppointmentService {
             TimeSlot timeSlot = createTimeSlot(technician, space, STARTDATE, STARTTIME, ENDDATE, ENDTIME);
             Appointment appointment = createAppointment(APPOINTMENTID, car, service, timeSlot);
 
+            List<Appointment> list = new ArrayList<>();
+            list.add(appointment);
+            return list;
+        });
+
+        // mock for findAll
+        lenient().when(appointmentRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+            Service service = createService(SERVICENAME,DURATION,PRICE);
+            Customer customer = createCustomer(LASTREMINDER, USERNAME, PASSWORD, EMAIL, PHONENUMBER);
+            Car car = createCar(customer, MODEL, MANUFACTURER, PLATENO, YEAR);
+            Technician technician = createTechnician(TECHID, TECHNAME, TECHEMAIL);
+            Space space = createSpace(SPACEID);
+            TimeSlot timeSlot = createTimeSlot(technician, space, STARTDATE, STARTTIME, ENDDATE, ENDTIME);
+            Appointment appointment = createAppointment(APPOINTMENTID, car, service, timeSlot);
             List<Appointment> list = new ArrayList<>();
             list.add(appointment);
             return list;
@@ -407,35 +422,20 @@ public class TestAppointmentService {
     public void test_create_an_appointment_successfully(){
         //service param
         String serviceName = SERVICENAME;
-        int duration = 50;
-        int price = 100;
         //car param
         String plateNo = PLATENO;
-        String manu="Tesla";
-        String model = "AA";
-        String year="2010";
         //time slot param
-        String businessName = "Tesla 4s";
         String startDate = "2019-03-02";
         String endDate = "2019-03-02";
         String startTime = "09:00:00";
         String endTime = "13:00:00";
         //create technician parameter
         int technicianID = TECHID;
-        String techName = "Mike";
-        String techEmail = "mike@mail.ca";
         //create space parameter
         int spaceID = SPACEID;
-        //create customer parameter
-        String lastReminder = "2020-03-01";
-        String username = "customerA";
-        String password = "goodpassword";
-        String email = "customera@mail.ca";
-        String phone = "1224343432";
 
         // initialize account to null, so we can see if appointment creation was successful
         Appointment appointment = null;
-
 
 
         try{
@@ -452,6 +452,177 @@ public class TestAppointmentService {
         assertEquals(2019030209000033L,appointment.getTimeSlot().getTimeslotID());
 
     }
+
+    @Test
+    public void testCreateAppointmentConflictWithSpace() {
+        //assertEquals(0, service.getAllPersons().size());
+        String error = null;
+
+        //service param
+        String serviceName = SERVICENAME;
+        //car param
+        String plateNo = PLATENO;
+        //time slot param
+        String startDate1 = "2004-05-07";
+        String endDate1 = "2004-05-07";
+        String startTime1 = "10:00:00";
+        String endTime1 = "14:00:00";
+
+        Space space1 = new Space();
+        space1.setSpaceID(1);
+        Technician technician1 = new Technician();
+        technician1.setTechnicianID(1);
+        Technician technician2 = new Technician();
+        technician2.setTechnicianID(2);
+
+        Appointment appointment = null;
+
+        try {
+            appointment = appointmentService.createAppointment(serviceName,plateNo,BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,1,2);
+        } catch (IllegalArgumentException e) {
+            // Check that no error occurred
+            error = e.getMessage();
+        }
+        assertNull(appointment);
+        assertEquals("cannot build such appointment since no free space!", error);
+    }
+
+    @Test
+    public void testCreateAppointmentConflictWithTech() {
+        String error = null;
+        //service param
+        String serviceName = SERVICENAME;
+        //car param
+        String plateNo = PLATENO;
+        //time slot param
+        String startDate1 = "2004-05-07";
+        String endDate1 = "2004-05-07";
+        String startTime1 = "10:00:00";
+        String endTime1 = "14:00:00";
+
+        Space space1 = new Space();
+        space1.setSpaceID(1);
+        Space space2 = new Space();
+        space2.setSpaceID(2);
+        Technician technician1 = new Technician();
+        technician1.setTechnicianID(1);
+        Technician technician2 = new Technician();
+        technician2.setTechnicianID(2);
+
+        Appointment appointment = null;
+
+        try {
+            appointment = appointmentService.createAppointment(serviceName,plateNo,BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,2,1);
+        } catch (IllegalArgumentException e) {
+            // Check that no error occurred
+            error = e.getMessage();
+        }
+        assertNull(appointment);
+        assertEquals("cannot build such appointment since no free tech !", error);
+    }
+
+    @Test
+    public void testCreateAppointmentConflictBusinessHour() {
+
+        String error = null;
+        //service param
+        String serviceName = SERVICENAME;
+        //car param
+        String plateNo = PLATENO;
+        //time slot param
+        String startDate1 = "1004-05-07";
+        String endDate1 = "1004-05-07";
+        String startTime1 = "10:00:00";
+        String endTime1 = "14:00:00";
+        Space space1 = new Space();
+        space1.setSpaceID(1);
+        Space space2 = new Space();
+        space2.setSpaceID(2);
+        Technician technician1 = new Technician();
+        technician1.setTechnicianID(1);
+        Technician technician2 = new Technician();
+        technician2.setTechnicianID(2);
+
+        Appointment appointment = null;
+
+        try {
+            appointment = appointmentService.createAppointment(serviceName,plateNo,BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,2,1);
+        } catch (IllegalArgumentException e) {
+            // Check that no error occurred
+            error = e.getMessage();
+        }
+        assertNull(appointment);
+        assertEquals("cannot build such appointment since no free businessHour!", error);
+    }
+
+
+    @Test
+    public void test_get_existing_appointment(){
+        Appointment appointment = appointmentService.getAppointment(APPOINTMENTID);
+        assertEquals(APPOINTMENTID, appointment.getAppointmentID());
+    }
+
+    @Test
+    public void test_get_non_existing_appointment(){
+        String error = "";
+        try{
+            assertNull(appointmentService.getAppointment(2));
+        }catch (IllegalArgumentException e){
+            error = e.getMessage();
+        }
+        assertEquals(error, "Appointment with ID 2 does not exist");
+    }
+
+    @Test
+    public void test_get_all_services(){
+        List<Appointment> appointments = appointmentService.getAllAppointments();
+        assertEquals(appointments.get(0).getAppointmentID(), APPOINTMENTID);
+    }
+
+    @Test
+    public void testDeleteExistingAppointment() {
+
+        int i = 0;
+        try {
+            i = appointmentService.deleteAppointment(APPOINTMENTID);
+        } catch (IllegalArgumentException e) {
+            fail();
+        }
+
+        // check if not null and values are as expected
+        assertEquals(1,i);
+    }
+
+    @Test
+    public void test_update_an_appointment_successfully(){
+//        ArmsApplication.setSystemDateAndTime();
+        //service param
+        String serviceName = SERVICENAME;
+        //car param
+        String plateNo = PLATENO;
+        //time slot param
+        String startDate = "2019-03-02";
+        String endDate = "2019-03-02";
+        String startTime = "09:00:00";
+        String endTime = "13:00:00";
+        //create technician parameter
+        int technicianID = TECHID;
+        //create space parameter
+        int spaceID = SPACEID;
+
+        Appointment appointment = null;
+        try {
+            appointment = appointmentService.updateAppointment(APPOINTMENTID,serviceName,plateNo,BUSINESS_KEY,startDate,startTime,endDate,endTime,technicianID,spaceID);
+        }catch(IllegalArgumentException e){
+            fail();
+        }
+
+        assertNotNull(appointment);
+        assertEquals(serviceName, appointment.getService().getName());
+        assertEquals(plateNo, appointment.getCar().getPlateNo());
+        assertEquals(2019030209000033L,appointment.getTimeSlot().getTimeslotID());
+    }
+
 
 
     //below are helper method to create test instance

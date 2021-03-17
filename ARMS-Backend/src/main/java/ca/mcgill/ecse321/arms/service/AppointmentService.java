@@ -100,13 +100,14 @@ public class AppointmentService {
      * @author Grey Yuan
      */
     @Transactional
-    public void deleteAppointment(int appointmentID) {
+    public int deleteAppointment(int appointmentID) {
         Appointment anAppointment = appointmentRepository.findAppointmentByAppointmentID(appointmentID);
         if(anAppointment==null){
             throw new IllegalArgumentException("No appointment was found.");
         }
 
         appointmentRepository.delete(anAppointment);
+        return appointmentID;
     }
 
     /**
@@ -126,7 +127,7 @@ public class AppointmentService {
      * @author Grey Yuan
      */
     @Transactional
-    public Appointment updateService(int appointmentID, String serviceName, String plateNo,
+    public Appointment updateAppointment(int appointmentID, String serviceName, String plateNo,
                                      String businessName,String startDate, String startTime,
                                      String endDate, String endTime,int spaceID,int technicianID){
         deleteAppointment(appointmentID);
@@ -143,7 +144,7 @@ public class AppointmentService {
     public Appointment getAppointment(int appointmentID){
         Appointment appointment = appointmentRepository.findAppointmentByAppointmentID(appointmentID);
         if(appointment==null){
-            throw new IllegalArgumentException("Appointment with ID" + appointmentID + " does not exist");
+            throw new IllegalArgumentException("Appointment with ID " + appointmentID + " does not exist");
         }
         return appointment;
     }
@@ -187,7 +188,7 @@ public class AppointmentService {
         int flag1 = check_hour(list_businessHour_sorted,startDate,startTime,endDate,endTime);
 
         if(flag1 != 0){
-            throw new IllegalArgumentException("cannot build such timeSlot since no free businessHour!");
+            throw new IllegalArgumentException("cannot build such appointment since no free businessHour!");
         }
 
         //Judge if has conflict with space and tech
@@ -204,10 +205,10 @@ public class AppointmentService {
         int flag3 = check_slot(list_timeSlot_Tech_sorted,startDate,startTime,endDate,endTime);
 
         if(flag2 != 0){
-            throw new IllegalArgumentException("cannot build such timeSlot since no free space!");
+            throw new IllegalArgumentException("cannot build such appointment since no free space!");
         }
         if(flag3 != 0){
-            throw new IllegalArgumentException("cannot build such timeSlot since no free tech !");
+            throw new IllegalArgumentException("cannot build such appointment since no free tech !");
         }
 
         TimeSlot timeSlot = new TimeSlot();
