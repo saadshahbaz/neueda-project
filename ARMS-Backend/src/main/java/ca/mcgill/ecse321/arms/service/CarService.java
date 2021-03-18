@@ -15,6 +15,18 @@ public class CarService {
     private CarRepository carRepository;
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    /**
+     * create car with the input parameters
+     * @param customer
+     * @param manufacturer
+     * @param model
+     * @param year
+     * @param plateN
+     * @return car
+     * @author Zhiwei Li
+     * @throws IllegalArgumentException
+     */
     @Transactional
     public Car createCar(String customer, String manufacturer, String model, String year, String plateN) throws IllegalArgumentException{
         String error="";
@@ -37,6 +49,18 @@ public class CarService {
         carRepository.save(car);
         return car;
     }
+
+    /**
+     * update car with input plate number with the given parameters
+     * @param customer
+     * @param manufacturer
+     * @param model
+     * @param year
+     * @param plateN
+     * @return car
+     * @author Zhiwei Li
+     * @throws IllegalArgumentException
+     */
     @Transactional
     public Car updateCar(String customer, String manufacturer, String model, String year, String plateN) throws IllegalArgumentException{
         String error="";
@@ -59,6 +83,14 @@ public class CarService {
         carRepository.save(car);
         return car;
     }
+
+    /**
+     * delete car with input plate number
+     * @param plateNo
+     * @return
+     * @author Zhiwei Li
+     * @throws IllegalArgumentException
+     */
     @Transactional
     public Integer deleteCar(String plateNo)  throws IllegalArgumentException{
         String error = "";
@@ -73,6 +105,14 @@ public class CarService {
         }
         return carRepository.deleteCarByPlateNo(plateNo);
     }
+
+    /**
+     * get car with input plate number
+     * @param plateNo
+     * @return car
+     * @author Zhiwei Li
+     * @throws IllegalArgumentException
+     */
     @Transactional
     public Car getCar(String plateNo) throws IllegalArgumentException{
         String error = "";
@@ -87,6 +127,12 @@ public class CarService {
         return carRepository.findCarByPlateNo(plateNo);
     }
 
+    /**
+     * get list of cars associated with the input customer
+     * @param customer
+     * @return
+     * @author Zhiwei Li
+     */
     @Transactional
     public List<Car> getCarsByCustomer(String customer){
         return  carRepository.findCarsByCustomer(customerRepository.findCustomerByUsername(customer));

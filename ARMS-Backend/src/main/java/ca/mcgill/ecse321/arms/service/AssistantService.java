@@ -13,6 +13,14 @@ public class AssistantService {
     @Autowired
     private AssistantRepository assistantRepository;
 
+    /**
+     * create an assistant
+     * @param username
+     * @param password
+     * @return
+     * @author Zhiwei Li
+     * @throws IllegalArgumentException
+     */
     @Transactional
     public Assistant CreatAccount(String username, String password) throws IllegalArgumentException {
         String error = "";
@@ -32,6 +40,14 @@ public class AssistantService {
         assistantRepository.save(assistant);
         return assistant;
     }
+
+    /**
+     * get an assistant with the input username
+     * @param username
+     * @return
+     * @author Zhiwei Li
+     * @throws IllegalArgumentException
+     */
     @Transactional
     public Assistant getAssistant(String username) throws IllegalArgumentException{
         String error = "";
@@ -46,6 +62,13 @@ public class AssistantService {
         return assistantRepository.findAssistantByUsername(username);
     }
 
+    /**
+     * update the assistant account with the new username and password
+     * @param username
+     * @param password
+     * @return new assistant
+     * @author Zhiwei Li
+     */
     @Transactional
     public Assistant updateAccount(String username,String password){
         String error = "";
@@ -65,6 +88,12 @@ public class AssistantService {
         return assistant;
     }
 
+    /**
+     * delete assistant account with the given username
+     * @param username
+     * @return
+     * @author Zhiwei Li
+     */
     @Transactional
     public Integer deleteAccount(String username){
         return assistantRepository.deleteAssistantByUsername(username);
