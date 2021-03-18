@@ -25,15 +25,15 @@ public class AppointmentController {
 
     @PostMapping(value={"/appointment","/appointment/"})
     public AppointmentDto createAppointment(
-            @RequestParam("service name") String serviceName,
-            @RequestParam("plate number") String plateNO,
-            @RequestParam("business name") String businessName,
-            @RequestParam("start date") String startDate,
-            @RequestParam("start time") String startTime,
-            @RequestParam("end date") String endDate,
-            @RequestParam("end time") String endTime,
-            @RequestParam("technician ID") int technicianID,
-            @RequestParam("space ID") int spaceID
+            @RequestParam("serviceName") String serviceName,
+            @RequestParam("plateNo") String plateNO,
+            @RequestParam("businessName") String businessName,
+            @RequestParam("startDate") String startDate,
+            @RequestParam("startTime") String startTime,
+            @RequestParam("endDate") String endDate,
+            @RequestParam("endTime") String endTime,
+            @RequestParam("technicianID") int technicianID,
+            @RequestParam("spaceID") int spaceID
     ){
         Appointment appointment = appointmentService.createAppointment(serviceName, plateNO, businessName,
                 startDate,startTime,endDate,endTime,spaceID,technicianID);
@@ -42,16 +42,16 @@ public class AppointmentController {
 
     @PutMapping(value = {"/updateAppointment","/updateAppointment/"})
     public AppointmentDto updateAppointment(
-            @RequestParam("appointment ID") int appointmentID,
-            @RequestParam("service name") String serviceName,
-            @RequestParam("plate number") String plateNO,
-            @RequestParam("business name") String businessName,
-            @RequestParam("start date") String startDate,
-            @RequestParam("start time") String startTime,
-            @RequestParam("end date") String endDate,
-            @RequestParam("end time") String endTime,
-            @RequestParam("technician ID") int technicianID,
-            @RequestParam("space ID") int spaceID
+            @RequestParam("appointmentID") int appointmentID,
+            @RequestParam("serviceName") String serviceName,
+            @RequestParam("plateNo") String plateNO,
+            @RequestParam("businessName") String businessName,
+            @RequestParam("startDate") String startDate,
+            @RequestParam("startTime") String startTime,
+            @RequestParam("endDate") String endDate,
+            @RequestParam("endTime") String endTime,
+            @RequestParam("technicianID") int technicianID,
+            @RequestParam("spaceID") int spaceID
     ){
         Appointment appointment = appointmentService.updateAppointment(appointmentID,serviceName, plateNO, businessName,
                 startDate,startTime,endDate,endTime,spaceID,technicianID);

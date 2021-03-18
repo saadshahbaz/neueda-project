@@ -39,7 +39,7 @@ public class Appointment {
 
     private TimeSlot timeSlot;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false,cascade=CascadeType.ALL)
     public TimeSlot getTimeSlot() {
         return this.timeSlot;
     }
