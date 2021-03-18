@@ -26,11 +26,11 @@ public class BillController {
         return convertToDto(bill);
     }
 
-    @PostMapping(value = {"/payBill", "/payBill/"})
-    public Bill payBill(
+    @PutMapping(value = {"/payBill", "/payBill/"})
+    public BillDto payBill(
             @RequestParam("BillNo") int billNo
     ){
-        return billService.payBill(billNo);
+        return convertToDto(billService.payBill(billNo));
     }
 
     @GetMapping(value = {"/getBill", "/getBill/"})

@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.arms.service;
+import ca.mcgill.ecse321.arms.ArmsApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,10 +52,12 @@ public class AssistantService {
         String error = "";
         if (username == null || username.isEmpty()) {
             error = "The user name cannot be empty";
-        } else if (password == null || password.isEmpty()) {
-            error = "The password cannot be empty";
+        } else if (password.length()<=8) {
+            error = "The password cannot be less than 8 characters";
         } else if(assistantRepository.findAssistantByUsername(username)==null){
             error = "The username doesn't exist";
+        } else if(!ArmsApplication.getCurrentuser().getUsername().equals(username)){
+            error = "You can only change your own account";
         }
         if (error.length() > 0) {
             throw new IllegalArgumentException(error.trim());
@@ -66,8 +69,10 @@ public class AssistantService {
     }
 
     @Transactional
-    public Integer deleteAccount(String username){
-        return assistantRepository.deleteAssistantByUsername(username);
+    public Integer deleteAccount(){
+        Integer i = assistantRepository.deleteAssistantByUsername(ArmsApplication.getCurrentuser().getUsername());
+        ArmsApplication.setCurrentuser(null);
+        return i;
     }
 
 

@@ -69,14 +69,14 @@ public class TimeSlotController {
     }
 
     @DeleteMapping(value = {"/deleteTimeSlot", "/deleteTimeSlot/"})
-    public void deleteService(
+    public void deleteTimeSlot(
             @RequestParam("timeSlotID") Long timeSlotID
     ){
         service.deleteTimeSlot(timeSlotID);
     }
 
     @GetMapping(value = {"/timeSlots","/timeSlots/"})
-    public List<TimeSlotDto> getAlltimeSlots(){
+    public List<TimeSlotDto> getAllTimeSlots(){
         return service.getAllTimeSlots().stream().map(s -> convertToDto(s)).collect(Collectors.toList());
     }
 

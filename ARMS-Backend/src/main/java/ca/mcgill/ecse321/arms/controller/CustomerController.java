@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.arms.controller;
+import ca.mcgill.ecse321.arms.ArmsApplication;
 import ca.mcgill.ecse321.arms.dao.CustomerRepository;
 import ca.mcgill.ecse321.arms.dto.CustomerDto;
 import ca.mcgill.ecse321.arms.model.Customer;
@@ -24,6 +25,24 @@ public class CustomerController {
         return convertToDto(customer );
     }
 
+    @PutMapping(value = {"/loginCustomer", "/loginCustomer/"})
+    public CustomerDto login (
+            @RequestParam("username") String username,
+            @RequestParam("password") String password
+    )throws IllegalArgumentException{
+        Customer customer=customerService.getCustomer(username);
+        if (customer.getPassword().equals(password)){
+            ArmsApplication.setCurrentuser(customer);
+        }else{
+            throw new IllegalArgumentException("The password is incorrect");
+        }
+        return convertToDto(customer );
+    }
+    @DeleteMapping(value = {"/logoutCustomer", "/logoutCustomer/"})
+    public void logout(){
+        ArmsApplication.setCurrentuser(null);
+    }
+
     @PutMapping(value = {"/updateCustomer", "/updateCustomer/"})
     public CustomerDto updateCustomer(
             @RequestParam("username") String username,
@@ -43,10 +62,8 @@ public class CustomerController {
     }
 
     @DeleteMapping(value = {"/deleteCustomer", "/deleteCustomer/"})
-    public Integer deleteCustomer(
-            @RequestParam("username") String username
-    ){
-        return customerService.deleteAccount(username);
+    public Integer deleteCustomer(){
+        return customerService.deleteAccount();
     }
 
     public CustomerDto convertToDto(Customer customer){

@@ -225,7 +225,7 @@ public class TestAppointmentService {
             }
         });
 
-        lenient().when(timeSlotRepository.findTimeSlotByTimeSlotID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
+        lenient().when(timeSlotRepository.findTimeSlotByTimeslotID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(TimeSlot_KEY1)) {
                 TimeSlot timeSlot = new TimeSlot();
                 timeSlot.setTimeslotID(TimeSlot_KEY1);
