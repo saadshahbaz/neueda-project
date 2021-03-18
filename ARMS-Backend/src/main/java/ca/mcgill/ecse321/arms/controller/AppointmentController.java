@@ -25,6 +25,7 @@ public class AppointmentController {
 
     @PostMapping(value={"/appointment","/appointment/"})
     public AppointmentDto createAppointment(
+            @RequestParam("appointmentID") int appointmentID,
             @RequestParam("serviceName") String serviceName,
             @RequestParam("plateNo") String plateNO,
             @RequestParam("businessName") String businessName,
@@ -35,7 +36,7 @@ public class AppointmentController {
             @RequestParam("technicianID") int technicianID,
             @RequestParam("spaceID") int spaceID
     ){
-        Appointment appointment = appointmentService.createAppointment(serviceName, plateNO, businessName,
+        Appointment appointment = appointmentService.createAppointment(appointmentID, serviceName, plateNO, businessName,
                 startDate,startTime,endDate,endTime,spaceID,technicianID);
         return convertToDto(appointment);
     }
