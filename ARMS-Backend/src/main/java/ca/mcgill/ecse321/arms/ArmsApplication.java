@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.arms;
 
+import ca.mcgill.ecse321.arms.model.User;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,7 @@ import java.util.Calendar;
 @RestController
 @SpringBootApplication
 public class ArmsApplication {
-
+  private static User currentuser;
   private static Date date;
   private static Time time;
   public static void main(String[] args) {
@@ -49,5 +50,13 @@ public class ArmsApplication {
     Time curTime = Time.valueOf(dateAndTime.substring(11));
     ArmsApplication.setCurrentDate(curDate);
     ArmsApplication.setCurrentTime(curTime);
+  }
+
+  public static User getCurrentuser() {
+    return currentuser;
+  }
+
+  public static void setCurrentuser(User currentuser) {
+    ArmsApplication.currentuser = currentuser;
   }
 }
