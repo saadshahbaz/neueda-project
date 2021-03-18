@@ -80,7 +80,7 @@ public class AppointmentService {
         TimeSlot timeSlot = createTimeSlot(businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
 
 
-
+        System.out.println(timeSlot);
         Appointment anAppointment = new Appointment();
         anAppointment.setAppointmentID(appointmentID);
         anAppointment.setService(service);
@@ -238,7 +238,7 @@ public class AppointmentService {
         timeSlot.setTechnician(technician);
         System.out.println("itmeSlotID is "+timeSlot.getTimeslotID());
 
-        timeSlotRepository.save(timeSlot);
+        //timeSlotRepository.save(timeSlot);
         return timeSlot;
     }
 
