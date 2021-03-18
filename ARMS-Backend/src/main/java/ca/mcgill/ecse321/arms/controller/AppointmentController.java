@@ -53,7 +53,7 @@ public class AppointmentController {
             @RequestParam("technician ID") int technicianID,
             @RequestParam("space ID") int spaceID
     ){
-        Appointment appointment = appointmentService.updateService(appointmentID,serviceName, plateNO, businessName,
+        Appointment appointment = appointmentService.updateAppointment(appointmentID,serviceName, plateNO, businessName,
                 startDate,startTime,endDate,endTime,spaceID,technicianID);
         return convertToDto(appointment);
     }

@@ -12,10 +12,7 @@ import ca.mcgill.ecse321.arms.model.*;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -82,12 +79,7 @@ public class AppointmentService {
         Car car = carRepository.findCarByPlateNo(plateNo);
         TimeSlot timeSlot = createTimeSlot(businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
 
-        // if the appointment of the customer already exists
-        Appointment appointment = appointmentRepository.findAppointmentByCar(car);
-        if (appointment != null) {
-            error = "appointment of " + car.getCustomer().getUsername() + " already exists";
-            throw new IllegalArgumentException(error);
-        }
+
 
         Appointment anAppointment = new Appointment();
         anAppointment.setService(service);
@@ -105,13 +97,22 @@ public class AppointmentService {
      * @author Grey Yuan
      */
     @Transactional
-    public void deleteAppointment(int appointmentID) {
+    public int deleteAppointment(int appointmentID) {
+        String error = "";
         Appointment anAppointment = appointmentRepository.findAppointmentByAppointmentID(appointmentID);
         if(anAppointment==null){
             throw new IllegalArgumentException("No appointment was found.");
         }
+        //only be able to cancel 24hr before the appointment starts
+        Date appointmentDate = anAppointment.getTimeSlot().getStartDate();
+        Date curDate = ArmsApplication.getCurrentDate();
+        if (appointmentDate.equals(curDate)){
+            error = "You can not delete an appointment happening on the current date";
+            throw new IllegalArgumentException(error);
+        }
 
         appointmentRepository.delete(anAppointment);
+        return appointmentID;
     }
 
     /**
@@ -131,7 +132,7 @@ public class AppointmentService {
      * @author Grey Yuan
      */
     @Transactional
-    public Appointment updateService(int appointmentID, String serviceName, String plateNo,
+    public Appointment updateAppointment(int appointmentID, String serviceName, String plateNo,
                                      String businessName,String startDate, String startTime,
                                      String endDate, String endTime,int spaceID,int technicianID){
         deleteAppointment(appointmentID);
@@ -148,7 +149,7 @@ public class AppointmentService {
     public Appointment getAppointment(int appointmentID){
         Appointment appointment = appointmentRepository.findAppointmentByAppointmentID(appointmentID);
         if(appointment==null){
-            throw new IllegalArgumentException("Appointment with ID" + appointmentID + " does not exist");
+            throw new IllegalArgumentException("Appointment with ID " + appointmentID + " does not exist");
         }
         return appointment;
     }
@@ -183,8 +184,7 @@ public class AppointmentService {
 
         System.out.println("Hi*2");
         //Judge if has conflict with businesshour
-        Set<BusinessHour> businessHours = business.getBusinessHour();
-        List<BusinessHour> list_businessHour = new ArrayList<>(businessHours);
+        List<BusinessHour> list_businessHour = businessHourRepository.findBusinessHourByBusiness(business);
         Stream<BusinessHour> sorted1 = list_businessHour.stream().sorted(Comparator.comparing(BusinessHour::getBusinessHourID));
         List<BusinessHour> list_businessHour_sorted = sorted1.collect(Collectors.toList());
 
@@ -193,7 +193,7 @@ public class AppointmentService {
         int flag1 = check_hour(list_businessHour_sorted,startDate,startTime,endDate,endTime);
 
         if(flag1 != 0){
-            throw new IllegalArgumentException("cannot build such timeSlot since no free businessHour!");
+            throw new IllegalArgumentException("cannot build such appointment since no free businessHour!");
         }
 
         //Judge if has conflict with space and tech
@@ -210,10 +210,10 @@ public class AppointmentService {
         int flag3 = check_slot(list_timeSlot_Tech_sorted,startDate,startTime,endDate,endTime);
 
         if(flag2 != 0){
-            throw new IllegalArgumentException("cannot build such timeSlot since no free space!");
+            throw new IllegalArgumentException("cannot build such appointment since no free space!");
         }
         if(flag3 != 0){
-            throw new IllegalArgumentException("cannot build such timeSlot since no free tech !");
+            throw new IllegalArgumentException("cannot build such appointment since no free tech !");
         }
 
         TimeSlot timeSlot = new TimeSlot();
@@ -275,4 +275,5 @@ public class AppointmentService {
         res = res.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "");
         return Long.parseLong(res);
     }
+
 }
