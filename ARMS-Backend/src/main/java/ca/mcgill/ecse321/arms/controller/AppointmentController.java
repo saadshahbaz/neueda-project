@@ -59,7 +59,7 @@ public class AppointmentController {
         return convertToDto(appointment);
     }
 
-    @GetMapping(value = {"/appointment","/appointment/"})
+    @GetMapping(value = {"/getAppointments","/getAppointments/"})
     public List<AppointmentDto> getAllAppointments(){
         List<AppointmentDto> appointmentDtos = new ArrayList<>();
         for(Appointment appointment : appointmentService.getAllAppointments()){
@@ -70,7 +70,7 @@ public class AppointmentController {
 
     @DeleteMapping(value = {"/deleteAppointment", "/deleteAppointment/"})
     public void deleteAppointment(
-            @RequestParam("appointment ID") int appointmentID
+            @RequestParam("appointmentID") int appointmentID
     ){
         appointmentService.deleteAppointment(appointmentID);
     }
