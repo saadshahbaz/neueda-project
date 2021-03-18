@@ -17,7 +17,7 @@ public class Customer extends User {
         return this.lastReminder;
     }
 
-    private Set<Bill> bill;
+    /*private Set<Bill> bill;
 
     @OneToMany(mappedBy = "customer")
     public Set<Bill> getBill() {
@@ -26,18 +26,18 @@ public class Customer extends User {
 
     public void setBill(Set<Bill> bills) {
         this.bill = bills;
-    }
+    }*/
 
-    private Set<Car> car;
+    /*private Set<Car> car;
 
-    @OneToMany(mappedBy = "customer")
+    //@OneToMany(mappedBy = "customer")
     public Set<Car> getCar() {
         return this.car;
     }
 
     public void setCar(Set<Car> cars) {
         this.car = cars;
-    }
+    }*/
 
     private String phoneNumber;
 
