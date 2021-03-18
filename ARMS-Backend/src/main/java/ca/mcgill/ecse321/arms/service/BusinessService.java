@@ -104,6 +104,9 @@ public class BusinessService {
         if(sDate.after(eDate)){
             throw new IllegalArgumentException("Start date can not be after end date.");
         }
+        if(business==null){
+            throw new IllegalArgumentException("Business cannot be invalid.");
+        }
 
         if(business.getBusinessHour()!=null){
             for(BusinessHour bh : business.getBusinessHour()){

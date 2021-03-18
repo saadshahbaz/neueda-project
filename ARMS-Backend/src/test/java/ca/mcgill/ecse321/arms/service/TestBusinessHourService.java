@@ -216,6 +216,28 @@ public class TestBusinessHourService {
     }
 
     @Test
+    public void testCreateBusinessHourInvalidBusiness() {
+        //assertEquals(0, service.getAllPersons().size());
+        String error = null;
+
+        String startDate = "2002-06-07";
+        String endDate = "2002-07-02";
+        String startTime = "08:00:00";
+        String endTime = "18:00:00";
+        Business business = null;
+        BusinessHour businessHour = null;
+
+        try {
+            businessHour = businessService.createBusinessHour(startDate,endDate,startTime,endTime,business);
+        } catch (IllegalArgumentException e) {
+            // Check that no error occurred
+            error = e.getMessage();
+        }
+        assertNull(businessHour);
+        assertEquals("Business cannot be invalid.", error);
+    }
+
+    @Test
     public void testGetBusinessHourById() {
         assertEquals(BUSINESSHOUR_KEY, businessService.getBusinessHour(BUSINESSHOUR_KEY).getBusinessHourID());
     }
