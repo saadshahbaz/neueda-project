@@ -62,7 +62,7 @@ public class TestTimeSlotService {
     private static Business business;
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(timeSlotRepository.findTimeSlotByTimeSlotID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
+        lenient().when(timeSlotRepository.findTimeSlotByTimeslotID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(TimeSlot_KEY1)) {
                 TimeSlot timeSlot = new TimeSlot();
                 timeSlot.setTimeslotID(TimeSlot_KEY1);
@@ -249,7 +249,7 @@ public class TestTimeSlotService {
         });
         lenient().when(timeSlotRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
             List<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
-            timeSlots.add(timeSlotRepository.findTimeSlotByTimeSlotID(TimeSlot_KEY1));
+            timeSlots.add(timeSlotRepository.findTimeSlotByTimeslotID(TimeSlot_KEY1));
             return timeSlots;
         });
 
