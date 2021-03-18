@@ -12,6 +12,6 @@ import java.util.Set;
 public interface TimeSlotRepository extends CrudRepository<TimeSlot, String>{
     List<TimeSlot> findTimeSlotsBySpace(Space space);
     List<TimeSlot> findTimeSlotsByTechnician(Technician technician);
-    TimeSlot findTimeSlotByTimeSlotID(Long timeSlotID);
+    TimeSlot findTimeSlotByTimeslotID(Long timeSlotID);
     Integer deleteTimeSlotByTimeslotID(Long timeSlotID);
 }
