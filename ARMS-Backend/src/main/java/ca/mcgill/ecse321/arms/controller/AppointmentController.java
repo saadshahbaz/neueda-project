@@ -79,7 +79,8 @@ public class AppointmentController {
         if(appointment == null){
             throw new IllegalArgumentException("There is no such appointment");
         }
-        AppointmentDto appointmentDto = new AppointmentDto(appointment.getService(),appointment.getCar(),appointment.getTimeSlot());
+        System.out.println("Here is row 82 in controller : id : "+appointment.getAppointmentID());
+        AppointmentDto appointmentDto = new AppointmentDto(appointment.getAppointmentID(),appointment.getService(),appointment.getCar(),appointment.getTimeSlot());
         return appointmentDto;
     }
 

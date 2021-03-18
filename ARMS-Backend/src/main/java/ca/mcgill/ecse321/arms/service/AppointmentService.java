@@ -80,11 +80,11 @@ public class AppointmentService {
         TimeSlot timeSlot = createTimeSlot(businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
 
 
-        System.out.println(timeSlot);
         Appointment anAppointment = new Appointment();
         anAppointment.setAppointmentID(appointmentID);
         anAppointment.setService(service);
         anAppointment.setCar(car);
+        timeSlotRepository.save(timeSlot);
         anAppointment.setTimeSlot(timeSlot);
         appointmentRepository.save(anAppointment);
         return anAppointment;
@@ -236,9 +236,10 @@ public class AppointmentService {
         timeSlot.setTimeslotID(transfer(startDate, startTime)*100+spaceID*10+technicianID);
         timeSlot.setSpace(space);
         timeSlot.setTechnician(technician);
-        System.out.println("itmeSlotID is "+timeSlot.getTimeslotID());
+        System.out.println("timeSlotID is "+timeSlot.getTimeslotID());
+        System.out.println(timeSlot+"the stat date of it : "+timeSlot.getStartDate());
+        System.out.println("row 241 is "+timeSlot);
 
-        //timeSlotRepository.save(timeSlot);
         return timeSlot;
     }
 
@@ -292,6 +293,7 @@ public class AppointmentService {
                     flag2 = 0;
                 }
                 else {
+                    System.out.println(list_slot.get(i).getStartDate());
                     flag2 = 1;
                     return flag2;
                 }
