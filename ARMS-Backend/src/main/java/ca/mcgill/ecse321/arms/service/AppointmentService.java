@@ -52,7 +52,7 @@ public class AppointmentService {
      * @author Grey Yuan
      */
     @Transactional
-    public Appointment createAppointment(String serviceName, String plateNo,
+    public Appointment createAppointment(int appointmentID, String serviceName, String plateNo,
                                          String businessName,String startDate, String startTime,
                                          String endDate, String endTime,int spaceID,int technicianID) {
         String error = "";
@@ -82,6 +82,7 @@ public class AppointmentService {
 
 
         Appointment anAppointment = new Appointment();
+        anAppointment.setAppointmentID(appointmentID);
         anAppointment.setService(service);
         anAppointment.setCar(car);
         anAppointment.setTimeSlot(timeSlot);
@@ -136,7 +137,7 @@ public class AppointmentService {
                                      String businessName,String startDate, String startTime,
                                      String endDate, String endTime,int spaceID,int technicianID){
         deleteAppointment(appointmentID);
-        return createAppointment(serviceName,plateNo,businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
+        return createAppointment(appointmentID, serviceName,plateNo,businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
     }
 
     /**
