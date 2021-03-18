@@ -184,6 +184,10 @@ public class ServiceService {
         return toList(serviceRepository.findAll());
     }
 
+    /**
+     * return all services sorted by price low to high
+     * @return
+     */
     @Transactional
     public List<ca.mcgill.ecse321.arms.model.Service> sortServicesByPriceLtoH(){
         List<ca.mcgill.ecse321.arms.model.Service> services = toList(serviceRepository.findAll());
@@ -191,6 +195,10 @@ public class ServiceService {
         return services;
     }
 
+    /**
+     * return list of services sorted by price high to low
+     * @return
+     */
     @Transactional
     public List<ca.mcgill.ecse321.arms.model.Service> sortServicesByPriceHtoL(){
         List<ca.mcgill.ecse321.arms.model.Service> services = toList(serviceRepository.findAll());
@@ -198,6 +206,9 @@ public class ServiceService {
         return services;
     }
 
+    /**
+     * helper method to compare price of the two input service
+     */
     public class CustomComparator1 implements Comparator<ca.mcgill.ecse321.arms.model.Service> {
         @Override
         public int compare(ca.mcgill.ecse321.arms.model.Service o1, ca.mcgill.ecse321.arms.model.Service o2) {
@@ -205,6 +216,9 @@ public class ServiceService {
         }
     }
 
+    /**
+     * helper method to compare price of the two input service
+     */
     public class CustomComparator2 implements Comparator<ca.mcgill.ecse321.arms.model.Service> {
         @Override
         public int compare(ca.mcgill.ecse321.arms.model.Service o1, ca.mcgill.ecse321.arms.model.Service o2) {
@@ -212,6 +226,12 @@ public class ServiceService {
         }
     }
 
+    /**
+     * helper method that turns iterables to list
+     * @param iterable
+     * @param <T>
+     * @return
+     */
     private <T> List<T> toList(Iterable<T> iterable){
         List<T> resultList = new ArrayList<T>();
         for (T t : iterable) {

@@ -17,6 +17,16 @@ public class CustomerService {
     @Autowired
     private BillRepository billRepository;
 
+    /**
+     * create account for customer with input parameters
+     * @param username
+     * @param password
+     * @param email
+     * @param phonenumber
+     * @return customer
+     * @author Zhiwei Li
+     * @throws IllegalArgumentException
+     */
     @Transactional
     public Customer CreatAccount(String username, String password, String email, String phonenumber) throws IllegalArgumentException {
         String error = "";
@@ -43,6 +53,13 @@ public class CustomerService {
         return customer;
     }
 
+    /**
+     * get customer with the input username
+     * @param username
+     * @return customer
+     * @author Zhiwei Li
+     * @throws IllegalArgumentException
+     */
     @Transactional
     public Customer getCustomer(String username) throws IllegalArgumentException{
         String error = "";
@@ -57,6 +74,15 @@ public class CustomerService {
         return customerRepository.findCustomerByUsername(username);
     }
 
+    /**
+     * update customer's account with the input parameters
+     * @param username
+     * @param password
+     * @param email
+     * @param phonenumber
+     * @return customer
+     * @author Zhiwei Li
+     */
     @Transactional
     public Customer updateAccount(String username,String password, String email, String phonenumber) {
         String error = "";
@@ -84,6 +110,12 @@ public class CustomerService {
         return customer;
     }
 
+    /**
+     * delete customer's account with the input username
+     * @param username
+     * @return
+     * @author Zhiwei Li
+     */
     @Transactional
     public Integer deleteAccount(){
         String error = "";
@@ -105,6 +137,12 @@ public class CustomerService {
         return i;
     }
 
+    /**
+     * helper method to check if the email address is valid
+     * @param email
+     * @return
+     * @author Zhiwei Li
+     */
     private static boolean isValidEmailAddress(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);

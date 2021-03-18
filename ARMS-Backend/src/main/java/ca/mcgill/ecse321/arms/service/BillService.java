@@ -14,6 +14,15 @@ public class BillService {
     @Autowired
     private BillRepository billRepository;
 
+    /**
+     * create a bill with the given parameters
+     * @param username
+     * @param billNo
+     * @param amount
+     * @return bill
+     * @author Zhiwei Li
+     * @throws IllegalArgumentException
+     */
     @Transactional
     public Bill createBill(String username, int billNo, int amount) throws IllegalArgumentException{
         String error="";
@@ -33,6 +42,13 @@ public class BillService {
         billRepository.save(bill);
         return bill;
     }
+
+    /**
+     * get list of bills with given username
+     * @param username
+     * @return list of bills
+     * @author Zhiwei Li
+     */
     @Transactional
     public List<Bill> getBillsByCustomer(String username)throws IllegalArgumentException{
         Customer customer=customerRepository.findCustomerByUsername(username);
@@ -41,6 +57,14 @@ public class BillService {
         }
         return  billRepository.findBillsByCustomer(customer);
     }
+
+    /**
+     * get bill with input bill number
+     * @param billNo
+     * @return bill
+     * @author Zhiwei Li
+     * @throws IllegalArgumentException
+     */
     @Transactional
     public Bill getBill(int billNo) throws IllegalArgumentException{
         String error = "";
@@ -52,6 +76,13 @@ public class BillService {
         }
         return billRepository.findBillByBillNo(billNo);
     }
+
+    /**
+     * pay the bill with input billNo
+     * @param billNo
+     * @return
+     * @author Zhiwei Li
+     */
     @Transactional
     public Bill payBill(int billNo){
         String error = "";
