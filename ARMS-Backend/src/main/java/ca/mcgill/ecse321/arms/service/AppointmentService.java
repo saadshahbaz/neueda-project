@@ -79,8 +79,6 @@ public class AppointmentService {
         Car car = carRepository.findCarByPlateNo(plateNo);
         TimeSlot timeSlot = createTimeSlot(businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
 
-
-
         Appointment anAppointment = new Appointment();
         anAppointment.setAppointmentID(appointmentID);
         anAppointment.setService(service);
