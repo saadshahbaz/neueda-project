@@ -118,7 +118,7 @@ public class TestCustomerService {
         customerRepository.deleteAll();
     }
     @Test
-    public void test_create_a_timeSlot_successfully() {
+    public void test_create_a_customer_successfully() {
         String username = "username1";
         String password = "password1";
         String email = "672202408@qq.com";
@@ -243,7 +243,7 @@ public class TestCustomerService {
         String password = "password2";
         String email = "672202408@qq.com";
         String phone = "12345678";
-
+        ArmsApplication.setCurrentuser(customerRepository.findCustomerByUsername(username));
         // initialize account to null, so we can see if account creation was successful
         Customer customer = null;
         String error="";
@@ -319,12 +319,14 @@ public class TestCustomerService {
     @Test
     public void test_delete_a_customer_successfully() {
         String username = TEST_Username;
+        Customer customer=customerRepository.findCustomerByUsername(username);
+        ArmsApplication.setCurrentuser(customer);
 
         // initialize account to null, so we can see if account creation was successful
         Integer i = null;
         String error="";
         try {
-            i = customerService.deleteAccount(username);
+            i = customerService.deleteAccount();
         } catch (IllegalArgumentException e) {
             fail();
         }
@@ -335,12 +337,13 @@ public class TestCustomerService {
     @Test
     public void test_delete_a_customer_with_unpaid_bill() {
         String username = TEST_Username1;
-
+        Customer customer=customerRepository.findCustomerByUsername(username);
+        ArmsApplication.setCurrentuser(customer);
         // initialize account to null, so we can see if account creation was successful
         Integer i = null;
         String error="";
         try {
-            i = customerService.deleteAccount(username);
+            i = customerService.deleteAccount();
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }
@@ -351,12 +354,14 @@ public class TestCustomerService {
     @Test
     public void test_delete_a_customer_with_none_exsited_username() {
         String username = "username1";
-
+        Customer customer=new Customer();
+        customer.setUsername(username);
+        ArmsApplication.setCurrentuser(customer);
         // initialize account to null, so we can see if account creation was successful
         Integer i = null;
         String error="";
         try {
-            i = customerService.deleteAccount(username);
+            i = customerService.deleteAccount();
         } catch (IllegalArgumentException e) {
             fail();
         }
