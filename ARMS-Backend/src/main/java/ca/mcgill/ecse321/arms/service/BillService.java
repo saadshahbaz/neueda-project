@@ -50,8 +50,12 @@ public class BillService {
      * @author Zhiwei Li
      */
     @Transactional
-    public List<Bill> getBillsByCustomer(String username){
-        return  billRepository.findBillsByCustomer(customerRepository.findCustomerByUsername(username));
+    public List<Bill> getBillsByCustomer(String username)throws IllegalArgumentException{
+        Customer customer=customerRepository.findCustomerByUsername(username);
+        if (customer==null){
+            throw new IllegalArgumentException("The customer is not found");
+        }
+        return  billRepository.findBillsByCustomer(customer);
     }
 
     /**

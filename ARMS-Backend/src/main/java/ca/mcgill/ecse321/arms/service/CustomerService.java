@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.arms.service;
+import ca.mcgill.ecse321.arms.ArmsApplication;
 import ca.mcgill.ecse321.arms.dto.CustomerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,6 +86,7 @@ public class CustomerService {
     @Transactional
     public Customer updateAccount(String username,String password, String email, String phonenumber) {
         String error = "";
+        Customer customer=customerRepository.findCustomerByUsername(username);
         if (username == null ) {
             error = "The user name cannot be empty";
         } else if (email == null ) {
@@ -93,13 +95,14 @@ public class CustomerService {
             error = "The phone number cannot be empty";
         } else if (password.length() <= 8) {
             error = "The password must be longer than 8 characters";
-        } else if (customerRepository.findCustomerByUsername(username) == null) {
+        }else if (customer == null) {
             error = "The username doesn't exist";
+        } else if (ArmsApplication.getCurrentuser().equals(customer)) {
+            error = "You can only update your own account";
         }
         if (error.length() > 0) {
             throw new IllegalArgumentException(error.trim());
         }
-        Customer customer = customerRepository.findCustomerByUsername(username);
         customer.setPassword(password);
         customer.setEmail(email);
         customer.setPhoneNumber(phonenumber);
@@ -114,20 +117,24 @@ public class CustomerService {
      * @author Zhiwei Li
      */
     @Transactional
-    public Integer deleteAccount(String username){
+    public Integer deleteAccount(){
         String error = "";
-        Customer customer = customerRepository.findCustomerByUsername(username);
+        Customer customer = (Customer) ArmsApplication.getCurrentuser();
         List<Bill> bills=billRepository.findBillsByCustomer(customer);
-        for (Bill bill:bills){
-            if (!bill.isIsPaid()) {
-                error = "You have an unpaid bill";
-                break;
+        if (bills!=null) {
+            for (Bill bill : bills) {
+                if (!bill.isIsPaid()) {
+                    error = "You have an unpaid bill";
+                    break;
+                }
             }
         }
         if (error.length() > 0) {
             throw new IllegalArgumentException(error.trim());
         }
-        return customerRepository.deleteCustomerByUsername(username);
+        Integer i = customerRepository.deleteCustomerByUsername(customer.getUsername());
+        ArmsApplication.setCurrentuser(null);
+        return i;
     }
 
     /**
@@ -142,5 +149,6 @@ public class CustomerService {
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
     }
+
 
 }
