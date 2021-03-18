@@ -26,3 +26,16 @@ Ruixin Su
 | Zhiwei Li | Domain model description, detailed use cases description, meeting documentation | 20 |
 | Cecilia Jiang |Domain model, UML lab Creation, system build, and persistence tester | 20 |
 | Ruixin Su | Domain model, UML lab Creation and persistence layer, and persistence tester | 20 |
+
+### Deliverable 2  
+* [Domain Model](https://github.com/McGill-ECSE321-Winter2021/project-group-10/wiki/Domain-Model)
+* [RESTful Services documentation](https://github.com/McGill-ECSE321-Winter2021/project-group-10/wiki/RESTful-Services-Documentation)
+* [Software Quality Assurance Plan](https://github.com/McGill-ECSE321-Winter2021/project-group-10/wiki/Software-Quality-Assurance-Plan)
+
+|   Members | Responsibility  | Hours  |
+| :-------: | :-------------: | :-: |
+| Jianmo Li | Service methods and unit testing for TimeSlot | 30 |
+| Grey Yuan | Service methods and unit testing for Appointment | 30 |
+| Zhiwei Li | Service methods and unit testing for Assistant, Customer, Bill and Car | 30 |
+| Cecilia Jiang | Service methods and unit testing for Service, Technician and Space | 30 |
+| Ruixin Su | Service methods and unit testing for Business and BusinessHour | 30 |  
