@@ -52,7 +52,7 @@ public class AppointmentService {
      * @author Grey Yuan
      */
     @Transactional
-    public Appointment createAppointment(String serviceName, String plateNo,
+    public Appointment createAppointment(int appointmentID, String serviceName, String plateNo,
                                          String businessName,String startDate, String startTime,
                                          String endDate, String endTime,int spaceID,int technicianID) {
         String error = "";
@@ -82,6 +82,7 @@ public class AppointmentService {
 
 
         Appointment anAppointment = new Appointment();
+        anAppointment.setAppointmentID(appointmentID);
         anAppointment.setService(service);
         anAppointment.setCar(car);
         anAppointment.setTimeSlot(timeSlot);
@@ -136,7 +137,7 @@ public class AppointmentService {
                                      String businessName,String startDate, String startTime,
                                      String endDate, String endTime,int spaceID,int technicianID){
         deleteAppointment(appointmentID);
-        return createAppointment(serviceName,plateNo,businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
+        return createAppointment(appointmentID, serviceName,plateNo,businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
     }
 
     /**
@@ -171,6 +172,17 @@ public class AppointmentService {
         return resultList;
     }
 
+    /**
+     * helper method for creating a time slot
+     * @param businessName
+     * @param startDate1
+     * @param startTime1
+     * @param endDate1
+     * @param endTime1
+     * @param spaceID
+     * @param technicianID
+     * @return
+     */
     public TimeSlot createTimeSlot(String businessName,String startDate1, String startTime1, String endDate1, String endTime1,int spaceID,int technicianID){
 
         Date startDate = Date.valueOf(startDate1);
@@ -230,6 +242,16 @@ public class AppointmentService {
         return timeSlot;
     }
 
+    /**
+     * helper method to check if the input date and time conflict with the input list of business hour
+     * @param list_businessHour
+     * @param startDate
+     * @param startTime
+     * @param endDate
+     * @param endTime
+     * @author Jianmo Li
+     * @return
+     */
     private int check_hour(List<BusinessHour> list_businessHour,Date startDate,Time startTime,Date endDate,Time endTime){
         //O(n)  comp
         int flag1 = 0; // if has conflict, flag1 = 1
@@ -250,6 +272,16 @@ public class AppointmentService {
         return flag1;
     }
 
+    /**
+     * helper method to check if the input time and dates conflict with the input list of time slots
+     * @param list_slot
+     * @param startDate
+     * @param startTime
+     * @param endDate
+     * @param endTime
+     * @author Jianmo Li
+     * @return
+     */
     private int check_slot(List<TimeSlot> list_slot,Date startDate,Time startTime,Date endDate,Time endTime){
         //O(n)  comp
         int flag2 = 0; // if has conflict, flag1 = 1
@@ -268,6 +300,13 @@ public class AppointmentService {
         return flag2;
     }
 
+    /**
+     * helper method to transfer input startDate and startTime into a long id
+     * @param startDate
+     * @param startTime
+     * @author Jianmo Li
+     * @return
+     */
     private Long transfer(Date startDate, Time startTime){
         String date = startDate.toString();
         String time = startTime.toString();

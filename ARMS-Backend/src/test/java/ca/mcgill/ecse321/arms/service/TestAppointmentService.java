@@ -439,7 +439,7 @@ public class TestAppointmentService {
 
 
         try{
-            appointment = appointmentService.createAppointment(serviceName,plateNo,BUSINESS_KEY,startDate,startTime,endDate,endTime,spaceID,technicianID);
+            appointment = appointmentService.createAppointment(APPOINTMENTID,serviceName,plateNo,BUSINESS_KEY,startDate,startTime,endDate,endTime,spaceID,technicianID);
         }catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
             fail();
@@ -478,7 +478,7 @@ public class TestAppointmentService {
         Appointment appointment = null;
 
         try {
-            appointment = appointmentService.createAppointment(serviceName,plateNo,BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,1,2);
+            appointment = appointmentService.createAppointment(APPOINTMENTID,serviceName,plateNo,BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,1,2);
         } catch (IllegalArgumentException e) {
             // Check that no error occurred
             error = e.getMessage();
@@ -512,7 +512,7 @@ public class TestAppointmentService {
         Appointment appointment = null;
 
         try {
-            appointment = appointmentService.createAppointment(serviceName,plateNo,BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,2,1);
+            appointment = appointmentService.createAppointment(APPOINTMENTID,serviceName,plateNo,BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,2,1);
         } catch (IllegalArgumentException e) {
             // Check that no error occurred
             error = e.getMessage();
@@ -546,7 +546,7 @@ public class TestAppointmentService {
         Appointment appointment = null;
 
         try {
-            appointment = appointmentService.createAppointment(serviceName,plateNo,BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,2,1);
+            appointment = appointmentService.createAppointment(APPOINTMENTID,serviceName,plateNo,BUSINESS_KEY,startDate1,startTime1,endDate1,endTime1,2,1);
         } catch (IllegalArgumentException e) {
             // Check that no error occurred
             error = e.getMessage();

@@ -25,6 +25,7 @@ public class AppointmentController {
 
     @PostMapping(value={"/appointment","/appointment/"})
     public AppointmentDto createAppointment(
+            @RequestParam("appointmentID") int appointmentID,
             @RequestParam("serviceName") String serviceName,
             @RequestParam("plateNo") String plateNO,
             @RequestParam("businessName") String businessName,
@@ -35,7 +36,7 @@ public class AppointmentController {
             @RequestParam("technicianID") int technicianID,
             @RequestParam("spaceID") int spaceID
     ){
-        Appointment appointment = appointmentService.createAppointment(serviceName, plateNO, businessName,
+        Appointment appointment = appointmentService.createAppointment(appointmentID, serviceName, plateNO, businessName,
                 startDate,startTime,endDate,endTime,spaceID,technicianID);
         return convertToDto(appointment);
     }
@@ -58,7 +59,7 @@ public class AppointmentController {
         return convertToDto(appointment);
     }
 
-    @GetMapping(value = {"/appointment","/appointment/"})
+    @GetMapping(value = {"/getAppointments","/getAppointments/"})
     public List<AppointmentDto> getAllAppointments(){
         List<AppointmentDto> appointmentDtos = new ArrayList<>();
         for(Appointment appointment : appointmentService.getAllAppointments()){
@@ -69,7 +70,7 @@ public class AppointmentController {
 
     @DeleteMapping(value = {"/deleteAppointment", "/deleteAppointment/"})
     public void deleteAppointment(
-            @RequestParam("appointment ID") int appointmentID
+            @RequestParam("appointmentID") int appointmentID
     ){
         appointmentService.deleteAppointment(appointmentID);
     }
