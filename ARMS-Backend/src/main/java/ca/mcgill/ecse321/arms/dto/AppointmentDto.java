@@ -5,6 +5,7 @@ import ca.mcgill.ecse321.arms.model.Service;
 import ca.mcgill.ecse321.arms.model.TimeSlot;
 
 public class AppointmentDto {
+    private int ID;
     private Service service;
     private Car car;
     private TimeSlot timeslot;
@@ -15,21 +16,26 @@ public class AppointmentDto {
      * @param timeslot
      * @author Grey Yuan
      */
-    public AppointmentDto(Service service, Car car, TimeSlot timeslot){
+    public AppointmentDto(int ID,Service service, Car car, TimeSlot timeslot){
+        this.ID = ID;
         this.service = service;
         this.car = car;
         this.timeslot = timeslot;
     }
 
+    public int getID() {
+        return this.ID;
+    }
+
     public Service getService() {
-        return service;
+        return this.service;
     }
 
     public Car getCar() {
-        return car;
+        return this.car;
     }
 
     public TimeSlot getTimeslot() {
-        return timeslot;
+        return this.timeslot;
     }
 }
