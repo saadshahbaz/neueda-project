@@ -34,45 +34,18 @@ public class TimeSlotService {
     @Autowired
     BusinessHourRepository businessHourRepository;
 
-
-//    @Transactional
-//    public Space createSpace(int ID){
-//        Space space = new Space();
-//        space.setSpaceID(ID);
-//        spaceRepository.save(space);
-//        return space;
-//    }
-//
-//    @Transactional
-//    public Space getSpace(int ID){
-//        Space space = spaceRepository.findSpaceBySpaceID(ID);
-//        return space;
-//    }
-//    @Transactional
-//    public List<Space> getAllSpaces(){
-//        return toList(spaceRepository.findAll());
-//    }
-//    @Transactional
-//    public Technician createTechnician(int ID,String email, String name){
-//        Technician technician = new Technician();
-//        technician.setTechnicianID(ID);
-//        technician.setEmail(email);
-//        technician.setName(name);
-//        technicianRepository.save(technician);
-//        return technician;
-//    }
-//    @Transactional
-//    public Technician getTechnician(int ID){
-//        Technician technician = technicianRepository.findTechnicianByTechnicianID(ID);
-//        return technician;
-//    }
-//    @Transactional
-//    public List<Technician> getAllTechnicians(){
-//        return toList(technicianRepository.findAll());
-//    }
-
-    //appointment1 --> createTimeSLot (ARM,2020-03-23,10:00:00,2020-03-23,12:00:00,3,5)
-
+    /**
+     * create a timeslot with the given parameters
+     * @param businessName
+     * @param startDate1
+     * @param startTime1
+     * @param endDate1
+     * @param endTime1
+     * @param spaceID
+     * @param technicianID
+     * @author Jianmo Li
+     * @return
+     */
     @Transactional
     public TimeSlot createTimeSlot(String businessName,String startDate1, String startTime1, String endDate1, String endTime1,int spaceID,int technicianID){
 
@@ -133,6 +106,12 @@ public class TimeSlotService {
         timeSlotRepository.save(timeSlot);
         return timeSlot;
     }
+
+    /**
+     * get list of all timeslots
+     * @return
+     * @author Jianmo Li
+     */
     @Transactional
     public List<TimeSlot> getAllTimeSlots(){
         return toList((timeSlotRepository.findAll()));
@@ -146,12 +125,27 @@ public class TimeSlotService {
     }
 
 
+    /**
+     * delete timeslot with the given timeslot id
+     * @param timeSlotID
+     * @author Jianmo Li
+     * @return
+     */
     @Transactional
     public Integer deleteTimeSlot(Long timeSlotID){
         return timeSlotRepository.deleteTimeSlotByTimeslotID(timeSlotID);
     }
 
-    //helper_check
+    /**
+     * helper method to check if the input date and time conflict with the input list of business hour
+     * @param list_businessHour
+     * @param startDate
+     * @param startTime
+     * @param endDate
+     * @param endTime
+     * @author Jianmo Li
+     * @return
+     */
     private int check_hour(List<BusinessHour> list_businessHour,Date startDate,Time startTime,Date endDate,Time endTime){
         //O(n)  comp
         int flag1 = 0; // if has conflict, flag1 = 1
@@ -171,6 +165,17 @@ public class TimeSlotService {
         if(q == 0){ flag1 = 1;}
         return flag1;
     }
+
+    /**
+     * helper method to check if the input time and dates conflict with the input list of time slots
+     * @param list_slot
+     * @param startDate
+     * @param startTime
+     * @param endDate
+     * @param endTime
+     * @author Jianmo Li
+     * @return
+     */
     private int check_slot(List<TimeSlot> list_slot,Date startDate,Time startTime,Date endDate,Time endTime){
         //O(n)  comp
         int flag2 = 0; // if has conflict, flag1 = 1
@@ -193,6 +198,13 @@ public class TimeSlotService {
 
 
     //helper_transferToLong
+    /**
+     * helper method to transfer input startDate and startTime into a long id
+     * @param startDate
+     * @param startTime
+     * @author Jianmo Li
+     * @return
+     */
     private Long transfer(Date startDate, Time startTime){
         String date = startDate.toString();
         String time = startTime.toString();

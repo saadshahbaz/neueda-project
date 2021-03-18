@@ -85,12 +85,7 @@ public class BusinessService {
      */
     @Transactional
     public BusinessHour createBusinessHour(String startDate, String endDate, String startTime, String endTime, Business business) {
-        //might need to check if id already exists & parameter validation
-        //DateFormat Dateformatter = new SimpleDateFormat("yyyy-MM-dd");
-        //DateFormat Timeformatter = new SimpleDateFormat("yyyy-MM-dd");
-
-
-        //creating businessHour with given parameters
+//creating businessHour with given parameters
         Date sDate = Date.valueOf(startDate);
         Date eDate = Date.valueOf(endDate);
         Time sTime = Time.valueOf(startTime);
@@ -103,6 +98,9 @@ public class BusinessService {
         }
         if(sDate.after(eDate)){
             throw new IllegalArgumentException("Start date can not be after end date.");
+        }
+        if(business==null){
+            throw new IllegalArgumentException("Business cannot be invalid.");
         }
 
         if(business.getBusinessHour()!=null){
@@ -132,6 +130,12 @@ public class BusinessService {
         return businessHour;
     }
 
+    /**
+     * helper method to transfer input startDate and startTime into a long id
+     * @param startDate
+     * @param startTime
+     * @return
+     */
     private long transfer(Date startDate, Time startTime){
 
         String date = startDate.toString();
@@ -175,6 +179,11 @@ public class BusinessService {
         return toList(businessHourRepository.findAll());
     }
 
+    /**
+     * get list of businessHours assiciated to the input business name
+     * @param name
+     * @return
+     */
     @Transactional
     public List<BusinessHour> getBusinessHourByBusiness(String name){
         Business business = getBusiness(name);
@@ -186,6 +195,12 @@ public class BusinessService {
         }
     }
 
+    /**
+     * helper method that turns iterables to list
+     * @param iterable
+     * @param <T>
+     * @return
+     */
     <T> List<T> toList(Iterable<T> iterable) {
         List<T> resultList = new ArrayList<T>();
         for (T t : iterable) {

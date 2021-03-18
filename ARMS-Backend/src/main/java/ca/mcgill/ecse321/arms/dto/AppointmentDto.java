@@ -5,6 +5,7 @@ import ca.mcgill.ecse321.arms.model.Service;
 import ca.mcgill.ecse321.arms.model.TimeSlot;
 
 public class AppointmentDto {
+
     private int appointmentID;
     private String serviceName;
     private String plateNo;
@@ -15,6 +16,7 @@ public class AppointmentDto {
     private String endTime;
     private int spaceID;
     private int technicianID;
+
 
     /**
      * @param appointmentID
@@ -29,6 +31,7 @@ public class AppointmentDto {
      * @param technicianID
      * @author Grey Yuan
      */
+
     public AppointmentDto(int appointmentID, String serviceName, String plateNo,
                           String businessName,String startDate, String startTime,
                           String endDate, String endTime,int spaceID,int technicianID){
@@ -78,5 +81,6 @@ public class AppointmentDto {
 
     public int getSpaceID() {
         return spaceID;
+
     }
 }

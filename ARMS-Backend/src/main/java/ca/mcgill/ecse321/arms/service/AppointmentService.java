@@ -79,10 +79,12 @@ public class AppointmentService {
         Car car = carRepository.findCarByPlateNo(plateNo);
         TimeSlot timeSlot = createTimeSlot(businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
 
+
         Appointment anAppointment = new Appointment();
         anAppointment.setAppointmentID(appointmentID);
         anAppointment.setService(service);
         anAppointment.setCar(car);
+        timeSlotRepository.save(timeSlot);
         anAppointment.setTimeSlot(timeSlot);
         appointmentRepository.save(anAppointment);
         return anAppointment;
@@ -170,6 +172,17 @@ public class AppointmentService {
         return resultList;
     }
 
+    /**
+     * helper method for creating a time slot
+     * @param businessName
+     * @param startDate1
+     * @param startTime1
+     * @param endDate1
+     * @param endTime1
+     * @param spaceID
+     * @param technicianID
+     * @return
+     */
     public TimeSlot createTimeSlot(String businessName,String startDate1, String startTime1, String endDate1, String endTime1,int spaceID,int technicianID){
 
         Date startDate = Date.valueOf(startDate1);
@@ -223,12 +236,23 @@ public class AppointmentService {
         timeSlot.setTimeslotID(transfer(startDate, startTime)*100+spaceID*10+technicianID);
         timeSlot.setSpace(space);
         timeSlot.setTechnician(technician);
-        System.out.println("itmeSlotID is "+timeSlot.getTimeslotID());
+        System.out.println("timeSlotID is "+timeSlot.getTimeslotID());
+        System.out.println(timeSlot+"the stat date of it : "+timeSlot.getStartDate());
+        System.out.println("row 241 is "+timeSlot);
 
-        timeSlotRepository.save(timeSlot);
         return timeSlot;
     }
 
+    /**
+     * helper method to check if the input date and time conflict with the input list of business hour
+     * @param list_businessHour
+     * @param startDate
+     * @param startTime
+     * @param endDate
+     * @param endTime
+     * @author Jianmo Li
+     * @return
+     */
     private int check_hour(List<BusinessHour> list_businessHour,Date startDate,Time startTime,Date endDate,Time endTime){
         //O(n)  comp
         int flag1 = 0; // if has conflict, flag1 = 1
@@ -249,6 +273,16 @@ public class AppointmentService {
         return flag1;
     }
 
+    /**
+     * helper method to check if the input time and dates conflict with the input list of time slots
+     * @param list_slot
+     * @param startDate
+     * @param startTime
+     * @param endDate
+     * @param endTime
+     * @author Jianmo Li
+     * @return
+     */
     private int check_slot(List<TimeSlot> list_slot,Date startDate,Time startTime,Date endDate,Time endTime){
         //O(n)  comp
         int flag2 = 0; // if has conflict, flag1 = 1
@@ -259,6 +293,7 @@ public class AppointmentService {
                     flag2 = 0;
                 }
                 else {
+                    System.out.println(list_slot.get(i).getStartDate());
                     flag2 = 1;
                     return flag2;
                 }
@@ -267,6 +302,13 @@ public class AppointmentService {
         return flag2;
     }
 
+    /**
+     * helper method to transfer input startDate and startTime into a long id
+     * @param startDate
+     * @param startTime
+     * @author Jianmo Li
+     * @return
+     */
     private Long transfer(Date startDate, Time startTime){
         String date = startDate.toString();
         String time = startTime.toString();
