@@ -77,6 +77,7 @@ public class AppointmentService {
         //find the intermediate objects with given paremeter
         ca.mcgill.ecse321.arms.model.Service service = serviceRepository.findServiceByName(serviceName);
         Car car = carRepository.findCarByPlateNo(plateNo);
+        System.out.println("here is startDate : "+startDate);
         TimeSlot timeSlot = createTimeSlot(businessName,startDate,startTime,endDate,endTime,spaceID,technicianID);
 
 
@@ -185,6 +186,7 @@ public class AppointmentService {
      */
     public TimeSlot createTimeSlot(String businessName,String startDate1, String startTime1, String endDate1, String endTime1,int spaceID,int technicianID){
 
+        System.out.println("here is startDate : "+startDate1);
         Date startDate = Date.valueOf(startDate1);
         Time startTime = Time.valueOf(startTime1);
         Date endDate = Date.valueOf(endDate1);
