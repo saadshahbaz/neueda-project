@@ -146,7 +146,7 @@ public class TestAssistantService {
     public void test_update_a_assistant_successfully() {
         String username = TEST_Username;
         String password = "password2";
-
+        ArmsApplication.setCurrentuser(assistantRepository.findAssistantByUsername(username));
         // initialize account to null, so we can see if account creation was successful
         Assistant assistant = null;
         String error="";
@@ -218,12 +218,14 @@ public class TestAssistantService {
     @Test
     public void test_delete_a_assistant_successfully() {
         String username = TEST_Username;
-
+        Assistant assistant=new Assistant();
+        assistant=assistantRepository.findAssistantByUsername(username);
+        ArmsApplication.setCurrentuser(assistant);
         // initialize account to null, so we can see if account creation was successful
         Integer i = null;
         String error="";
         try {
-            i = assistantService.deleteAccount(username);
+            i = assistantService.deleteAccount();
         } catch (IllegalArgumentException e) {
             fail();
         }
@@ -234,12 +236,15 @@ public class TestAssistantService {
     @Test
     public void test_delete_a_assistant_with_none_exsited_username() {
         String username = "username1";
+        Assistant assistant=new Assistant();
+        assistant.setUsername(username);
+        ArmsApplication.setCurrentuser(assistant);
 
         // initialize account to null, so we can see if account creation was successful
         Integer i = null;
         String error="";
         try {
-            i = assistantService.deleteAccount(username);
+            i = assistantService.deleteAccount();
         } catch (IllegalArgumentException e) {
             fail();
         }
