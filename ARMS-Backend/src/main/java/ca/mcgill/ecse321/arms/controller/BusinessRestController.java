@@ -10,12 +10,7 @@ import ca.mcgill.ecse321.arms.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -100,6 +95,17 @@ public class BusinessRestController {
         return helper.convertToDto(businessHour);
     }
 
+    /**
+     * method that deletes a businessHour given business hour id
+     * @param id
+     * @throws IllegalArgumentException
+     */
+    @DeleteMapping(value = {"/deleteBusinessHour", "/deleteBusinessHour/"})
+    public void deleteService (
+            @PathVariable("id") long id
+    ) throws IllegalArgumentException{
+        businessService.deleteBusinessHour(id);
+    }
 
     /**
      * method that returns list of businessHour belongs to the same business
