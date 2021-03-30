@@ -1,5 +1,5 @@
 import { AXIOS } from "./axiosInstance";
-
+import Router from "../router";
 
 export default {
   name: "SignUpForm",
@@ -36,12 +36,12 @@ export default {
             this.error = "";
             this.username = "";
             this.password = "";
-            this.$router.push({name: "/home"});
+            window.location.href = "/home"
+
           })
           .catch((e) => {
-            var errorMsg = "Please enter a valid email and password"
+            this.error= "Please enter a valid email and password"
             console.log(e);
-            this.error = errorMsg;
           });
       }
     },
