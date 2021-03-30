@@ -21,7 +21,7 @@ public class CustomerController {
             @RequestParam("email") String email,
             @RequestParam("phonenumber") String phonenumber
     ){
-        Customer customer=customerService.CreatAccount(username,  password, email, phonenumber);
+        Customer customer=customerService.CreatAccount(username, password, email, phonenumber);
         return convertToDto(customer );
     }
 
