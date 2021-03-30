@@ -1,4 +1,6 @@
 import { AXIOS } from "./axiosInstance";
+import Router from "../router";
+
 export default {
   name: "SignUpForm",
 
@@ -9,37 +11,39 @@ export default {
     return {
       username: "",
       password: "",
-      firstName: "",
-      lastName: "",
       email: "",
+      phonenumber: "",
       user: "",
-      errorUser: "",
+      error: "",
     };
   },
   methods: {
+    signup: function () {
+      if (this.username == "") {
+        this.error = "Please enter your name";
+      } else if (this.email == "") {
+        this.error = "Please enter your email";
+      } else if (this.password == "") {
+        this.error = "Please enter your password";
+      } else if (this.phonenumber == "") {
+        this.error = "Please enter your phonenumber";
+      } else {
+        AXIOS.post(`/customer/?username=${this.username}&password=${this.password}&email=${this.email}&phonenumber=${this.phonenumber}`)
 
-    /**
-     * Signup to the platform
-     */
-    signup: async function () {
-      this.$emit("update:user", { username: "", isLoggedIn: false })
-      var self = this;
+          .then((response) => {
+            this.email = "";
+            this.phonenumber = "";
+            this.error = "";
+            this.username = "";
+            this.password = "";
+            window.location.href = "/home"
 
-      try {
-        const res = await AXIOS.post(`/users/${this.username}?firstName=${this.firstName}&lastName=${this.lastName}&email=${this.email}&password=${this.password}`)
-        this.user = res.data
-        this.$emit("update:user", { username: this.user.username, isLoggedIn: true });
-      } catch (e) {
-        console.log(e.response)
-        if (
-          e.response) {
-          self.errorUser = e.response.data.message
-          this.$emit("update:error", self.errorUser)
-        } else {
-          console.log(e)
-        }
-
+          })
+          .catch((e) => {
+            this.error= "Please enter a valid email and password"
+            console.log(e);
+          });
       }
     },
-  },
+  }
 };

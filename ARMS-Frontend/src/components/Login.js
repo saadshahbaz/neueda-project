@@ -26,7 +26,7 @@ export default {
         /**
          * attempt to login using get request to the backend
          */
-        const response = await AXIOS.get(`/users/${this.username}?password=${this.password}`)
+        const response = await AXIOS.get(`/getCustomer/?username=${this.username}?password=${this.password}`)
         if (this.password != response.data.password) {
           this.errorUser = "Incorrect password."
           this.$emit("update:error", this.errorUser)
