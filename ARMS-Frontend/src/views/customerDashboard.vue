@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard">
-    <Sidebar/>
+    <customerSidebar/>
     <div class="content">
+
       <router-view/>
     </div>
   </div>
@@ -14,6 +15,14 @@ export default {
 
   components: {
     customerSidebar
+  },
+  methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    }
   }
 }
 </script>
