@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import dashboard from '../views/Dashboard'
-import Login from "../components/Login";
+import landingPage from '../components/LandingPage'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    component: Login
+    component: landingPage
   },
   {
     path: '/home',
