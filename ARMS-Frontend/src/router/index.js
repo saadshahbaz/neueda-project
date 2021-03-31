@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import dashboard from '../views/Dashboard'
 import landingPage from '../components/LandingPage'
 import customerDashboard from "../views/customerDashboard";
+import assistantDashboard from "../views/assistantDashboard";
 
 Vue.use(VueRouter)
 
@@ -66,6 +67,38 @@ const routes = [
       {
         path: 'deleteAccount',
         component: () => import(/* webpackChunkName: "Settings" */ '../views/DeleteAccount.vue')
+      },
+    ]
+  },
+  {
+    path: '/assistantHome',
+    name: 'assistantHome',
+    component: assistantDashboard,
+    children: [
+      {
+        path: '',
+        component: () => import(/* webpackChunkName: "Overview" */ '../views/Profile.vue')
+      },
+
+      {
+        path: 'business',
+        component: () => import(/* webpackChunkName: "Messages" */ '../views/Business.vue')
+      },
+      {
+        path: 'space',
+        component: () => import(/* webpackChunkName: "Messages" */ '../views/Space.vue')
+      },
+      {
+        path: 'technicians',
+        component: () => import(/* webpackChunkName: "Messages" */ '../views/Technicians.vue')
+      },
+      {
+        path: 'service',
+        component: () => import(/* webpackChunkName: "Settings" */ '../views/Services.vue')
+      },
+      {
+        path: 'viewAppointments',
+        component: () => import(/* webpackChunkName: "Settings" */ '../views/ViewAppointments.vue')
       },
     ]
   }

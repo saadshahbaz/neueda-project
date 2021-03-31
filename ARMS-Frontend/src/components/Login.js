@@ -46,7 +46,7 @@ export default {
               this.error = "";
               this.username = "";
               this.password = "";
-              window.location.href = "/customerHome"
+              window.location.href = "/assistantHome"
 
             })
             .catch((e) => {
