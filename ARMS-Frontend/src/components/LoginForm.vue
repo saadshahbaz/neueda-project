@@ -11,6 +11,7 @@
           v-model="password"
         /></div>
       <div class="button px-3 py-1 mt-1 mb-3" v-on:click="login">Login</div>
+      <div class="button px-3 py-1 mt-1 mb-3" v-on:click="loginAssistant">Login As Assistant</div>
     </form>
 
   </div>
