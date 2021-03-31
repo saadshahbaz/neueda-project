@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import dashboard from '../views/Dashboard'
 import landingPage from '../components/LandingPage'
+import customerDashboard from "../views/customerDashboard";
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,33 @@ const routes = [
         path: 'reminders',
         component: () => import(/* webpackChunkName: "Settings" */ '../views/Reminders.vue')
       }
+    ]
+  },
+  {
+    path: '/customerHome',
+    name: 'customerHome',
+    component: customerDashboard,
+    children: [
+      {
+        path: '',
+        component: () => import(/* webpackChunkName: "Overview" */ '../views/Profile.vue')
+      },
+      {
+        path: 'car',
+        component: () => import(/* webpackChunkName: "Profile" */ '../views/Car.vue')
+      },
+      {
+        path: 'customerAppointment',
+        component: () => import(/* webpackChunkName: "Messages" */ '../views/customerAppointment.vue')
+      },
+      {
+        path: 'bill',
+        component: () => import(/* webpackChunkName: "Settings" */ '../views/Bill.vue')
+      },
+      {
+        path: 'deleteAccount',
+        component: () => import(/* webpackChunkName: "Settings" */ '../views/DeleteAccount.vue')
+      },
     ]
   }
 ]

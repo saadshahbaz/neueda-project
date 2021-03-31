@@ -36,12 +36,14 @@ export default {
             this.error = "";
             this.username = "";
             this.password = "";
-            window.location.href = "/home"
+            window.location.href = "/customerHome"
 
           })
           .catch((e) => {
             this.error= "Please enter a valid email and password"
             console.log(e);
+            alert(e);
+            alert("invalid password");
           });
       }
     },
