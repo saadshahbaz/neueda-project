@@ -2,45 +2,62 @@ import { AXIOS } from "../components/axiosInstance";
 export default {
   name: "LoginForm",
 
-  /**
-   * declaration of the page's data
-   */
-  data() {
-    return {
-      username: "",
-      password: "",
-      user: "",
-      errorUser: "",
-    };
-  },
-  methods: {
 
-    /**
-     * login method
-     */
-    login: async function () {
-      this.$emit("update:user", { username: "", isLoggedIn: false })
-      var self = this;
-      try {
-
-        /**
-         * attempt to login using get request to the backend
-         */
-        const response = await AXIOS.get(`/getCustomer/?username=${this.username}?password=${this.password}`)
-        if (this.password != response.data.password) {
-          this.errorUser = "Incorrect password."
-          this.$emit("update:error", this.errorUser)
-        } else {
-          this.user = response.data
-          this.$emit("update:user", { username: this.user.username, isLoggedIn: true });
-        }
-
-      } catch (e) {
-        console.log(e.response.data)
-        self.errorUser = e.response.data.message;
-        console.log(self.errorUser);
-        this.$emit("update:error", self.errorUser)
+    data() {
+      return {
+        username: "",
+        password: "",
+        error: "",
       };
     },
-  },
-};
+    methods: {
+      login: function () {
+        if (this.username == "") {
+          this.error = "Please enter your name";
+        }  else if (this.password == "") {
+          this.error = "Please enter your password";
+        }else {
+          AXIOS.put(`/loginCustomer/?username=${this.username}&password=${this.password}`)
+
+            .then((response) => {
+              this.error = "";
+              this.username = "";
+              this.password = "";
+              window.location.href = "/customerHome"
+
+            })
+            .catch((e) => {
+              this.error= "The password is invalid or the username doesn't exist"
+              console.log(e);
+              alert(e);
+              alert("The password is invalid or the username doesn't exist");
+            });
+        }
+      },
+      loginAssistant: function () {
+        if (this.username == "") {
+          this.error = "Please enter your name";
+        }  else if (this.password == "") {
+          this.error = "Please enter your password";
+        }else {
+          AXIOS.put(`/loginAssistant/?username=${this.username}&password=${this.password}`)
+
+            .then((response) => {
+              this.error = "";
+              this.username = "";
+              this.password = "";
+              window.location.href = "/customerHome"
+
+            })
+            .catch((e) => {
+              this.error= "The password is invalid or the username doesn't exist"
+              console.log(e);
+              alert(e);
+              alert("The password is invalid or the username doesn't exist");
+            });
+        }
+      },
+    }
+  };
+
+
