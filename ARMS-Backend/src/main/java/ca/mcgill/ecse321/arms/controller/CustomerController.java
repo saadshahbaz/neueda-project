@@ -22,6 +22,7 @@ public class CustomerController {
             @RequestParam("phonenumber") String phonenumber
     ){
         Customer customer=customerService.CreatAccount(username, password, email, phonenumber);
+        ArmsApplication.setCurrentuser(customer);
         return convertToDto(customer );
     }
 
