@@ -5,7 +5,7 @@
     <el-date-picker
       v-model="value1"
       type="date"
-      placeholder="选择日期">
+      placeholder="Select Date">
     </el-date-picker>
 
     <el-select v-model="space" placeholder="Space">
@@ -39,8 +39,8 @@
       <el-option
         v-for="item in cars"
         :key="item.id"
-        :label="item.id"
-        :value="item.id">
+        :label="item.plateNo"
+        :value="item.plateNo">
       </el-option>
     </el-select>
 
@@ -50,6 +50,7 @@
 
 <script>
 import axios from "axios";
+import Cookies from 'js-cookie'
 
 export default {
   data() {
@@ -124,7 +125,7 @@ export default {
     })
 
 
-    axios.get('http://localhost:8080/getCarsByCustomer/?username=$Cookies.get("userName")').then(res => {
+    axios.get(`http://localhost:8080/getCarsByCustomer/?username=${Cookies.get("userName")}`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.cars = res.data;
