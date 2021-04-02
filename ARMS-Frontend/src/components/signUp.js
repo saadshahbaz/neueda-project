@@ -43,7 +43,7 @@ export default {
             this.error= "Please enter a valid email and password"
             console.log(e);
             alert(e);
-            alert("invalid password");
+            alert("Please recheck the information");
           });
       }
     },
