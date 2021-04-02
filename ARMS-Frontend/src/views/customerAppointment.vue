@@ -26,6 +26,24 @@
       </el-option>
     </el-select>
 
+    <el-select v-model="service" placeholder="Service">
+      <el-option
+        v-for="item in services"
+        :key="item.id"
+        :label="item.name"
+        :value="item.name">
+      </el-option>
+    </el-select>
+
+    <el-select v-model="car" placeholder="Car">
+      <el-option
+        v-for="item in cars"
+        :key="item.id"
+        :label="item.name"
+        :value="item.name">
+      </el-option>
+    </el-select>
+
   </div>
 
 </template>
@@ -67,9 +85,19 @@ export default {
       space: '',
       spaceValue: '',
       spaceOptions: [],
+
       technician: '',
       techValue:'',
-      techOptions: []
+      techOptions: [],
+
+      service:'',
+      serviceValue:'',
+      services: [],
+
+      car:'',
+      carValue:'',
+      cars: []
+
     }
   },
   mounted: function () {
@@ -78,10 +106,23 @@ export default {
       //this.s = res.data;
       this.spaceOptions = res.data;
     })
+
     axios.get('http://localhost:8080/allSpace').then(res => {
       console.log(res);
       //this.s = res.data;
       this.techOptions = res.data;
+    })
+
+    axios.get('http://localhost:8080/services').then(res => {
+      console.log(res);
+      //this.s = res.data;
+      this.services = res.data;
+    })
+
+    axios.get('http://localhost:8080/getCarsByCustomer/').then(res => {
+      console.log(res);
+      //this.s = res.data;
+      this.cars = res.data;
     })
   }
 
