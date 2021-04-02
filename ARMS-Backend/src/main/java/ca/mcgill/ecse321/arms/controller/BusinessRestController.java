@@ -96,11 +96,22 @@ public class BusinessRestController {
     }
 
     /**
+     * method that deletes a business given business name
+     * @param name
+     * @throws IllegalArgumentException
+     */
+    @DeleteMapping(value = {"/deleteBusiness/{name}", "/deleteBusiness/{name}/"})
+    public void deleteBusiness (
+            @PathVariable("name") String name
+    ) throws IllegalArgumentException{
+        businessService.deleteBusiness(name);
+    }
+    /**
      * method that deletes a businessHour given business hour id
      * @param id
      * @throws IllegalArgumentException
      */
-    @DeleteMapping(value = {"/deleteBusinessHour", "/deleteBusinessHour/"})
+    @DeleteMapping(value = {"/deleteBusinessHour/{id}", "/deleteBusinessHour/{id}/"})
     public void deleteService (
             @PathVariable("id") long id
     ) throws IllegalArgumentException{
