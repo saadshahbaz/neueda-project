@@ -47,6 +47,24 @@ public class ServiceController {
         return serviceDtos;
     }
 
+    @GetMapping(value = {"/servicesHtoL","/servicesHtoL/"})
+    public List<ServiceDto> sortServicesByPriceHtoL() throws IllegalArgumentException{
+        List<ServiceDto> serviceDtos = new ArrayList<>();
+        for(ca.mcgill.ecse321.arms.model.Service service : serviceService.sortServicesByPriceHtoL()){
+            serviceDtos.add(convertToDto(service));
+        }
+        return serviceDtos;
+    }
+
+    @GetMapping(value = {"/servicesLtoH","/servicesLtoH/"})
+    public List<ServiceDto> sortServicesByPriceLtoH() throws IllegalArgumentException{
+        List<ServiceDto> serviceDtos = new ArrayList<>();
+        for(ca.mcgill.ecse321.arms.model.Service service : serviceService.sortServicesByPriceLtoH()){
+            serviceDtos.add(convertToDto(service));
+        }
+        return serviceDtos;
+    }
+
     @DeleteMapping(value = {"/deleteService", "/deleteService/"})
     public void deleteService (
             @RequestParam("name") String name
