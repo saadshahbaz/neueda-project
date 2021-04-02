@@ -19,6 +19,7 @@ export default {
   },
   methods: {
     signup: function () {
+
       if (this.username == "") {
         this.error = "Please enter your name";
       } else if (this.email == "") {
