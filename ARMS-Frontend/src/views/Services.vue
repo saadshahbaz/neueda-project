@@ -4,15 +4,20 @@
     Services
   </div>
     <div>
-    <select class="selected" v-model="selected" >
-      <option disabled value="">FILTER</option>
-      <option>by price (lowest to highest)</option>
-      <option>by price (highest to lowest)</option>
+    <select class="selected" v-model="selected" @change="sortServices(selected)">
+      <option value="0">default</option>
+      <option value="1">by price (lowest to highest)</option>
+      <option value="2">by price (highest to lowest)</option>
     </select>
     </div>
+
+    <div>
     <p>
       <span v-if="errorService" style="color:#960f0f">{{errorService}}</span>
     </p>
+    </div>
+
+    <div>
     <table class="table">
       <tr >
         <td><h5>name</h5></td>
@@ -49,7 +54,7 @@
         </td>
       </tr>
     </table>
-
+    </div>
   </div>
 </template>
 
@@ -76,6 +81,7 @@ export default {
       newServiceName: '',
       newServiceDuration: '',
       newServicePrice: '',
+      selected: '0',
     }
   },
   created() {
@@ -161,7 +167,15 @@ export default {
           this.errorService = e;
         });
   },
-  //...
+    sortServices: function (value) {
+      if (value==1){
+        this.sortServicesLtoH()
+      }else if (value==2){
+        this.sortServicesHtoL()
+      }else if (value==0){
+        this.getAllServices()
+      }
+    }
 },}
 </script>
 
@@ -183,6 +197,7 @@ export default {
 }
 .selected {
   position: absolute;
+  top: 40px;
   right: 20px;
 }
 </style>

@@ -19,6 +19,8 @@
     "bootstrap-vue": "latest",
     "element-ui": "^2.15.1",
     "jquery": "^3.6.0",
+    "js-cookie": "^2.2.1",
+    "js-cookies": "^1.0.4",
     "popper.js": "^1.12.9",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
