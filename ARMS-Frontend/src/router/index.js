@@ -4,6 +4,7 @@ import dashboard from '../views/Dashboard'
 import landingPage from '../components/LandingPage'
 import customerDashboard from "../views/customerDashboard";
 import assistantDashboard from "../views/assistantDashboard";
+import * as path from "path";
 
 Vue.use(VueRouter)
 
@@ -58,7 +59,11 @@ const routes = [
       },
       {
         path: 'customerAppointment',
-        component: () => import(/* webpackChunkName: "Messages" */ '../views/customerAppointment.vue')
+        component: () => import(/* webpackChunkName: "Messages" */ '../views/customerAppointment.vue'),
+      },
+      {
+        path: 'services',
+        component: () => import('../views/CustomerServices.vue'),
       },
       {
         path: 'bill',

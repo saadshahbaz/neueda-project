@@ -17,9 +17,11 @@ import { Button, Form, FormItem, Input, Message, Container, Header,
   Step, Steps, Checkbox, CheckboxGroup, Upload,
   Timeline, TimelineItem } from 'element-ui'
 
-//import ElementUI from 'element-ui';
+import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
+
+Vue.use(ElementUI);
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
@@ -68,6 +70,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  render:h=>h(App),
   router,
   template: '<App/>',
   components: { App }
