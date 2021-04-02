@@ -39,8 +39,8 @@
       <el-option
         v-for="item in cars"
         :key="item.id"
-        :label="item.name"
-        :value="item.name">
+        :label="item.id"
+        :value="item.id">
       </el-option>
     </el-select>
 
@@ -54,6 +54,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+
+
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
@@ -81,6 +83,8 @@ export default {
       },
       value1: '',
       value2: '',
+
+      //curUserName = Cookies.get("userName"),
 
       space: '',
       spaceValue: '',
@@ -119,7 +123,8 @@ export default {
       this.services = res.data;
     })
 
-    axios.get('http://localhost:8080/getCarsByCustomer/').then(res => {
+
+    axios.get('http://localhost:8080/getCarsByCustomer/?username=$Cookies.get("userName")').then(res => {
       console.log(res);
       //this.s = res.data;
       this.cars = res.data;
