@@ -3,11 +3,24 @@
   <div class="services">
     Services
   </div>
+    <div>
+    <select class="selected" v-model="selected" >
+      <option disabled value="">FILTER</option>
+      <option>by price (lowest to highest)</option>
+      <option>by price (highest to lowest)</option>
+    </select>
+    </div>
     <p>
-      <span style="color:#06411c">Error: Message text comes here</span>
+      <span v-if="errorService" style="color:#960f0f">{{errorService}}</span>
     </p>
     <table class="table">
-      <tr v-for="service in services" >
+      <tr >
+        <td><h5>name</h5></td>
+        <td><h5>duration</h5></td>
+        <td><h5>price</h5></td>
+        <td><h5>action</h5></td>
+      </tr>
+      <tr v-for="service in services" :key="service.name">
         <td>{{ service.name }}</td>
         <td>{{ service.duration }}</td>
         <td>{{ service.price }}</td>
@@ -19,26 +32,20 @@
           </ul>
         </td>
       </tr>
-      <tr >
-        <td>name</td>
-        <td>duration</td>
-        <td>price</td>
-        <td>action</td>
-      </tr>
       <tr>
         <td>
-          <input type="text" v-model="newService" placeholder="Service Name">
+          <input type="text" v-model="newServiceName" placeholder="Service Name">
         </td>
         <td>
-          <input type="text" placeholder="Duration">
+          <input type="text" v-model="newServiceDuration" placeholder="Duration">
         </td>
         <td>
-          <input type="text" placeholder="Price">
+          <input type="text" v-model="newServicePrice" placeholder="Price">
         </td>
         <td>
-          <button v-bind:disabled="!newService" @click="createService(newService.name, newService.duration, newService.price)">Create</button>
-          <button>Update</button>
-          <button>Delete</button>
+          <button v-bind:disabled="!newServiceName" @click="createService(newServiceName, newServiceDuration, newServicePrice)">Create</button>
+          <button v-bind:disabled="!newServiceName" @click="updateService(newServiceName, newServiceDuration, newServicePrice)">Update</button>
+          <button v-bind:disabled="!newServiceName" @click="deleteService(newServiceName)">Delete</button>
         </td>
       </tr>
     </table>
@@ -65,7 +72,10 @@ export default {
       services: [],
       newService: '',
       errorService: '',
-      response: []
+      response: [],
+      newServiceName: '',
+      newServiceDuration: '',
+      newServicePrice: '',
     }
   },
   created() {
@@ -84,12 +94,38 @@ export default {
           this.errorService = e.response.data.message;
         });
     },
+    sortServicesHtoL: function (){
+      // Initializing people from backend
+      AXIOS.get(`servicesHtoL`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.services = response.data
+          this.errorService =''
+        })
+        .catch(e => {
+          this.errorService = e.response.data.message;
+        });
+    },
+    sortServicesLtoH: function (){
+      // Initializing people from backend
+      AXIOS.get(`servicesLtoH`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.services = response.data
+          this.errorService =''
+        })
+        .catch(e => {
+          this.errorService = e.response.data.message;
+        });
+    },
     deleteService: function (name){
       // Initializing people from backend
       AXIOS.delete(`/deleteService?name=${name}`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.services = response.data
+          this.services= []
+          this.getAllServices()
+          this.newService = ''
           this.errorService =''
         })
         .catch(e => {
@@ -98,10 +134,12 @@ export default {
     },
     updateService: function (name, duration, price){
       // Initializing people from backend
-      AXIOS.delete(`/updateService?name=${name}&duration=${duration}&price=${price}`)
+      AXIOS.put(`/updateService?name=${name}&duration=${duration}&price=${price}`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.services = response.data
+          this.services= []
+          this.getAllServices()
+          this.newService = ''
           this.errorService =''
         })
         .catch(e => {
@@ -110,14 +148,17 @@ export default {
     },
     createService: function (name, duration, price){
       // Initializing people from backend
-      AXIOS.delete(`/service?name=${name}&duration=${duration}&price=${price}`)
+      AXIOS.post(`/service?name=${name}&duration=${duration}&price=${price}`)
         .then(response => {
           // JSON responses are automatically parsed.
+          this.services.push(response.data)
           this.newService = response.data
           this.errorService =''
         })
         .catch(e => {
-          this.errorService = e.response.data.message;
+          var errorMsg = e.response.data.message
+          console.log(errorMsg)
+          this.errorService = e;
         });
   },
   //...
@@ -139,5 +180,9 @@ export default {
 .table {
   justify-content: center;
   align-items: center;
+}
+.selected {
+  position: absolute;
+  right: 20px;
 }
 </style>
