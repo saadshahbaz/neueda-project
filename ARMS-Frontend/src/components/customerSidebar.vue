@@ -35,7 +35,7 @@
       </router-link>
 
       <router-link to="/" active-class="active" tag="button" exact class="side-btn">
-        <div class="link-container">
+        <div class="link-container" @click="logout()">
           Log Out
         </div>
       </router-link>
@@ -45,8 +45,16 @@
 </template>
 
 <script>
+import { AXIOS } from "./axiosInstance";
 export default {
-  name: "customerSidebar"
+  name: "customerSidebar",
+
+  methods:{
+    logout: function(){
+      AXIOS.delete(`/logoutCustomer/`)
+    }
+  }
+
 }
 </script>
 
