@@ -66,6 +66,8 @@ var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
+
+import Cookies from 'js-cookie'
 export default {
   name: 'cars',
   data () {
@@ -116,12 +118,12 @@ export default {
           this.errorCar = e.response.data.message;
         });
     },
-    createCar: function (customer, manufacturer, model, year, plateNo){
+    createCar: function ( manufacturer, model, year, plateNo){
       // Initializing people from backend
-      AXIOS.delete(`/updateCar?customer=${customer}&manufacturer=${manufacturer}&model=${model}&year=${year}&plateNo=${plateNo}`)
+      AXIOS.post(`/car?customer=${Cookies.get("userName")}&manufacturer=${manufacturer}&model=${model}&year=${year}&plateNo=${plateNo}`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.cars = response.data
+          this.cars.push(response.data)
           this.errorCar =''
         })
         .catch(e => {
