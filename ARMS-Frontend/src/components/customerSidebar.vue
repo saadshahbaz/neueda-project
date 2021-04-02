@@ -16,6 +16,12 @@
         </div>
       </router-link>
 
+      <router-link to="/customerHome/services" active-class="active" tag="button" exact class="side-btn">
+        <div class="link-container">
+          Services
+        </div>
+      </router-link>
+
       <router-link to="/customerHome/customerAppointment" active-class="active" tag="button" exact class="side-btn">
         <div class="link-container">
           Appointment
