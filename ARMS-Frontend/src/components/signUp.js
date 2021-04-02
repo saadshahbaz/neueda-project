@@ -1,5 +1,6 @@
 import { AXIOS } from "./axiosInstance";
 import Router from "../router";
+import Cookies from 'js-cookie'
 
 export default {
   name: "SignUpForm",
@@ -29,6 +30,10 @@ export default {
       } else if (this.phonenumber == "") {
         this.error = "Please enter your phonenumber";
       } else {
+        alert("adaf")
+        alert(username.value)
+        Cookies.set('userName',this.username)
+        alert("asssssss")
         AXIOS.post(`/customer/?username=${this.username}&password=${this.password}&email=${this.email}&phonenumber=${this.phonenumber}`)
 
           .then((response) => {
