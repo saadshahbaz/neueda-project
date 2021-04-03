@@ -200,9 +200,9 @@ export default {
 
       //bySpace
 
-      let res = await axios.get(`/findTimeSlotsBySpace/${this.space}`);
+      let res = await axios.get(`/findTimeSlotsBySpaceID/${this.space}`);
       //byTech
-      let res1 = await axios.get(`/findTimeSlotsByTechinician/${this.technician}`);
+      let res1 = await axios.get(`/findTimeSlotsByTechinicianID/${this.technician}`);
 
 
       let result = res.concat(res1);
