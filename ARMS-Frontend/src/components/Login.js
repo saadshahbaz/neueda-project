@@ -1,4 +1,6 @@
 import { AXIOS } from "../components/axiosInstance";
+import Cookies from 'js-cookie';
+
 export default {
   name: "LoginForm",
 
@@ -17,7 +19,8 @@ export default {
         }  else if (this.password == "") {
           this.error = "Please enter your password";
         }else {
-          AXIOS.put(`/loginCustomer/?username=${this.username}&password=${this.password}`)
+          Cookies.set('username',this.username)
+          AXIOS.post(`/loginCustomer/?username=${this.username}&password=${this.password}`)
 
             .then((response) => {
               this.error = "";
@@ -40,7 +43,8 @@ export default {
         }  else if (this.password == "") {
           this.error = "Please enter your password";
         }else {
-          AXIOS.put(`/loginAssistant/?username=${this.username}&password=${this.password}`)
+          Cookies.set('username',this.username)
+          AXIOS.post(`/loginAssistant/?username=${this.username}&password=${this.password}`)
 
             .then((response) => {
               this.error = "";
