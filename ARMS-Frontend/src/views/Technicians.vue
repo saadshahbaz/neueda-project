@@ -1,17 +1,140 @@
 <template>
-  <div class="technicians">
-    Technicians
+  <div>
+    <div class="technicians">
+      Technician
+    </div>
+
+    <p>
+      <span v-if="errorTechnician" style="color:#960f0f">{{errorTechnician}}</span>
+    </p>
+    <table class="table">
+      <tr >
+        <td><h5>id</h5></td>
+        <td><h5>name</h5></td>
+        <td><h5>email</h5></td>
+        </tr>
+      <tr v-for="technician in technicians" :key="technician.id">
+        <td>{{ technician.id }}</td>
+        <td>{{ technician.name }}</td>
+        <td>{{ technician.email }}</td>
+
+      </tr>
+      <tr>
+        <td>
+          <input type="text" v-model="newTechnicianId" placeholder="Technician ID">
+        </td>
+        <td>
+          <input type="text" v-model="newTechnicianName" placeholder="Technician Name">
+        </td>
+        <td>
+          <input type="text" v-model="newTechnicianEmail" placeholder="Technician Email">
+        </td>
+
+        <td>
+          <button v-bind:disabled="!newTechnicianId" @click="createTechnician(newTechnicianId)">Create</button>
+          <button v-bind:disabled="!newTechnicianId" @click="updateTechnician(newTechnicianId, newTechnicianName, newTechnicianEmail)">Update</button>
+          <button v-bind:disabled="!newTechnicianId" @click="deleteTechnician(newTechnicianId)">Delete</button>
+        </td>
+      </tr>
+    </table>
+
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import Router from "../router";
+var config = require("../../config");
+// Axios config
+var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
+var backendUrl =
+  "http://" + config.dev.backendHost + ":" + config.dev.backendPort;
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { "Access-Control-Allow-Origin": frontendUrl }
+});
 export default {
+  name: 'technicians',
+  data () {
+    return {
+      Technicians: [],
+      newTechnician: '',
+      errorTechnician: '',
+      response: [],
+      newTechnicianId: '',
+      newTechnicianName: '',
+      newTechnicianEmail: ''
 
-}
+    }
+  },
+  created() {
+    this.getAllTechnicians();
+  },
+  methods: {
+    getAllTechnicians: function (){
+      // Initializing people from backend
+      AXIOS.get(`/technicians`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.Technicians = response.data
+          this.errorTechnician =''
+        })
+        .catch(e => {
+          this.errorTechnician = e.response.data.message;
+        });
+    },
+
+    deleteTechnician: function (id){
+      // Initializing people from backend
+      AXIOS.delete(`/deleteTechnician?id=${id}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.Technicians= []
+          this.getAllTechnicians()
+          this.newTechnician = ''
+          this.errorTechnician =''
+        })
+        .catch(e => {
+          this.errorTechnician = e.response.data.message;
+        });
+    },
+    updateTechnician: function (id, name, email){
+      // Initializing people from backend
+      AXIOS.put(`/updateTechnician?id=${id}&name=${name}&email=${email}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.Technicians= []
+          this.getAllTechnicians()
+          this.newTechnician = ''
+          this.errorTechnician =''
+        })
+        .catch(e => {
+          this.errorTechnician = e.response.data.message;
+        });
+    },
+
+    createTechnician: function (id){
+      // Initializing people from backend
+      AXIOS.post(`/technician?id=${id}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.Technicians.push(response.data)
+          this.newTechnician = response.data
+          this.errorTechnician =''
+        })
+        .catch(e => {
+          var errorMsg = e.response.data.message
+          console.log(errorMsg)
+          this.errorTechnician = e;
+        });
+    },
+    //...
+  },}
 </script>
 
 <style scoped>
-.technicians {
+.services {
+  margin-top: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,5 +143,13 @@ export default {
   font-size: 40px;
   color: rgb(167, 167, 167);
   font-weight: 600;
+}
+.table {
+  justify-content: center;
+  align-items: center;
+}
+.selected {
+  position: absolute;
+  right: 20px;
 }
 </style>
