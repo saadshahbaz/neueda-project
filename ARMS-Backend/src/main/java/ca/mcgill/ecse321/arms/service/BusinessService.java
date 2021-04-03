@@ -163,6 +163,15 @@ public class BusinessService {
 
     /**
      * delete a businessHour by id
+     * @param name
+     */
+    @Transactional
+    public Integer deleteBusiness(String name){
+        return businessRepository.deleteBusinessByName(name);
+    }
+
+    /**
+     * delete a businessHour by id
      * @param id
      */
     @Transactional

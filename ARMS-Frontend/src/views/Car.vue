@@ -3,12 +3,23 @@
     <div class="cars">
       Cars
     </div>
+
+    <div>
     <p>
-      <span style="color:#06411c">Error: Message text comes here</span>
+      <span v-if="errorCar" style="color:#960f0f">{{errorCar}}</span>
     </p>
+    </div>
+
+    <div>
     <table class="table">
-      <tr v-for="car in cars" >
-        <td>{{ car.customer }}</td>
+      <tr >
+        <td><h5>manufacturer</h5></td>
+        <td><h5>model</h5></td>
+        <td><h5>year</h5></td>
+        <td><h5>plateNo</h5></td>
+        <td><h5>action</h5></td>
+      </tr>
+      <tr v-for="car in cars" :key="car.plateNo">
         <td>{{ car.manufacturer }}</td>
         <td>{{ car.model }}</td>
         <td>{{ car.year }}</td>
@@ -21,36 +32,27 @@
           </ul>
         </td>
       </tr>
-      <tr >
-        <td>customer</td>
-        <td>manufacturer</td>
-        <td>model</td>
-        <td>year</td>
-        <td>plateNo</td>
-      </tr>
       <tr>
         <td>
-          <input type="text" v-model="newCar" placeholder="Customer">
+          <input type="text" v-model="newCarManufacturer" placeholder="Manufacturer">
         </td>
         <td>
-          <input type="text" placeholder="Manufacturer">
+          <input type="text" v-model="newCarModel" placeholder="Model">
         </td>
         <td>
-          <input type="text" placeholder="Model">
+          <input type="text" v-model="newCarYear" placeholder="Year">
         </td>
         <td>
-          <input type="text" placeholder="Year">
+          <input type="text" v-model="newCarPlateNo" placeholder="Plate Number">
         </td>
         <td>
-          <input type="text" placeholder="Plate Number">
-        </td>
-        <td>
-          <button v-bind:disabled="!newCar" @click="createCar(newCar.customer, newCar.manufacturer, newCar.model,newCar.year,newCar.plateNo)">Create</button>
-          <button>Update</button>
-          <button>Delete</button>
+          <button v-bind:disabled="!newCarPlateNo" @click="createCar(newCarManufacturer, newCarModel,newCarYear,newCarPlateNo)">Create</button>
+          <button v-bind:disabled="!newCarPlateNo" @click="updateCar(newCarManufacturer, newCarModel,newCarYear,newCarPlateNo)">Update</button>
+          <button v-bind:disabled="!newCarPlateNo" @click="deleteCar(newCarPlateNo)">Delete</button>
         </td>
       </tr>
     </table>
+  </div>
   </div>
 </template>
 
@@ -66,6 +68,8 @@ var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
+
+import Cookies from 'js-cookie'
 export default {
   name: 'cars',
   data () {
@@ -73,16 +77,20 @@ export default {
       cars: [],
       newCar: '',
       errorCar: '',
-      response: []
+      response: [],
+      newCarManufacturer:'',
+      newCarModel:'',
+      newCarYear:'',
+      newCarPlateNo:''
     }
   },
   created() {
-    this.getAllCars();
+    this.getCarsByCustomer();
   },
   methods: {
-    getAllCars: function (){
+    getCarsByCustomer: function (){
       // Initializing people from backend
-      AXIOS.get(`/cars`)
+      AXIOS.get(`/getCarsByCustomer?username=${Cookies.get("userName")}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.cars = response.data
@@ -97,31 +105,35 @@ export default {
       AXIOS.delete(`/deleteCar?plateNo=${plateNo}`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.cars = response.data
+          this.cars = []
+          this.getCarsByCustomer(Cookies.get("userName"))
+          this.newCar = ''
           this.errorCar =''
         })
         .catch(e => {
           this.errorCar = e.response.data.message;
         });
     },
-    updateCar: function (customer, manufacturer, model, year, plateNo){
+    updateCar: function (manufacturer, model, year, plateNo){
       // Initializing people from backend
-      AXIOS.delete(`/updateCar?customer=${customer}&manufacturer=${manufacturer}&model=${model}&year=${year}&plateNo=${plateNo}`)
+      AXIOS.put(`/updateCar?customer=${Cookies.get("userName")}&manufactuer=${manufacturer}&model=${model}&year=${year}&plateN=${plateNo}`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.cars = response.data
+          this.cars = []
+          this.getCarsByCustomer(Cookies.get("userName"))
+          this.newCar = ''
           this.errorCar =''
         })
         .catch(e => {
           this.errorCar = e.response.data.message;
         });
     },
-    createCar: function (customer, manufacturer, model, year, plateNo){
+    createCar: function ( manufacturer, model, year, plateNo){
       // Initializing people from backend
-      AXIOS.delete(`/updateCar?customer=${customer}&manufacturer=${manufacturer}&model=${model}&year=${year}&plateNo=${plateNo}`)
+      AXIOS.post(`/car?customer=${Cookies.get("userName")}&manufactuer=${manufacturer}&model=${model}&year=${year}&plateN=${plateNo}`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.cars = response.data
+          this.cars.push(response.data)
           this.errorCar =''
         })
         .catch(e => {

@@ -34,6 +34,8 @@ public class AppointmentService {
     private SpaceRepository spaceRepository;
     @Autowired
     private TechnicianRepository technicianRepository;
+    @Autowired
+    private BillRepository billRepository;
 
     /**
      * add an appointment to the ARMS
@@ -88,6 +90,11 @@ public class AppointmentService {
         timeSlotRepository.save(timeSlot);
         anAppointment.setTimeSlot(timeSlot);
         appointmentRepository.save(anAppointment);
+        Bill bill = new Bill();
+        bill.setBillNo(anAppointment.hashCode());
+        bill.setAmount(service.getPrice());
+        bill.setCustomer((Customer)ArmsApplication.getCurrentuser());
+        billRepository.save(bill);
         return anAppointment;
 
     }
