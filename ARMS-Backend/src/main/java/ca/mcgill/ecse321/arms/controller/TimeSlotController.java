@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.arms.controller;
 
 import ca.mcgill.ecse321.arms.dao.BussinessRepository;
+import ca.mcgill.ecse321.arms.dao.SpaceRepository;
+import ca.mcgill.ecse321.arms.dao.TechnicianRepository;
 import ca.mcgill.ecse321.arms.dto.BusinessDto;
 import ca.mcgill.ecse321.arms.dto.BusinessHourDto;
 import ca.mcgill.ecse321.arms.model.Business;
@@ -50,6 +52,10 @@ public class TimeSlotController {
     @Autowired
     private TimeSlotRepository timeSlotRepository;
     @Autowired
+    private SpaceRepository spaceRepository;
+    @Autowired
+    private TechnicianRepository technicianRepository;
+    @Autowired
     private SpaceController spaceController;
     @Autowired
     private  TechnicianController technicianController;
@@ -78,6 +84,14 @@ public class TimeSlotController {
     @GetMapping(value = {"/timeSlots","/timeSlots/"})
     public List<TimeSlotDto> getAllTimeSlots(){
         return service.getAllTimeSlots().stream().map(s -> convertToDto(s)).collect(Collectors.toList());
+    }
+    @GetMapping(value={"/findTimeSlotsBySpaceID/{spaceID}","/findTimeSlotsBySpaceID/{spaceID}/"})
+    public List<TimeSlotDto> getTimeSlotsBySpace(@PathVariable("spaceID") int spaceID){
+        return service.getTimeSlotsBySpaceID(spaceID).stream().map(s -> convertToDto(s)).collect(Collectors.toList());
+    }
+    @GetMapping(value={"/findTimeSlotsByTechnicianID/{techID}","/findTimeSlotsByTechnicianID/{techID}/"})
+    public List<TimeSlotDto> getTimeSlotsByTechnician(@PathVariable("techID") int techID){
+        return service.getTimeSlotsByTechnicianID(techID).stream().map(s -> convertToDto(s)).collect(Collectors.toList());
     }
 
     private TimeSlotDto convertToDto(TimeSlot timeSlot){

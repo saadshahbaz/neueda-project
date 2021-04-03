@@ -151,26 +151,26 @@ export default {
     }
   },
   mounted: function () {
-    axios.get('http://localhost:8080/allSpace').then(res => {
+    axios.get(`/allSpace`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.spaceOptions = res.data;
     })
 
-    axios.get('http://localhost:8080/allSpace').then(res => {
+    axios.get(`/allSpace`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.techOptions = res.data;
     })
 
-    axios.get('http://localhost:8080/services').then(res => {
+    axios.get(`/services`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.services = res.data;
     })
 
 
-    axios.get(`http://localhost:8080/getCarsByCustomer/?username=${Cookies.get("userName")}`).then(res => {
+    axios.get(`/getCarsByCustomer/?username=${Cookies.get("userName")}`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.cars = res.data;
@@ -199,9 +199,10 @@ export default {
       console.log("qqqqq");
 
       //bySpace
-      let res = await axios.get();
+
+      let res = await axios.get(`/findTimeSlotsBySpace/${this.space}`);
       //byTech
-      let res1 = await axios.get();
+      let res1 = await axios.get(`/findTimeSlotsByTechinician/${this.technician}`);
 
 
       let result = res.concat(res1);
