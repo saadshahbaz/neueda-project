@@ -5,9 +5,7 @@
     id="OldPassword"
     placeholder="Please input delete to confirm"
     v-model="deleteInput"/></div>
-    <router-link to="/" active-class="active" tag="button" exact class="side-btn">
   <div class="button px-3 py-1 mt-1 mb-3" type="submit" @click="deleteAccount">Delete Account</div>
-    </router-link>
   </div>
 </template>
 
@@ -28,7 +26,8 @@ export default {
       AXIOS.delete(`/deleteCustomer`)
         .then((response) => {
         this.deleteInput="";
-          alert("Delete Successfully");
+        alert("Delete Successfully");
+        window.location.href = "/"
       })
         .catch((e) => {
           alert("You have unpaid bills");
