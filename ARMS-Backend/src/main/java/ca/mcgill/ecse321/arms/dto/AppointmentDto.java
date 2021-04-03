@@ -82,8 +82,11 @@ public class AppointmentDto {
         return this.endTime;
     }
 
+    public int getTechnicianID() {
+        return technicianID;
+    }
+
     public int getSpaceID() {
         return spaceID;
-
     }
 }

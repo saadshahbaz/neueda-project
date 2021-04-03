@@ -4,6 +4,7 @@
       Customer
     </div>
     <div class="menu-items">
+
       <router-link to="/customerHome" active-class="active" tag="button" exact class="side-btn">
         <div class="link-container">
           Profile
@@ -31,6 +32,12 @@
       <router-link to="/customerHome/bill" active-class="active" tag="button" exact class="side-btn">
         <div class="link-container">
           Bill
+        </div>
+      </router-link>
+
+      <router-link to="/customerHome/informationUpdate" active-class="active" tag="button" exact class="side-btn">
+        <div class="link-container">
+          InformationUpdate
         </div>
       </router-link>
 

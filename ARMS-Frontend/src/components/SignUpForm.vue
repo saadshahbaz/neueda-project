@@ -37,7 +37,93 @@
 
   </div>
 </template>
-<script src="../components/signUp.js">
+<script>
+import { AXIOS } from "./axiosInstance";
+import Router from "../router";
+import Cookies from 'js-cookie'
+
+export default {
+  name: "SignUpForm",
+
+  /**
+   * declaration of the page's data
+   */
+  data() {
+    return {
+      username: "",
+      password: "",
+      email: "",
+      phonenumber: "",
+      user: "",
+      error: "",
+    };
+  },
+  methods: {
+    /**
+     * Sign up as a Customer, with username, password, email, and phone number
+     * throw exception if the password is less than 9 characters or the email is incorrect.
+     */
+    signup: function () {
+      Cookies.set('userName',this.username)
+      AXIOS.post(`/customer/?username=${this.username}&password=${this.password}&email=${this.email}&phonenumber=${this.phonenumber}`)
+        .then((response) => {
+          this.email = "";
+          this.phonenumber = "";
+          this.error = "";
+          this.username = "";
+          this.password = "";
+          window.location.href = "/customerHome"
+
+        })
+        .catch((e) => {
+          alert(e.response.data.message);
+        });
+    },
+  }
+};
+
 </script>
-<style scoped src="../components/signInForm.css">
+<style scoped>
+#login-form,
+.sign-up-form {
+  padding: 5px;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
+input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  width: 100%;
+  color: black;
+  font-family: "Montserrat";
+}
+
+input:focus {
+  outline: none;
+}
+
+.row {
+  border: none;
+  width: 100%;
+  margin: auto;
+}
+
+.button {
+  margin: auto;
+  font-family: "Georgia";
+  font-size: 20px;
+  color: white;
+  background-color: #4f5f5e;
+  border: none;
+  transition: 0.5s;
+  width: fit-content;
+}
+
+.button:hover {
+  background-color: #268078;
+}
+
 </style>
