@@ -27,15 +27,15 @@ input:focus {
 
 .button {
   margin: auto;
-  font-family: "Lora";
-  font-size: 24px;
+  font-family: "Georgia";
+  font-size: 20px;
   color: white;
-  background-color: black;
+  background-color: #4f5f5e;
   border: none;
   transition: 0.5s;
   width: fit-content;
 }
 
 .button:hover {
-  background-color: #006F45;
+  background-color: #268078;
 }

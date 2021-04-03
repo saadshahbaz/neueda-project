@@ -10,7 +10,7 @@
   overflow-y: hidden;
   position: relative;
   margin: 0;
-  background: #E9E7DB;
+  background: #f1f6f6;
 }
 
 .sign-in-form {
@@ -21,13 +21,13 @@
   width: 25%;
   box-sizing: border-box;
   border: 1px solid #000000;
-  background: #E9E7DB;
+  background: #f1f6f6;
   z-index: 1;
 }
 
 .form-tabs {
   box-sizing: border-box;
-  border: 1px solid #000000;
+  border: 1px solid #268078;
   margin: 0;
 }
 
@@ -45,11 +45,11 @@
 
 .active {
   color: white;
-  background-color: black;
+  background-color: #268078;
 }
 
 h1 {
-  color: #006F45;
+  color: #268078;
   font-size: 96px;
 }
 

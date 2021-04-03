@@ -20,22 +20,8 @@ export default {
   },
   methods: {
     signup: function () {
-
-      if (this.username == "") {
-        this.error = "Please enter your name";
-      } else if (this.email == "") {
-        this.error = "Please enter your email";
-      } else if (this.password == "") {
-        this.error = "Please enter your password";
-      } else if (this.phonenumber == "") {
-        this.error = "Please enter your phonenumber";
-      } else {
-        alert("adaf")
-        alert(username.value)
         Cookies.set('userName',this.username)
-        alert("asssssss")
         AXIOS.post(`/customer/?username=${this.username}&password=${this.password}&email=${this.email}&phonenumber=${this.phonenumber}`)
-
           .then((response) => {
             this.email = "";
             this.phonenumber = "";
@@ -46,12 +32,8 @@ export default {
 
           })
           .catch((e) => {
-            this.error= "Please enter a valid email and password"
-            console.log(e);
-            alert(e);
-            alert("Please recheck the information");
+            alert(e.response.data.message);
           });
-      }
     },
   }
 };
