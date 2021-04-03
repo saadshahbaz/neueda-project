@@ -1,5 +1,6 @@
 <template>
   <div>
+  <div>
     <div class="Business">
       Business
     </div>
@@ -58,6 +59,7 @@
     <td>
       <button v-bind:disabled="!newBusinessName" @click="createBusinessHour(value1[0], value1[1], value2[0], value2[1], newBusinessName)">Create</button>
     </td>
+  </div>
   </div>
 </template>
 
