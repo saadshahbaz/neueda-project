@@ -36,6 +36,8 @@ public class AppointmentService {
     private TechnicianRepository technicianRepository;
     @Autowired
     private BillRepository billRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     /**
      * add an appointment to the ARMS
@@ -93,7 +95,7 @@ public class AppointmentService {
         Bill bill = new Bill();
         bill.setBillNo(anAppointment.hashCode());
         bill.setAmount(service.getPrice());
-        bill.setCustomer((Customer)ArmsApplication.getCurrentuser());
+        bill.setCustomer(car.getCustomer());
         billRepository.save(bill);
         return anAppointment;
 
