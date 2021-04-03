@@ -20,9 +20,8 @@
       /></div>
       <div class="row my-3 px-3"><input
         type="email" name="email"
-        id="email"
         placeholder="Email"
-        v-model="email" /></div>
+        v-model="emailAddress" /></div>
 
       <div class="row my-3 px-3"><input
         type="text"
@@ -50,7 +49,7 @@ export default {
     return {
       oldpassword: "",
       newpassword: "",
-      email: "",
+      emailAddress: "",
       phonenumber: "",
       realpassword:"",
       username:"",
@@ -66,9 +65,6 @@ export default {
           .then((response) =>{
             this.realpassword=response.data.password;
             this.username=response.data.username;
-            if (this.email==""){
-              this.email=response.data.email;
-            }
             if (this.phonenumber==""){
               this.phonenumber=response.data.phonenumber;
             }
@@ -79,12 +75,12 @@ export default {
               if (this.newpassword==""){
                 this.newpassword=response.data.password;
               }
-              AXIOS.put(`/updateCustomer/?username=${this.username}&password=${this.newpassword}&email=${this.email}&phonenumber=${this.phonenumber}`)
+              AXIOS.put(`/updateCustomer/?username=${this.username}&password=${this.newpassword}&email=${this.emailAddress}&phonenumber=${this.phonenumber}`)
 
                 .then((response) => {
                   this.oldpassword= "";
                   this.newpassword= "";
-                  this.email= "";
+                  this.emailAddress= "";
                   this.phonenumber= "";
                   this.realpassword="";
                   this.username="";
