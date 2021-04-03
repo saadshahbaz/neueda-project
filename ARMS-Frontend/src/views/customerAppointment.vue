@@ -1,48 +1,101 @@
 <template>
   <div class="appointments">
-    Appointments
+    <div class="title">
+      Appointments
+    </div>
 
-    <el-date-picker
-      v-model="value1"
-      type="date"
-      placeholder="Select Date">
-    </el-date-picker>
+    <div>
+      <p>
+        <span class="errorMsg" v-if="errorAppointment" style="color:#960f0f">{{ errorAppointment }}</span>
+      </p>
+    </div>
 
-    <el-select v-model="space" placeholder="Space">
-      <el-option
-        v-for="item in spaceOptions"
-        :key="item.id"
-        :label="item.id"
-        :value="item.id">
-      </el-option>
-    </el-select>
+    <div class="selections">
+      <el-date-picker
+        v-model="startDate"
+        type="date"
+        placeholder="Select Date">
+      </el-date-picker>
 
-    <el-select v-model="technician" placeholder="Techinician">
-      <el-option
-        v-for="item in techOptions"
-        :key="item.id"
-        :label="item.id"
-        :value="item.id">
-      </el-option>
-    </el-select>
+      <el-select v-model="space" placeholder="Space">
+        <el-option
+          v-for="item in spaceOptions"
+          :key="item.id"
+          :label="item.id"
+          :value="item.id">
+        </el-option>
+      </el-select>
 
-    <el-select v-model="service" placeholder="Service">
-      <el-option
-        v-for="item in services"
-        :key="item.id"
-        :label="item.name"
-        :value="item.name">
-      </el-option>
-    </el-select>
+      <el-select v-model="technician" placeholder="Techinician">
+        <el-option
+          v-for="item in techOptions"
+          :key="item.id"
+          :label="item.id"
+          :value="item.id">
+        </el-option>
+      </el-select>
 
-    <el-select v-model="car" placeholder="Car">
-      <el-option
-        v-for="item in cars"
-        :key="item.id"
-        :label="item.plateNo"
-        :value="item.plateNo">
-      </el-option>
-    </el-select>
+      <el-select v-model="service" placeholder="Service">
+        <el-option
+          v-for="item in services"
+          :key="item.id"
+          :label="item.name"
+          :value="item.name">
+        </el-option>
+      </el-select>
+
+      <el-select v-model="car" placeholder="Car">
+        <el-option
+          v-for="item in cars"
+          :key="item.id"
+          :label="item.plateNo"
+          :value="item.plateNo">
+        </el-option>
+      </el-select>
+    </div>
+
+
+    <div class="button">
+      <button  @click="createAppointment()">Create</button>
+      <button  @click="updateAppointment()">Update</button>
+      <button  @click="deleteAppointment()">Delete</button>
+      <button  @click="checkAppointments()">Check</button>
+    </div>
+
+    <div class="table" v-if="tableData.length!==0">
+
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        max-height="250">
+
+        <el-table-column
+          fixed
+          prop="workingSpaceID"
+          label="日期"
+          width="150">
+        </el-table-column>
+
+        <el-table-column
+          prop="workingTechID"
+          label="姓名"
+          width="120">
+        </el-table-column>
+
+        <el-table-column
+          prop="workingStartTime"
+          label="省份"
+          width="120">
+        </el-table-column>
+
+        <el-table-column
+          prop="workingEndTime"
+          label="市区"
+          width="120">
+        </el-table-column>
+      </el-table>
+    </div>
+
 
   </div>
 
@@ -51,12 +104,12 @@
 <script>
 import axios from "axios";
 import Cookies from 'js-cookie'
+import dayjs from 'dayjs'
 
 export default {
   data() {
     return {
-
-
+      tableData: [],
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
@@ -82,7 +135,7 @@ export default {
           }
         }]
       },
-      value1: '',
+      startDate: '',
       value2: '',
 
       //curUserName = Cookies.get("userName"),
@@ -101,35 +154,135 @@ export default {
 
       car:'',
       carValue:'',
-      cars: []
+      cars: [],
 
+      appointments:[],
+      newAppointment:'',
+      errorAppointment:'',
+      response:[],
+      newAppointmentID:1,
+      newAppointmentServiceName:'',
+      newAppointmentPlateNo:'',
+      newAppointmentBusinessName:'',
+      newAppointmentStartDate:'',
+      newAppointmentStartTime:'',
+      newAppointmentEndDate:'',
+      newAppointmentEndTime:'',
     }
   },
   mounted: function () {
-    axios.get('http://localhost:8080/allSpace').then(res => {
+    axios.get(`/allSpace`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.spaceOptions = res.data;
     })
 
-    axios.get('http://localhost:8080/allSpace').then(res => {
+    axios.get(`/allSpace`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.techOptions = res.data;
     })
 
-    axios.get('http://localhost:8080/services').then(res => {
+    axios.get(`/services`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.services = res.data;
     })
 
 
-    axios.get(`http://localhost:8080/getCarsByCustomer/?username=${Cookies.get("userName")}`).then(res => {
+    axios.get(`/getCarsByCustomer/?username=${Cookies.get("userName")}`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.cars = res.data;
     })
+  },
+  methods: {
+    // incrementAppointmentID(appointmentID){
+    //
+    // },
+    deleteAppointment(appointmentID){
+      // Initializing people from backend
+      AXIOS.delete(`/deleteAppointment?appointmentID=${appointmentID}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.appointments = []
+          this.getAppointments()
+          this.newAppointment = ''
+          this.errorAppointment = ''
+        })
+        .catch(e => {
+          this.errorAppointment = e.response.data.message;
+        });
+    },
+    updateAppointment(appointmentID, serviceName, plateNo, businessName,
+                      startDate,startTime,endDate,endTime,spaceID,technicianID){
+      // Initializing people from backend
+      AXIOS.put(`/updateAppointment?appointmentID=${appointmentID}&serviceName=${serviceName}&plateNo=${plateNo}&businessName=${businessName}&startDate=${startDate}&startTime=${startTime}&endDate=${endDate}&endTime=${endTime}&technicianID=${technicianID}&spaceID=${spaceID}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.appointments = []
+          this.getAppointments()
+          this.newAppointment = ''
+          this.errorAppointment = ''
+        })
+        .catch(e => {
+          this.errorAppointment = e.response.data.message;
+        });
+    },
+    createAppointment(appointmentID, serviceName, plateNo, businessName,
+                      startDate,startTime,endDate,endTime,spaceID,technicianID) {
+      console.log(dayjs(this.startDate).format('YYYY-MM-DD'));
+      console.log(this.space);
+      AXIOS.post(`appointment?appointmentID=${appointmentID}&serviceName=${serviceName}&plateNo=${plateNo}&businessName=${businessName}&startDate=${startDate}&startTime=${startTime}&endDate=${endDate}&endTime=${endTime}&technicianID=${technicianID}&spaceID=${spaceID}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.appointments.push(response.data)
+          this.newAppointment = response.data
+          this.errorAppointment =''
+        })
+        .catch(e => {
+          var errorMsg = e.response.data.message
+          console.log(errorMsg)
+          this.errorAppointment = e;
+        });
+      if (this.errorAppointment == ''){
+        this.newAppointmentID++
+        console.log(this.newAppointmentID)
+        alert("Appointment is successfully booked!")
+      }
+    },
+    async checkAppointments(){
+      this.tableData = [];
+      console.log("qqqqq");
+
+      //bySpace
+
+      let res = await axios.get(`/findTimeSlotsBySpaceID/${this.space}`);
+      //byTech
+      let res1 = await axios.get(`/findTimeSlotsByTechinicianID/${this.technician}`);
+
+
+      let result = res.concat(res1);
+      result = result.filter(function(item){
+        return dayjs(item.startDate).isSame(dayis(this.startDate));
+      })
+      result = result.sort(function(item1,item2) {
+        if(dayjs(item1.startTime).isBefore(dayjs(item2.startTime))) {
+          return -1;
+        }
+        else{return 1;}
+      })
+      result = result.map(function(item){
+        return {
+          workingSpaceID: item.spaceID,
+          workingTechID: item.techinicianID,
+          workingStartTime: item.startTime,
+          workingEndTime: item.endTime
+        }
+      })
+      this.tableData = result;
+    }
+
   }
 
 }
@@ -138,12 +291,36 @@ export default {
 <style scoped>
 .appointments {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
   height: 100%;
   width: 100%;
   font-size: 40px;
   color: rgb(167, 167, 167);
   font-weight: 600;
+}
+.title{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+}
+.selections{
+  margin-top: 30px;
+}
+.button{
+  margin-top: 30px;
+  width: 100%;
+  text-align: center;
+}
+.table{
+  margin-top:50px;
+  width: 100%;
+  text-align: center;
+}
+.errorMsg {
+  top: 50px;
 }
 </style>

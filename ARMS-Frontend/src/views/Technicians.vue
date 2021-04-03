@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="technicians">
+    <div class="services">
       Technician
     </div>
 
@@ -13,31 +13,36 @@
         <td><h5>name</h5></td>
         <td><h5>email</h5></td>
         </tr>
-      <tr v-for="technician in technicians" :key="technician.id">
-        <td>{{ technician.id }}</td>
+      <tr v-for="technician in this.Technicians" :key="technician.technicianID">
+        <td>{{ technician.technicianID }}</td>
         <td>{{ technician.name }}</td>
         <td>{{ technician.email }}</td>
 
       </tr>
-      <tr>
-        <td>
-          <input type="text" v-model="newTechnicianId" placeholder="Technician ID">
-        </td>
-        <td>
-          <input type="text" v-model="newTechnicianName" placeholder="Technician Name">
-        </td>
-        <td>
-          <input type="text" v-model="newTechnicianEmail" placeholder="Technician Email">
-        </td>
 
-        <td>
-          <button v-bind:disabled="!newTechnicianId" @click="createTechnician(newTechnicianId)">Create</button>
-          <button v-bind:disabled="!newTechnicianId" @click="updateTechnician(newTechnicianId, newTechnicianName, newTechnicianEmail)">Update</button>
-          <button v-bind:disabled="!newTechnicianId" @click="deleteTechnician(newTechnicianId)">Delete</button>
-        </td>
+      <tr>
+
+
       </tr>
     </table>
+    <div class="box">
+      <p>New Technician Information</p>
 
+
+        <input type="text" v-model="newTechnicianId" placeholder="Technician ID">
+
+        <input type="text" v-model="newTechnicianName" placeholder="Technician Name">
+
+        <input type="text" v-model="newTechnicianEmail" placeholder="Technician Email">
+
+    </div>
+
+    <div class="box">
+      <p>  </p>
+      <button v-bind:disabled="!newTechnicianId" @click="createTechnician(newTechnicianId,newTechnicianName,newTechnicianEmail)">Create</button>
+      <button v-bind:disabled="!newTechnicianId" @click="updateTechnician(newTechnicianId, newTechnicianName, newTechnicianEmail)">Update</button>
+      <button v-bind:disabled="!newTechnicianId" @click="deleteTechnician(newTechnicianId)">Delete</button>
+    </div>
   </div>
 </template>
 
@@ -63,7 +68,7 @@ export default {
       response: [],
       newTechnicianId: '',
       newTechnicianName: '',
-      newTechnicianEmail: ''
+      newTechnicianEmail: '',
 
     }
   },
@@ -113,9 +118,9 @@ export default {
         });
     },
 
-    createTechnician: function (id){
+    createTechnician: function (id,name,email){
       // Initializing people from backend
-      AXIOS.post(`/technician?id=${id}`)
+      AXIOS.post(`/technician?id=${id}&name=${name}&email=${email}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.Technicians.push(response.data)
