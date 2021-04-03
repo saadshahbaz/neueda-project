@@ -59,6 +59,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * Sign up as a Customer, with username, password, email, and phone number
+     * throw exception if the password is less than 9 characters or the email is incorrect.
+     */
     signup: function () {
       Cookies.set('userName',this.username)
       AXIOS.post(`/customer/?username=${this.username}&password=${this.password}&email=${this.email}&phonenumber=${this.phonenumber}`)
