@@ -23,6 +23,18 @@ public class SpaceController {
         return convertToDto(space);
     }
 
+    @GetMapping(value = {"/findSpace", "/findSpace/"})
+    public SpaceDto findSpace(
+            @RequestParam("id") int id
+    ) {
+
+        for(Space space : spaceService.getSpaces()){
+            if (space.getSpaceID()==id)
+            return convertToDto(space);
+        }
+        return null;
+    }
+
     @GetMapping(value = {"/allSpace", "/allSpace/"})
     public List<SpaceDto> getAllSpace() throws IllegalArgumentException{
         List<SpaceDto> spaceDtos = new ArrayList<>();

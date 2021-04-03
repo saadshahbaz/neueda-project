@@ -129,12 +129,14 @@ public class TimeSlotService {
      * get liost timeslots by space & tech
      */
     @Transactional
-    public List<TimeSlot> getTimeSlotsBySpace(Space space){
+    public List<TimeSlot> getTimeSlotsBySpaceID(int spaceID){
+        Space space = spaceRepository.findSpaceBySpaceID(spaceID);
         return toList((timeSlotRepository.findTimeSlotsBySpace(space)));
     }
 
     @Transactional
-    public List<TimeSlot> getTimeSlotsByTechnician(Technician tech){
+    public List<TimeSlot> getTimeSlotsByTechnicianID(int techID){
+        Technician tech = technicianRepository.findTechnicianByTechnicianID(techID);
         return toList((timeSlotRepository.findTimeSlotsByTechnician(tech)));
     }
 

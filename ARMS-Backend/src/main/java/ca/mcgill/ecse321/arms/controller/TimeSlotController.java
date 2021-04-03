@@ -85,13 +85,13 @@ public class TimeSlotController {
     public List<TimeSlotDto> getAllTimeSlots(){
         return service.getAllTimeSlots().stream().map(s -> convertToDto(s)).collect(Collectors.toList());
     }
-    @GetMapping(value={"/findTimeSLotsBySpace/{spaceID}","/findTimeSLotsBySpace/{spaceID}/"})
+    @GetMapping(value={"/findTimeSlotsBySpaceID/{spaceID}","/findTimeSlotsBySpaceID/{spaceID}/"})
     public List<TimeSlotDto> getTimeSlotsBySpace(@PathVariable("spaceID") int spaceID){
-        return service.getTimeSlotsBySpace(spaceRepository.findSpaceBySpaceID(spaceID)).stream().map(s -> convertToDto(s)).collect(Collectors.toList());
+        return service.getTimeSlotsBySpaceID(spaceID).stream().map(s -> convertToDto(s)).collect(Collectors.toList());
     }
-    @GetMapping(value={"/findTimeSLotsByTechnician/{techID}","/findTimeSLotsByTechnician/{techID}/"})
-    public List<TimeSlotDto> getTimeSlotsByTechnician(@PathVariable("spaceID") int techID){
-        return service.getTimeSlotsByTechnician(technicianRepository.findTechnicianByTechnicianID(techID)).stream().map(s -> convertToDto(s)).collect(Collectors.toList());
+    @GetMapping(value={"/findTimeSlotsByTechnicianID/{techID}","/findTimeSlotsByTechnicianID/{techID}/"})
+    public List<TimeSlotDto> getTimeSlotsByTechnician(@PathVariable("techID") int techID){
+        return service.getTimeSlotsByTechnicianID(techID).stream().map(s -> convertToDto(s)).collect(Collectors.toList());
     }
 
     private TimeSlotDto convertToDto(TimeSlot timeSlot){

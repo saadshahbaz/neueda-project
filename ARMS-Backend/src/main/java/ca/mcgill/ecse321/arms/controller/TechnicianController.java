@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.arms.controller;
 
 import ca.mcgill.ecse321.arms.dao.TechnicianRepository;
+import ca.mcgill.ecse321.arms.dto.SpaceDto;
 import ca.mcgill.ecse321.arms.dto.TechnicianDto;
 import ca.mcgill.ecse321.arms.model.Technician;
 import ca.mcgill.ecse321.arms.service.TechnicianService;
@@ -45,6 +46,16 @@ public class TechnicianController {
             technicianDtos.add(convertToDto(technician));
         }
         return getAllTechnicians();
+    }
+    @GetMapping(value = {"/findTechnician", "/findTechnician/"})
+    public TechnicianDto findTechnician(
+            @RequestParam("id") int id
+    ) {
+        for(Technician technician: technicianService.getAllTechnicians()){
+            if (technician.getTechnicianID()==id)
+            return convertToDto(technician);
+        }
+        return null;
     }
 
     @DeleteMapping(value = {"/deleteTechnician", "/deleteTechnician/"})
