@@ -125,6 +125,19 @@ public class TimeSlotService {
         return resultList;
     }
 
+    /**
+     * get liost timeslots by space & tech
+     */
+    @Transactional
+    public List<TimeSlot> getTimeSlotsBySpace(Space space){
+        return toList((timeSlotRepository.findTimeSlotsBySpace(space)));
+    }
+
+    @Transactional
+    public List<TimeSlot> getTimeSlotsByTechnician(Technician tech){
+        return toList((timeSlotRepository.findTimeSlotsByTechnician(tech)));
+    }
+
 
     /**
      * delete timeslot with the given timeslot id

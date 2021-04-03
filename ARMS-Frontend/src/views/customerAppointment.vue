@@ -199,9 +199,9 @@ export default {
       console.log("qqqqq");
 
       //bySpace
-      let res = await axios.get();
+      let res = await axios.get('/findTimeSLotsBySpace/{space}');
       //byTech
-      let res1 = await axios.get();
+      let res1 = await axios.get('/findTimeSLotsByTechinician/{techinician}');
 
 
       let result = res.concat(res1);
