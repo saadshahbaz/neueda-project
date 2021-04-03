@@ -6,7 +6,7 @@
 
     <div>
       <p>
-        <span v-if="errorService" style="color:#960f0f">{{errorService}}</span>
+        <span v-if="errorBill" style="color:#960f0f">{{errorBill}}</span>
       </p>
     </div>
 
@@ -17,7 +17,7 @@
           <td><h5>amount</h5></td>
           <td><h5>action</h5></td>
         </tr>
-        <tr v-for="bill in bills" :key="bill.id">
+        <tr v-for="bill in bills" :key="bill.billNo">
           <td>{{ bill.billNo }}</td>
           <td>{{bill.amount  }}</td>
           <td>{{bill.isPaid }}</td>
@@ -44,7 +44,7 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 export default {
-  name: 'services',
+  name: 'bills',
   data () {
     return {
       bills: [],

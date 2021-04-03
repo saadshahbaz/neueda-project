@@ -58,6 +58,9 @@ export default {
     this.getAllServices();
   },
   methods: {
+    /*
+    get all the services and display error message if exception occurs
+    */
     getAllServices: function (){
       // Initializing people from backend
       AXIOS.get(`/services`)
@@ -70,6 +73,10 @@ export default {
           this.errorService = e.response.data.message;
         });
     },
+    /*
+    sort the services from highest price to lowest price and
+    display error message if exception occurs
+    */
     sortServicesHtoL: function (){
       // Initializing people from backend
       AXIOS.get(`servicesHtoL`)
@@ -82,6 +89,9 @@ export default {
           this.errorService = e.response.data.message;
         });
     },
+    /* sort the services from lowest price to highest price and
+    display error message if exception occurs
+    */
     sortServicesLtoH: function (){
       // Initializing people from backend
       AXIOS.get(`servicesLtoH`)
@@ -94,6 +104,9 @@ export default {
           this.errorService = e.response.data.message;
         });
     },
+    /*
+    sort services in default order and display error message if exception occurs
+    */
     sortServices: function (value) {
       if (value==1){
         this.sortServicesLtoH()
