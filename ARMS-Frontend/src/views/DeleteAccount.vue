@@ -1,10 +1,12 @@
 <template>
+  <div>
   <div class="row my-3 px-3"><input
     name="Delete"
     id="OldPassword"
     placeholder="Please input delete to confirm"
     v-model="deleteAccount"/></div>
   <div class="button px-3 py-1 mt-1 mb-3" type="submit" @click="deleteAccount">Delete Account</div>
+  </div>
 </template>
 
 <script>
