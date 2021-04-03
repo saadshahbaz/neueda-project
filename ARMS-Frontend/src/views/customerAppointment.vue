@@ -51,6 +51,8 @@
 
     <div class="button">
       <button  @click="createAppointment()">Create</button>
+      <button  @click="updateAppointment()">Update</button>
+      <button  @click="deleteAppointment()">Delete</button>
       <button  @click="checkAppointments()">Check</button>
     </div>
 
@@ -146,8 +148,20 @@ export default {
 
       car:'',
       carValue:'',
-      cars: []
+      cars: [],
 
+      appointments:[],
+      newAppointment:'',
+      errorAppointment:'',
+      response:[],
+      newAppointmentID:1,
+      newAppointmentServiceName:'',
+      newAppointmentPlateNo:'',
+      newAppointmentBusinessName:'',
+      newAppointmentStartDate:'',
+      newAppointmentStartTime:'',
+      newAppointmentEndDate:'',
+      newAppointmentEndTime:'',
     }
   },
   mounted: function () {
@@ -177,22 +191,58 @@ export default {
     })
   },
   methods: {
-    createAppointment(appointmentID, serviceName, plateNO, businessName,
+    // incrementAppointmentID(appointmentID){
+    //
+    // },
+    deleteAppointment(appointmentID){
+      // Initializing people from backend
+      AXIOS.delete(`/deleteAppointment?appointmentID=${appointmentID}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.appointments = []
+          this.getAppointments()
+          this.newAppointment = ''
+          this.errorAppointment = ''
+        })
+        .catch(e => {
+          this.errorAppointment = e.response.data.message;
+        });
+    },
+    updateAppointment(appointmentID, serviceName, plateNo, businessName,
+                      startDate,startTime,endDate,endTime,spaceID,technicianID){
+      // Initializing people from backend
+      AXIOS.put(`/updateAppointment?appointmentID=${appointmentID}&serviceName=${serviceName}&plateNo=${plateNo}&businessName=${businessName}&startDate=${startDate}&startTime=${startTime}&endDate=${endDate}&endTime=${endTime}&technicianID=${technicianID}&spaceID=${spaceID}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.appointments = []
+          this.getAppointments()
+          this.newAppointment = ''
+          this.errorAppointment = ''
+        })
+        .catch(e => {
+          this.errorAppointment = e.response.data.message;
+        });
+    },
+    createAppointment(appointmentID, serviceName, plateNo, businessName,
                       startDate,startTime,endDate,endTime,spaceID,technicianID) {
       console.log(dayjs(this.startDate).format('YYYY-MM-DD'));
       console.log(this.space);
-      // AXIOS.post(`appointment?appointmentID=${name}&serviceName=${duration}&duration=${duration}&duration=${duration}&duration=${duration}&duration=${duration}&price=${price}`)
-      //   .then(response => {
-      //     // JSON responses are automatically parsed.
-      //     this.businesses.push(response.data)
-      //     this.newBusiness = response.data
-      //     this.errorBusiness =''
-      //   })
-      //   .catch(e => {
-      //     var errorMsg = e.response.data.message
-      //     console.log(errorMsg)
-      //     this.errorService = e;
-      //   });
+      AXIOS.post(`appointment?appointmentID=${appointmentID}&serviceName=${serviceName}&plateNo=${plateNo}&businessName=${businessName}&startDate=${startDate}&startTime=${startTime}&endDate=${endDate}&endTime=${endTime}&technicianID=${technicianID}&spaceID=${spaceID}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.appointments.push(response.data)
+          this.newAppointment = response.data
+          this.errorAppointment =''
+        })
+        .catch(e => {
+          var errorMsg = e.response.data.message
+          console.log(errorMsg)
+          this.errorAppointment = e;
+        });
+      if (this.errorAppointment == ''){
+        this.newAppointmentID++
+        console.log(this.newAppointmentID)
+      }
     },
     async checkAppointments(){
       this.tableData = [];
