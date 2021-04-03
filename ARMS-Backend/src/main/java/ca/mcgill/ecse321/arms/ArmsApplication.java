@@ -21,7 +21,7 @@ public class ArmsApplication {
     SpringApplication.run(ArmsApplication.class, args);
   }
 
-  @RequestMapping("/")
+  @RequestMapping("/" )
   public String greeting(){
     return "Hello world!";
   }
