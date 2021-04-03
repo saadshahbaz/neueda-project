@@ -13,7 +13,6 @@
     <div>
     <table class="table">
       <tr >
-        <td>customer</td>
         <td>manufacturer</td>
         <td>model</td>
         <td>year</td>
@@ -105,7 +104,9 @@ export default {
       AXIOS.delete(`/deleteCar?plateNo=${plateNo}`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.cars = response.data
+          this.cars = []
+          this.getCarsByCustomer(Cookies.get("userName"))
+          this.newCar = ''
           this.errorCar =''
         })
         .catch(e => {
@@ -114,10 +115,12 @@ export default {
     },
     updateCar: function (manufacturer, model, year, plateNo){
       // Initializing people from backend
-      AXIOS.delete(`/updateCar?customer=${Cookies.get("userName")}&manufacturer=${manufacturer}&model=${model}&year=${year}&plateNo=${plateNo}`)
+      AXIOS.put(`/updateCar?customer=${Cookies.get("userName")}&manufactuer=${manufacturer}&model=${model}&year=${year}&plateN=${plateNo}`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.cars = response.data
+          this.cars = []
+          this.getCarsByCustomer(Cookies.get("userName"))
+          this.newCar = ''
           this.errorCar =''
         })
         .catch(e => {
@@ -126,7 +129,7 @@ export default {
     },
     createCar: function ( manufacturer, model, year, plateNo){
       // Initializing people from backend
-      AXIOS.post(`/car?customer=${Cookies.get("userName")}&manufacturer=${manufacturer}&model=${model}&year=${year}&plateNo=${plateNo}`)
+      AXIOS.post(`/car?customer=${Cookies.get("userName")}&manufactuer=${manufacturer}&model=${model}&year=${year}&plateN=${plateNo}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.cars.push(response.data)
