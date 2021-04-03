@@ -197,7 +197,7 @@ export default {
     },
     createBusiness: function (name, address, phoneNumber, email){
       // Initializing people from backend
-      this.
+
       AXIOS.post(`/business/${name}/${address}/${phoneNumber}/${email}`)
         .then(response => {
           // JSON responses are automatically parsed.
