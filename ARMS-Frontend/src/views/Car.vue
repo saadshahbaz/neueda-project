@@ -13,10 +13,11 @@
     <div>
     <table class="table">
       <tr >
-        <td>manufacturer</td>
-        <td>model</td>
-        <td>year</td>
-        <td>plateNo</td>
+        <td><h5>manufacturer</h5></td>
+        <td><h5>model</h5></td>
+        <td><h5>year</h5></td>
+        <td><h5>plateNo</h5></td>
+        <td><h5>action</h5></td>
       </tr>
       <tr v-for="car in cars" :key="car.plateNo">
         <td>{{ car.manufacturer }}</td>
