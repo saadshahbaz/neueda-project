@@ -15,15 +15,15 @@
         <td><h5>technician</h5></td>
         <td><h5>space</h5></td>
       </tr>
-      <tr v-for="appointment in appointments" :key="appointment.name">
+      <tr v-for="appointment in appointments" :key="appointment.plateNo">
         <td>{{ appointment.serviceName }}</td>
         <td>{{ appointment.plateNo }}</td>
         <td>{{ appointment.startDate }}</td>
         <td>{{ appointment.startTime }}</td>
         <td>{{ appointment.endDate }}</td>
         <td>{{ appointment.endTime }}</td>
-        <td>{{ appointment.technician }}</td>
-        <td>{{ appointment.space }}</td>
+        <td>{{ appointment.technicianID }}</td>
+        <td>{{ appointment.spaceID }}</td>
         <td>
           <ul>
             <li v-for="event in appointment.events">
@@ -32,32 +32,6 @@
           </ul>
         </td>
       </tr>
-<!--      <tr>-->
-<!--        <td>-->
-<!--          <input type="text" v-model="newAppointmentServiceName" placeholder="Service">-->
-<!--        </td>-->
-<!--        <td>-->
-<!--          <input type="text" v-model="newAppointmentPlateNo" placeholder="Plate Number">-->
-<!--        </td>-->
-<!--        <td>-->
-<!--          <input type="text" v-model="newAppointmentStartDate" placeholder="Start Date">-->
-<!--        </td>-->
-<!--        <td>-->
-<!--          <input type="text" v-model="newAppointmentStartTime" placeholder="Start Time">-->
-<!--        </td>-->
-<!--        <td>-->
-<!--          <input type="text" v-model="newAppointmentEndDate" placeholder="End Date">-->
-<!--        </td>-->
-<!--        <td>-->
-<!--          <input type="text" v-model="newAppointmentEndTime" placeholder="End Time">-->
-<!--        </td>-->
-<!--        <td>-->
-<!--          <input type="text" v-model="newAppointmentTechnician" placeholder="Technician">-->
-<!--        </td>-->
-<!--        <td>-->
-<!--          <input type="text" v-model="newAppointmentSpace" placeholder="Space">-->
-<!--        </td>-->
-<!--      </tr>-->
     </table>
   </div>
   </div>
@@ -90,10 +64,10 @@ export default {
   methods:{
     getAppointments: function (){
       // Initializing people from backend
-      AXIOS.get(`/appointments`)
+      AXIOS.get(`/getAppointments`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.services = response.data
+          this.appointments = response.data
           this.errorAppointment =''
         })
         .catch(e => {
