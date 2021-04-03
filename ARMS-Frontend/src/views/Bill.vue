@@ -15,14 +15,15 @@
         <tr >
           <td><h5>ID</h5></td>
           <td><h5>amount</h5></td>
+          <td><h5>status</h5></td>
           <td><h5>action</h5></td>
         </tr>
         <tr v-for="bill in bills" :key="bill.billNo">
           <td>{{ bill.billNo }}</td>
           <td>{{bill.amount  }}</td>
-          <td>{{bill.isPaid }}</td>
+          <td>{{bill.paid }}</td>
           <td>
-            <button v-bind:disabled="bill.isPaid" @click="payBill(bill.billNo)">Pay</button>
+            <button @click="payBill(bill.billNo)">Pay</button>
           </td>
         </tr>
       </table>
@@ -70,7 +71,7 @@ export default {
     },
     payBill: function (billNo){
       // Initializing people from backend
-      AXIOS.get(`/payBill?username=${billNo}`)
+      AXIOS.put(`/payBill?BillNo=${billNo}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.bills= []

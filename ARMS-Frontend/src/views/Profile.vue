@@ -39,7 +39,7 @@ export default {
         .then((response) => {
           this.username = response.data.username;
           this.email = response.data.email;
-          this.phonenumber = response.data.phonenumber;
+          this.phonenumber = response.data.phoneNumber;
         })
   }
 
