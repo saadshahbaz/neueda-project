@@ -2,7 +2,7 @@ import axios from 'axios'
 var config = require('../../config')
 
 /**
- * Creation and configuration of the AXIOS instance for all the javascript files in this directory.
+ * Creation and configuration of the AXIOS instance.
  */
 
 var frontendUrl

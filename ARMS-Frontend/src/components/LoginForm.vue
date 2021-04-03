@@ -32,6 +32,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * login as a Customer with username and password, clear the input after login
+     * throw exception if the password is false.
+     */
     login: function () {
       Cookies.set('username',this.username)
       AXIOS.put(`/loginCustomer/?username=${this.username}&password=${this.password}`)
@@ -45,6 +49,10 @@ export default {
           alert(e.response.data.message);
         });
     },
+    /**
+     * login as an Assistant with username and password, clear the input after login
+     * throw exception if the password is false.
+     */
     loginAssistant: function () {
       Cookies.set('username',this.username)
       AXIOS.put(`/loginAssistant/?username=${this.username}&password=${this.password}`)
