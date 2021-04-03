@@ -31,7 +31,8 @@
         placeholder="Phone Number"
         v-model="phonenumber"
       /></div>
-      <div class="button px-3 py-1 mt-1 mb-3" type="submit" @click="signup">Sign Up</div></form>
+      <div class="button px-3 py-1 mt-1 mb-3" type="submit" @click="signup">Sign Up</div>
+    </form>
 
 
   </div>

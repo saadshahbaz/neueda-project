@@ -20,7 +20,7 @@ export default {
           this.error = "Please enter your password";
         }else {
           Cookies.set('username',this.username)
-          AXIOS.post(`/loginCustomer/?username=${this.username}&password=${this.password}`)
+          AXIOS.put(`/loginCustomer/?username=${this.username}&password=${this.password}`)
 
             .then((response) => {
               this.error = "";
@@ -44,7 +44,7 @@ export default {
           this.error = "Please enter your password";
         }else {
           Cookies.set('username',this.username)
-          AXIOS.post(`/loginAssistant/?username=${this.username}&password=${this.password}`)
+          AXIOS.put(`/loginAssistant/?username=${this.username}&password=${this.password}`)
 
             .then((response) => {
               this.error = "";

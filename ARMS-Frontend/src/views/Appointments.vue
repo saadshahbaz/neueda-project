@@ -1,27 +1,112 @@
 <template>
-  <div id="appointments">
-    <date-picker v-model="date" lang="en" type="date" format="YYYY-MM-dd"></date-picker>
+  <div>
+  <div class="allAppointments">
+    Appointments
+  </div>
+  <div>
+    <table class="table">
+      <tr >
+        <td><h5>service</h5></td>
+        <td><h5>plate</h5></td>
+        <td><h5>start date</h5></td>
+        <td><h5>start time</h5></td>
+        <td><h5>end date</h5></td>
+        <td><h5>end time</h5></td>
+        <td><h5>technician</h5></td>
+        <td><h5>space</h5></td>
+      </tr>
+      <tr v-for="appointment in appointments" :key="appointment.name">
+        <td>{{ appointment.serviceName }}</td>
+        <td>{{ appointment.plateNo }}</td>
+        <td>{{ appointment.startDate }}</td>
+        <td>{{ appointment.startTime }}</td>
+        <td>{{ appointment.endDate }}</td>
+        <td>{{ appointment.endTime }}</td>
+        <td>{{ appointment.technician }}</td>
+        <td>{{ appointment.space }}</td>
+        <td>
+          <ul>
+            <li v-for="event in appointment.events">
+              {{event.name}}
+            </li>
+          </ul>
+        </td>
+      </tr>
+<!--      <tr>-->
+<!--        <td>-->
+<!--          <input type="text" v-model="newAppointmentServiceName" placeholder="Service">-->
+<!--        </td>-->
+<!--        <td>-->
+<!--          <input type="text" v-model="newAppointmentPlateNo" placeholder="Plate Number">-->
+<!--        </td>-->
+<!--        <td>-->
+<!--          <input type="text" v-model="newAppointmentStartDate" placeholder="Start Date">-->
+<!--        </td>-->
+<!--        <td>-->
+<!--          <input type="text" v-model="newAppointmentStartTime" placeholder="Start Time">-->
+<!--        </td>-->
+<!--        <td>-->
+<!--          <input type="text" v-model="newAppointmentEndDate" placeholder="End Date">-->
+<!--        </td>-->
+<!--        <td>-->
+<!--          <input type="text" v-model="newAppointmentEndTime" placeholder="End Time">-->
+<!--        </td>-->
+<!--        <td>-->
+<!--          <input type="text" v-model="newAppointmentTechnician" placeholder="Technician">-->
+<!--        </td>-->
+<!--        <td>-->
+<!--          <input type="text" v-model="newAppointmentSpace" placeholder="Space">-->
+<!--        </td>-->
+<!--      </tr>-->
+    </table>
+  </div>
   </div>
 </template>
 
 <script>
-import DatePicker from 'vue2-datepicker'
+import axios from "axios";
+import Router from "../router";
+var config = require("../../config");
+// Axios config
+var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
+var backendUrl =
+  "http://" + config.dev.backendHost + ":" + config.dev.backendPort;
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { "Access-Control-Allow-Origin": frontendUrl }
+});
 export default {
-
-  name: 'Appointments',
-  components: {
-    DatePicker
-  },
+  name: 'appointments',
   data(){
     return{
-      date:''
+      appointments: [],
+      errorAppointment: '',
+      response: [],
+    }
+  },
+  created() {
+    this.getAppointments();
+  },
+  methods:{
+    getAppointments: function (){
+      // Initializing people from backend
+      AXIOS.get(`/appointments`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.services = response.data
+          this.errorAppointment =''
+        })
+        .catch(e => {
+          this.errorAppointment = e.response.data.message;
+        });
     }
   }
 }
 </script>
 
 <style scoped>
-.appointments {
+.allAppointments {
+  margin-top: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,5 +115,10 @@ export default {
   font-size: 40px;
   color: rgb(167, 167, 167);
   font-weight: 600;
+}
+.table {
+  margin-top: 28px;
+  justify-content: center;
+  align-items: center;
 }
 </style>

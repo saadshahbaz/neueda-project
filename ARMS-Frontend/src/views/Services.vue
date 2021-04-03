@@ -13,7 +13,7 @@
 
     <div>
     <p>
-      <span v-if="errorService" style="color:#960f0f">{{errorService}}</span>
+      <span class="errorMsg" v-if="errorService" style="color:#960f0f">{{errorService}}</span>
     </p>
     </div>
 
@@ -159,12 +159,12 @@ export default {
           // JSON responses are automatically parsed.
           this.services.push(response.data)
           this.newService = response.data
-          this.errorService =''
+          this.errorService = ''
         })
         .catch(e => {
           var errorMsg = e.response.data.message
           console.log(errorMsg)
-          this.errorService = e;
+          this.errorService = errorMsg;
         });
   },
     sortServices: function (value) {
@@ -199,5 +199,8 @@ export default {
   position: absolute;
   top: 40px;
   right: 20px;
+}
+.errorMsg{
+  top: 50px;
 }
 </style>
