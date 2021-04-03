@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="technicians">
+    <div class="services">
       Technician
     </div>
 
@@ -19,25 +19,30 @@
         <td>{{ technician.email }}</td>
 
       </tr>
-      <tr>
-        <td>
-          <input type="text" v-model="newTechnicianId" placeholder="Technician ID">
-        </td>
-        <td>
-          <input type="text" v-model="newTechnicianName" placeholder="Technician Name">
-        </td>
-        <td>
-          <input type="text" v-model="newTechnicianEmail" placeholder="Technician Email">
-        </td>
 
-        <td>
-          <button v-bind:disabled="!newTechnicianId" @click="createTechnician(newTechnicianId)">Create</button>
-          <button v-bind:disabled="!newTechnicianId" @click="updateTechnician(newTechnicianId, newTechnicianName, newTechnicianEmail)">Update</button>
-          <button v-bind:disabled="!newTechnicianId" @click="deleteTechnician(newTechnicianId)">Delete</button>
-        </td>
+      <tr>
+
+
       </tr>
     </table>
+    <div class="box">
+      <p>New Technician Information</p>
 
+
+        <input type="text" v-model="newTechnicianId" placeholder="Technician ID">
+
+        <input type="text" v-model="newTechnicianName" placeholder="Technician Name">
+
+        <input type="text" v-model="newTechnicianEmail" placeholder="Technician Email">
+
+    </div>
+
+    <div class="box">
+      <p>  </p>
+      <button v-bind:disabled="!newTechnicianId" @click="createTechnician(newTechnicianId)">Create</button>
+      <button v-bind:disabled="!newTechnicianId" @click="updateTechnician(newTechnicianId, newTechnicianName, newTechnicianEmail)">Update</button>
+      <button v-bind:disabled="!newTechnicianId" @click="deleteTechnician(newTechnicianId)">Delete</button>
+    </div>
   </div>
 </template>
 
