@@ -16,15 +16,18 @@
       </tr>
       <tr>
         <td>
+          <p>new space ID</p>
           <input type="text" v-model="newSpaceId" placeholder="Space ID">
         </td>
 
-        <td>
-          <button v-bind:disabled="!newSpaceId" @click="createSpace(newSpaceId)">Create</button>
-          <button v-bind:disabled="!newSpaceId" @click="deleteSpace(newSpaceId)">Delete</button>
-        </td>
+
       </tr>
     </table>
+    <div class="box">
+
+        <button v-bind:disabled="!newSpaceId" @click="createSpace(newSpaceId)">Create</button>
+        <button v-bind:disabled="!newSpaceId" @click="deleteSpace(newSpaceId)">Delete</button>
+    </div>
 
   </div>
 </template>
