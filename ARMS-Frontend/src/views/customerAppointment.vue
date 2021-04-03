@@ -4,6 +4,12 @@
       Appointments
     </div>
 
+    <div>
+      <p>
+        <span class="errorMsg" v-if="errorAppointment" style="color:#960f0f">{{ errorAppointment }}</span>
+      </p>
+    </div>
+
     <div class="selections">
       <el-date-picker
         v-model="startDate"
@@ -242,6 +248,7 @@ export default {
       if (this.errorAppointment == ''){
         this.newAppointmentID++
         console.log(this.newAppointmentID)
+        alert("Appointment is successfully booked!")
       }
     },
     async checkAppointments(){
@@ -312,5 +319,8 @@ export default {
   margin-top:50px;
   width: 100%;
   text-align: center;
+}
+.errorMsg {
+  top: 50px;
 }
 </style>
