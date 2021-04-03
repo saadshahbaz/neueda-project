@@ -1,68 +1,94 @@
 <template>
+  <div>
+    <div class="services">
+      Bills
+    </div>
 
-  <div class="block riqi" v-show=see>
+    <div>
+      <p>
+        <span v-if="errorService" style="color:#960f0f">{{errorService}}</span>
+      </p>
+    </div>
 
-    <span class="check-add-del-span">日期</span>
-    <el-date-picker
-      v-model="gradeDate"
-      @focus="riqi"
-      type="date"
-      placeholder="选择日期"
-      format="yyyy年MM月dd日"
-      value-format="yyyy-MM-dd"
-      @change="toWeek"
-    >
-    </el-date-picker>
-
-    <el-table
-      :data="timeData"
-      style="width: 100%">
-      <el-table-column width="80" label="周" fixed="left" prop="label" align="center" :formatter="week"> </el-table-column>
-      <el-table-column width="150" label="日期" prop="timez" align="center"></el-table-column>
-    </el-table>
-
-
-
+    <div>
+      <table class="table">
+        <tr >
+          <td><h5>ID</h5></td>
+          <td><h5>amount</h5></td>
+          <td><h5>action</h5></td>
+        </tr>
+        <tr v-for="bill in bills" :key="bill.id">
+          <td>{{ bill.billNo }}</td>
+          <td>{{bill.amount  }}</td>
+          <td>{{bill.isPaid }}</td>
+          <td>
+            <button v-bind:disabled="bill.isPaid" @click="payBill(bill.billNo)">Pay</button>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
-
 </template>
 
 <script>
+import axios from "axios";
+import Cookies from 'js-cookie'
+import Router from "../router";
+var config = require("../../config");
+// Axios config
+var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
+var backendUrl =
+  "http://" + config.dev.backendHost + ":" + config.dev.backendPort;
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { "Access-Control-Allow-Origin": frontendUrl }
+});
 export default {
-  data(){
-    return{
-      gradeDate:'',//所选择的日期
-      timeData:[]//存放表格数据
+  name: 'services',
+  data () {
+    return {
+      bills: [],
+      errorBill: '',
+      response: [],
     }
   },
-  toWeek: function(){
-    var Setime = this.gradeDate; //给所选择的日期一个变量名
-    var ji = new Date(Setime).getDay() //将日期转换成周
-    var date = new Date(Setime); //指定在对象中存储的日期
-    var timeList = []
-    //  console.log(date)
-    for(var i=1-ji;i<8-ji;i++){ //根据选定的星期进行循环一周
-      var q = new Date(); //获取当前日期
-      // console.log(i);
-      let tt = q.setTime(date.getTime() + 3600 * 1000 * 24*i);//将当前日期设置成指定日期的前i天的毫秒日期
-      let td = new Date(tt); //将获取到的毫秒日期指定到对象中存储
-      let time = td.getFullYear() + "-" + (td.getMonth()+1) + "-" + td.getDate(); //将毫秒日期转为年月日格式
-      // console.log(time);
-      timeList.push(time) //将根据选择的日期循环出来一周的日期放进数组里面
-    }
-    this.timeData = [];
-    for(var i=0;i<7;i++){
-      this.timeData.push({
-        timez:timeList[i],
-        label:i+1
-      })
-    }
-  }
-}
+  created() {
+    this.getAllBills();
+  },
+  methods: {
+    getAllBills: function (){
+      // Initializing people from backend
+      AXIOS.get(`/getBillsByCustomer?username=${Cookies.get("userName")}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.bills = response.data
+          this.errorBill =''
+        })
+        .catch(e => {
+          this.errorBill = e.response.data.message;
+        });
+    },
+    payBill: function (billNo){
+      // Initializing people from backend
+      AXIOS.get(`/payBill?username=${billNo}`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.bills= []
+          this.getAllBills()
+          this.errorBill =''
+        })
+        .catch(e => {
+          this.errorBill = e.response.data.message;
+        });
+    },
+
+
+  },}
 </script>
 
 <style scoped>
-.appointments {
+.services {
+  margin-top: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,5 +97,14 @@ export default {
   font-size: 40px;
   color: rgb(167, 167, 167);
   font-weight: 600;
+}
+.table {
+  justify-content: center;
+  align-items: center;
+}
+.selected {
+  position: absolute;
+  top: 40px;
+  right: 20px;
 }
 </style>

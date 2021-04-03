@@ -54,6 +54,7 @@ public class ServiceService {
         ca.mcgill.ecse321.arms.model.Service service = serviceRepository.findServiceByName(serviceName.trim());
         if(service!=null){
             error = "service " + serviceName + " already exists";
+
             throw new IllegalArgumentException(error);
         }
 
