@@ -62,6 +62,12 @@ public class CustomerController {
         return convertToDto(customerService.getCustomer(username)) ;
     }
 
+    @GetMapping(value = {"/getCurrentCustomer", "/getCurrentCustomer/"})
+    public CustomerDto getCustomer(
+    ){
+        return convertToDto((Customer) ArmsApplication.getCurrentuser()) ;
+    }
+
     @DeleteMapping(value = {"/deleteCustomer", "/deleteCustomer/"})
     public Integer deleteCustomer(){
         return customerService.deleteAccount();
