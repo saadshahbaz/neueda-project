@@ -39,3 +39,16 @@ Ruixin Su
 | Zhiwei Li | Service methods and unit testing for Assistant, Customer, Bill and Car | 30 |
 | Cecilia Jiang | Service methods and unit testing for Service, Technician and Space | 30 |
 | Ruixin Su | Service methods and unit testing for Business and BusinessHour | 30 |  
+
+
+### Deliverable 3  
+* [Project Report (Deliverable 3)](https://github.com/McGill-ECSE321-Winter2021/project-group-10/wiki/Deliverable-3)
+* [Architecture Model](https://github.com/McGill-ECSE321-Winter2021/project-group-10/wiki/Architecture-Model)
+
+|   Members | Responsibility  | Hours  |
+| :-------: | :-------------: | :-: |
+| Jianmo Li | Frontend regarding view appointments, reminders, cars, and, available time slots | 30 |
+| Grey Yuan | Frontend regarding view appointments, reminders, cars, and, available time slots | 30 |
+| Zhiwei Li | Frontend regarding sign up, pay bills, login/logout, and delete account | 30 |
+| Cecilia Jiang | Frontend regarding service management, and customer information | 30 |
+| Ruixin Su | Frontend regarding space/technician management, business info, and business hour | 30 |  
