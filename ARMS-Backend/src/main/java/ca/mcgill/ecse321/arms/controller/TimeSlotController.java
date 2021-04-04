@@ -86,10 +86,12 @@ public class TimeSlotController {
         return service.getAllTimeSlots().stream().map(s -> convertToDto(s)).collect(Collectors.toList());
     }
     @GetMapping(value={"/findTimeSlotsBySpaceID/{spaceID}","/findTimeSlotsBySpaceID/{spaceID}/"})
+    @CrossOrigin
     public List<TimeSlotDto> findTimeSlotsBySpaceID(@PathVariable("spaceID") int spaceID){
         return service.getTimeSlotsBySpaceID(spaceID).stream().map(s -> convertToDto(s)).collect(Collectors.toList());
     }
     @GetMapping(value={"/findTimeSlotsByTechnicianID/{techID}","/findTimeSlotsByTechnicianID/{techID}/"})
+    @CrossOrigin
     public List<TimeSlotDto> findTimeSlotsByTechnicianID(@PathVariable("techID") int techID){
         return service.getTimeSlotsByTechnicianID(techID).stream().map(s -> convertToDto(s)).collect(Collectors.toList());
     }

@@ -72,25 +72,25 @@
         <el-table-column
           fixed
           prop="workingSpaceID"
-          label="日期"
+          label="Space"
           width="150">
         </el-table-column>
 
         <el-table-column
           prop="workingTechID"
-          label="姓名"
+          label="Technician"
           width="120">
         </el-table-column>
 
         <el-table-column
           prop="workingStartTime"
-          label="省份"
+          label="StartTime"
           width="120">
         </el-table-column>
 
         <el-table-column
           prop="workingEndTime"
-          label="市区"
+          label="endTime"
           width="120">
         </el-table-column>
       </el-table>
@@ -260,37 +260,66 @@ export default {
         alert("Appointment is successfully booked!")
       }
     },
-    async checkAppointments(){
-      this.tableData = [];
-      console.log("qqqqq");
+    // checkAppointments(){
+    //   this.tableData = [];
+    //   console.log("here i come in");
+    //   AXIOS.get(`/findTimeSlotsBySpaceID/${this.space}`)
+    //     .then(response => {
+    //       this.tableData = response.filter(function (item) {
+    //         return dayjs(item.startDate).isSame(dayis(this.startDate));
+    //       }).sort(function (item1, item2) {
+    //         if (dayjs(item1.startTime).isBefore(dayjs(item2.startTime))) {
+    //           return -1;
+    //         } else {
+    //           return 1;
+    //         }
+    //       }).map(function (item) {
+    //         return {
+    //           workingSpaceID: item.spaceID,
+    //           workingTechID: item.techinicianID,
+    //           workingStartTime: item.startTime,
+    //           workingEndTime: item.endTime
+    //         }
+    //       })
+    //     })
+    // }
+      // ,
+      async checkAppointments(){
+        this.tableData = [];
+        console.log("qqqqq");
 
-      //bySpace
+        //bySpace
 
-      let res = await AXIOS.get(`/findTimeSlotsBySpaceID/${this.space}`);
-      //byTech
-      let res1 = await AXIOS.get(`/findTimeSlotsByTechinicianID/${this.technician}`);
+        let res = await AXIOS.get(`/findTimeSlotsBySpaceID/${this.space}`);
+        console.log(res);
+        //byTech
+        let res1 = await AXIOS.get(`/findTimeSlotsByTechnicianID/${this.technician}`);
+        console.log(res1);
 
 
-      let result = res.concat(res1);
-      result = result.filter(function(item){
-        return dayjs(item.startDate).isSame(dayis(this.startDate));
-      })
-      result = result.sort(function(item1,item2) {
-        if(dayjs(item1.startTime).isBefore(dayjs(item2.startTime))) {
-          return -1;
-        }
-        else{return 1;}
-      })
-      result = result.map(function(item){
-        return {
-          workingSpaceID: item.spaceID,
-          workingTechID: item.techinicianID,
-          workingStartTime: item.startTime,
-          workingEndTime: item.endTime
-        }
-      })
-      this.tableData = result;
-    }
+        let result = res.data.concat(res1.data);
+        console.log(result);
+        result = result.filter((item)=>{
+          return dayjs(item.startDate).isSame(dayjs(this.startDate));
+        })
+        result = result.sort(function(item1,item2) {
+          if(dayjs(item1.startTime).isBefore(dayjs(item2.startTime))) {
+            return -1;
+          }
+          else{return 1;}
+        })
+        result = result.map(function(item){
+          return {
+            workingSpaceID: item.space.id,
+            workingTechID: item.technician.id,
+            workingStartTime: item.startTime,
+            workingEndTime: item.endTime
+          }
+        })
+        console.log(result);
+        this.tableData = result;
+
+      }
 
   }
 
