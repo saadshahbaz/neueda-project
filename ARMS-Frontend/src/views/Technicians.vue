@@ -13,8 +13,8 @@
         <td><h5>name</h5></td>
         <td><h5>email</h5></td>
         </tr>
-      <tr v-for="technician in this.Technicians" :key="technician.technicianID">
-        <td>{{ technician.technicianID }}</td>
+      <tr v-for="technician in Technicians" :key="technician.id">
+        <td>{{ technician.id}}</td>
         <td>{{ technician.name }}</td>
         <td>{{ technician.email }}</td>
 
@@ -128,9 +128,7 @@ export default {
           this.errorTechnician =''
         })
         .catch(e => {
-          var errorMsg = e.response.data.message
-          console.log(errorMsg)
-          this.errorTechnician = e;
+          this.errorTechnician = e.response.data.message;
         });
     },
     //...

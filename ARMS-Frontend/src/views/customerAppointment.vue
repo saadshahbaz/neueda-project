@@ -106,6 +106,15 @@ import axios from "axios";
 import Cookies from 'js-cookie'
 import dayjs from 'dayjs'
 
+var config = require("../../config");
+// Axios config
+var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
+var backendUrl =
+  "http://" + config.dev.backendHost + ":" + config.dev.backendPort;
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: {"Access-Control-Allow-Origin": frontendUrl}
+});
 export default {
   data() {
     return {
@@ -171,26 +180,26 @@ export default {
     }
   },
   mounted: function () {
-    axios.get(`/allSpace`).then(res => {
+    AXIOS.get(`/allSpace`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.spaceOptions = res.data;
     })
 
-    axios.get(`/allSpace`).then(res => {
+    AXIOS.get(`/technicians`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.techOptions = res.data;
     })
 
-    axios.get(`/services`).then(res => {
+    AXIOS.get(`/services`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.services = res.data;
     })
 
 
-    axios.get(`/getCarsByCustomer/?username=${Cookies.get("userName")}`).then(res => {
+    AXIOS.get(`/getCarsByCustomer/?username=${Cookies.get("userName")}`).then(res => {
       console.log(res);
       //this.s = res.data;
       this.cars = res.data;
@@ -257,9 +266,9 @@ export default {
 
       //bySpace
 
-      let res = await axios.get(`/findTimeSlotsBySpaceID/${this.space}`);
+      let res = await AXIOS.get(`/findTimeSlotsBySpaceID/${this.space}`);
       //byTech
-      let res1 = await axios.get(`/findTimeSlotsByTechinicianID/${this.technician}`);
+      let res1 = await AXIOS.get(`/findTimeSlotsByTechinicianID/${this.technician}`);
 
 
       let result = res.concat(res1);
