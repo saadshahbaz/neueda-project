@@ -264,14 +264,11 @@ export default {
           this.errorAppointment =''
         })
         .catch(e => {
-          var errorMsg = e.response.data.message
-          console.log(errorMsg)
-          this.errorAppointment = e;
+          this.errorAppointment = e.response.data.message;
         });
       if (this.errorAppointment == ''){
         this.newAppointmentID++
         console.log(this.newAppointmentID)
-        alert("Appointment is successfully booked!")
       }
     },
     // checkAppointments(){
@@ -374,5 +371,9 @@ export default {
 }
 .errorMsg {
   top: 50px;
+  font-size: 20px;
+  text-align: center;
+  justify-content: center;
+  left: 200px;
 }
 </style>
