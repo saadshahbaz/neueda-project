@@ -35,6 +35,22 @@
         </el-option>
       </el-select>
 
+      <el-time-picker
+        v-model="newAppointmentStartTime"
+        :picker-options="{
+      selectableRange: '09:00:00 - 23:30:00'
+    }"
+        placeholder="任意时间点">
+      </el-time-picker>
+      <el-time-picker
+        arrow-control
+        v-model="newAppointmentEndTime"
+        :picker-options="{
+      selectableRange: '09:30:00 - 23:30:00'
+    }"
+        placeholder="任意时间点">
+      </el-time-picker>
+
       <el-select v-model="service" placeholder="Service">
         <el-option
           v-for="item in services"
@@ -72,25 +88,25 @@
         <el-table-column
           fixed
           prop="workingSpaceID"
-          label="日期"
+          label="Space"
           width="150">
         </el-table-column>
 
         <el-table-column
           prop="workingTechID"
-          label="姓名"
+          label="Technician"
           width="120">
         </el-table-column>
 
         <el-table-column
           prop="workingStartTime"
-          label="省份"
+          label="StartTime"
           width="120">
         </el-table-column>
 
         <el-table-column
           prop="workingEndTime"
-          label="市区"
+          label="endTime"
           width="120">
         </el-table-column>
       </el-table>
@@ -145,7 +161,6 @@ export default {
         }]
       },
       startDate: '',
-      value2: '',
 
       //curUserName = Cookies.get("userName"),
 
@@ -177,6 +192,7 @@ export default {
       newAppointmentStartTime:'',
       newAppointmentEndDate:'',
       newAppointmentEndTime:'',
+      businessName:'ARMS'
     }
   },
   mounted: function () {
@@ -211,7 +227,7 @@ export default {
     // },
     deleteAppointment(appointmentID){
       // Initializing people from backend
-      AXIOS.delete(`/deleteAppointment?appointmentID=${appointmentID}`)
+      AXIOS.delete(`/deleteAppointment?appointmentID=${this.newAppointmentID}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.appointments = []
@@ -223,10 +239,9 @@ export default {
           this.errorAppointment = e.response.data.message;
         });
     },
-    updateAppointment(appointmentID, serviceName, plateNo, businessName,
-                      startDate,startTime,endDate,endTime,spaceID,technicianID){
+    updateAppointment(){
       // Initializing people from backend
-      AXIOS.put(`/updateAppointment?appointmentID=${appointmentID}&serviceName=${serviceName}&plateNo=${plateNo}&businessName=${businessName}&startDate=${startDate}&startTime=${startTime}&endDate=${endDate}&endTime=${endTime}&technicianID=${technicianID}&spaceID=${spaceID}`)
+      AXIOS.put(`updateAppointment?appointmentID=${this.newAppointmentID}&serviceName=${this.service}&plateNo=${this.car}&businessName=${this.businessName}&startDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&startTime=${dayjs(this.newAppointmentStartTime).format('HH:MM:ss')}&endDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&endTime=${dayjs(this.newAppointmentEndTime).format('HH:MM:ss')}&technicianID=${this.technician}&spaceID=${this.space}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.appointments = []
@@ -238,11 +253,10 @@ export default {
           this.errorAppointment = e.response.data.message;
         });
     },
-    createAppointment(appointmentID, serviceName, plateNo, businessName,
-                      startDate,startTime,endDate,endTime,spaceID,technicianID) {
-      console.log(dayjs(this.startDate).format('YYYY-MM-DD'));
-      console.log(this.space);
-      AXIOS.post(`appointment?appointmentID=${appointmentID}&serviceName=${serviceName}&plateNo=${plateNo}&businessName=${businessName}&startDate=${startDate}&startTime=${startTime}&endDate=${endDate}&endTime=${endTime}&technicianID=${technicianID}&spaceID=${spaceID}`)
+    createAppointment() {
+      this.newAppointmentID = Math.floor(Math.random()*1000000)+1;
+      console.log("ID is : "+this.newAppointmentID);
+      AXIOS.post(`appointment?appointmentID=${this.newAppointmentID}&serviceName=${this.service}&plateNo=${this.car}&businessName=${this.businessName}&startDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&startTime=${dayjs(this.newAppointmentStartTime).format('HH:MM:ss')}&endDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&endTime=${dayjs(this.newAppointmentEndTime).format('HH:MM:ss')}&technicianID=${this.technician}&spaceID=${this.space}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.appointments.push(response.data)
@@ -257,37 +271,66 @@ export default {
         console.log(this.newAppointmentID)
       }
     },
-    async checkAppointments(){
-      this.tableData = [];
-      console.log("qqqqq");
+    // checkAppointments(){
+    //   this.tableData = [];
+    //   console.log("here i come in");
+    //   AXIOS.get(`/findTimeSlotsBySpaceID/${this.space}`)
+    //     .then(response => {
+    //       this.tableData = response.filter(function (item) {
+    //         return dayjs(item.startDate).isSame(dayis(this.startDate));
+    //       }).sort(function (item1, item2) {
+    //         if (dayjs(item1.startTime).isBefore(dayjs(item2.startTime))) {
+    //           return -1;
+    //         } else {
+    //           return 1;
+    //         }
+    //       }).map(function (item) {
+    //         return {
+    //           workingSpaceID: item.spaceID,
+    //           workingTechID: item.techinicianID,
+    //           workingStartTime: item.startTime,
+    //           workingEndTime: item.endTime
+    //         }
+    //       })
+    //     })
+    // }
+      // ,
+      async checkAppointments(){
+        this.tableData = [];
+        console.log("qqqqq");
 
-      //bySpace
+        //bySpace
 
-      let res = await AXIOS.get(`/findTimeSlotsBySpaceID/${this.space}`);
-      //byTech
-      let res1 = await AXIOS.get(`/findTimeSlotsByTechinicianID/${this.technician}`);
+        let res = await AXIOS.get(`/findTimeSlotsBySpaceID/${this.space}`);
+        console.log(res);
+        //byTech
+        let res1 = await AXIOS.get(`/findTimeSlotsByTechnicianID/${this.technician}`);
+        console.log(res1);
 
 
-      let result = res.concat(res1);
-      result = result.filter(function(item){
-        return dayjs(item.startDate).isSame(dayis(this.startDate));
-      })
-      result = result.sort(function(item1,item2) {
-        if(dayjs(item1.startTime).isBefore(dayjs(item2.startTime))) {
-          return -1;
-        }
-        else{return 1;}
-      })
-      result = result.map(function(item){
-        return {
-          workingSpaceID: item.spaceID,
-          workingTechID: item.techinicianID,
-          workingStartTime: item.startTime,
-          workingEndTime: item.endTime
-        }
-      })
-      this.tableData = result;
-    }
+        let result = res.data.concat(res1.data);
+        console.log(result);
+        result = result.filter((item)=>{
+          return dayjs(item.startDate).isSame(dayjs(this.startDate));
+        })
+        result = result.sort(function(item1,item2) {
+          if(dayjs(item1.startTime).isBefore(dayjs(item2.startTime))) {
+            return -1;
+          }
+          else{return 1;}
+        })
+        result = result.map(function(item){
+          return {
+            workingSpaceID: item.space.id,
+            workingTechID: item.technician.id,
+            workingStartTime: item.startTime,
+            workingEndTime: item.endTime
+          }
+        })
+        console.log(result);
+        this.tableData = result;
+
+      }
 
   }
 
