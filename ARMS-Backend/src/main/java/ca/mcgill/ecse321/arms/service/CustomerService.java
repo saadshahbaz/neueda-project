@@ -17,6 +17,16 @@ public class CustomerService {
     @Autowired
     private BillRepository billRepository;
 
+    public List<Customer> getALlCustomers(){
+        return toList(customerRepository.findAll());
+    }
+    private <T> List<T> toList(Iterable<T> iterable){
+        List<T> resultList = new ArrayList<T>();
+        for (T t : iterable) {
+            resultList.add(t);
+        }
+        return resultList;
+    }
     /**
      * create account for customer with input parameters
      * @param username
@@ -112,7 +122,6 @@ public class CustomerService {
 
     /**
      * delete customer's account with the input username
-     * @param username
      * @return
      * @author Zhiwei Li
      */
