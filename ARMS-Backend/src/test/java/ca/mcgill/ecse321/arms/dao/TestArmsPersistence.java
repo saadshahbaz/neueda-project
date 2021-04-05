@@ -62,10 +62,10 @@ public class TestArmsPersistence {
 		carRepository.deleteAll();
 		customerRepository.deleteAll();
 		serviceRepository.deleteAll();
-		spaceRepository.deleteAll();
 		technicianRepository.deleteAll();
 		timeSlotRepository.deleteAll();
 		userRepository.deleteAll();
+		spaceRepository.deleteAll();
 	}
 
 
@@ -88,7 +88,7 @@ public class TestArmsPersistence {
 		assertEquals(customer.getUsername(), username);
 
 	}
-	
+
 	/**
 	  * @author Zhiwei Li
 	  */
@@ -114,7 +114,7 @@ public class TestArmsPersistence {
 	  assertEquals(car.getManufacturer(), manufactor);
 	  assertEquals(car.getCustomer().getUsername(), customer.getUsername());
 	 }
-	 
+
 	 @Test
 	 public void testPersistAndLoadBill() {
 	  String username="TestUserName";
@@ -141,7 +141,7 @@ public class TestArmsPersistence {
 	  assertEquals(bill.getAmount(), price);
 	  assertEquals(bill.getCustomer().getUsername(), customer.getUsername());
 	 }
-	 
+
 	 /**
 	  * @author Jianmo Li
 	  */
@@ -162,7 +162,7 @@ public class TestArmsPersistence {
 	  assertEquals(ass.getPassword(),password);
 
 	 }
-	 
+
 		/**
 		 * @author Ruixin Su
 		 */
@@ -204,10 +204,10 @@ public class TestArmsPersistence {
 			assertEquals(tech.getTechnicianID(), tid);
 //	      assertEquals(tech.getTimeSlot().iterator().next(),timeslot);
 		}
-	
+
 	/**
 	  * @author Linwei Yuan
-	  */	
+	  */
 	@Test
     public void testPersistenceAndLoadSpace() {
         String sd = "2010-01-03";
@@ -225,13 +225,12 @@ public class TestArmsPersistence {
         timeslot.setStartDate(startd);
         timeslot.setStartTime(startt);
         timeslot.setTimeslotID(timeslotid);
-        
+
         this.timeSlotRepository.save(timeslot);
         Set<TimeSlot> ts = new HashSet<>();
 	ts.add(timeslot);
 	int id = 1;
         Space space = new Space();
-        space.setTimeSlot(ts);
         space.setSpaceID(id);
         spaceRepository.save(space);
 
@@ -272,7 +271,7 @@ public class TestArmsPersistence {
 //		assertEquals(businessHour1.getStartTime().toString(), startTime1.toString());
 //
 //	}
-	
+
 	/**
 	  * @author Cecilia Jiang
 	  */
@@ -293,7 +292,7 @@ public class TestArmsPersistence {
 	  assertEquals(service.getName(), name);
 
 	 }
-	 
+
 		/**
 		 * @author Ruixin Su
 		 */

@@ -23,7 +23,7 @@
           <td>{{bill.amount  }}</td>
           <td>{{bill.paid }}</td>
           <td>
-            <button @click="payBill(bill.billNo)">Pay</button>
+            <button @click="payBill(bill.billNo); disabled = 'bill.paid'">Pay</button>
           </td>
         </tr>
       </table>

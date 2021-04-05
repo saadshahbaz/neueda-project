@@ -10,6 +10,33 @@
       </p>
     </div>
 
+    <div>
+      <table class="table">
+        <tr class="table-title">
+          <td><h5>ID</h5></td>
+          <td><h5>service</h5></td>
+          <td><h5>plate No</h5></td>
+          <td><h5>start date</h5></td>
+          <td><h5>start time</h5></td>
+          <td><h5>space</h5></td>
+          <td><h5>technician</h5></td>
+          <td><h5>action</h5></td>
+        </tr>
+        <tr class="table-content" v-for="apt in appointments" :key="apt.appointmentID">
+          <td>{{ apt.appointmentID }}</td>
+          <td>{{ apt.serviceName }}</td>
+          <td>{{ apt.plateNo }}</td>
+          <td>{{ apt.startDate }}</td>
+          <td>{{ apt.startTime }}</td>
+          <td>{{ apt.spaceID }}</td>
+          <td>{{ apt.technicianID }}</td>
+          <td>
+            <button @click="deleteAppointment(apt.appointmentID)">DELETE</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
     <div class="selections">
       <el-date-picker
         v-model="startDate"
@@ -195,6 +222,9 @@ export default {
       businessName:'ARMS'
     }
   },
+  created() {
+    this.getAllAppointments();
+  },
   mounted: function () {
     AXIOS.get(`/allSpace`).then(res => {
       console.log(res);
@@ -227,17 +257,19 @@ export default {
     // },
     deleteAppointment(appointmentID){
       // Initializing people from backend
-      AXIOS.delete(`/deleteAppointment?appointmentID=${this.newAppointmentID}`)
-        .then(response => {
-          // JSON responses are automatically parsed.
-          this.appointments = []
-          this.getAppointments()
-          this.newAppointment = ''
-          this.errorAppointment = ''
-        })
-        .catch(e => {
-          this.errorAppointment = e.response.data.message;
-        });
+      if(confirm("Do you really want to delete?")) {
+        AXIOS.delete(`/deleteAppointment?appointmentID=${appointmentID}`)
+          .then(response => {
+            // JSON responses are automatically parsed.
+            this.appointments = []
+            this.getAppointments()
+            this.newAppointment = ''
+            this.errorAppointment = ''
+          })
+          .catch(e => {
+            this.errorAppointment = e.response.data.message;
+          });
+      }
     },
     updateAppointment(){
       // Initializing people from backend
@@ -270,6 +302,17 @@ export default {
         this.newAppointmentID++
         console.log(this.newAppointmentID)
       }
+    },
+    getAllAppointments() {
+      AXIOS.get(`/getAppointments`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.appointments = response.data
+          this.errorAppointment =''
+        })
+        .catch(e => {
+          this.errorAppointment = e.response.data.message;
+        });
     },
     // checkAppointments(){
     //   this.tableData = [];
@@ -338,36 +381,28 @@ export default {
 </script>
 
 <style scoped>
-.appointments {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-  height: 100%;
-  width: 100%;
-  font-size: 40px;
-  color: rgb(167, 167, 167);
-  font-weight: 600;
-}
+
 .title{
   display: flex;
   justify-content: center;
   width: 100%;
   text-align: center;
   margin-top: 10px;
+  font-size: 25px;
 }
 .selections{
   margin-top: 30px;
 }
 .button{
+  font-size: 15px;
   margin-top: 30px;
   width: 100%;
   text-align: center;
 }
 .table{
-  margin-top:50px;
-  width: 100%;
-  text-align: center;
+
+  justify-content: center;
+  align-items: center;
 }
 .errorMsg {
   top: 50px;
@@ -375,5 +410,13 @@ export default {
   text-align: center;
   justify-content: center;
   left: 200px;
+}
+.table-title{
+  font-size: 25px;
+}
+.table-content{
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
 }
 </style>
