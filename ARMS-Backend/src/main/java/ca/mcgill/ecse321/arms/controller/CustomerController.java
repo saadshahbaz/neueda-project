@@ -2,10 +2,15 @@ package ca.mcgill.ecse321.arms.controller;
 import ca.mcgill.ecse321.arms.ArmsApplication;
 import ca.mcgill.ecse321.arms.dao.CustomerRepository;
 import ca.mcgill.ecse321.arms.dto.CustomerDto;
+import ca.mcgill.ecse321.arms.dto.ServiceDto;
 import ca.mcgill.ecse321.arms.model.Customer;
 import ca.mcgill.ecse321.arms.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 public class CustomerController {
@@ -13,6 +18,15 @@ public class CustomerController {
     CustomerService customerService;
     @Autowired
     CustomerRepository customerRepository;
+
+    @GetMapping(value = {"/allCustomers","/allCustomers/"})
+    public List<CustomerDto> getAllServices() throws IllegalArgumentException{
+        List<CustomerDto> customerDtos = new ArrayList<>();
+        for(Customer customer : customerService.getALlCustomers()){
+            customerDtos.add(convertToDto(customer));
+        }
+        return customerDtos;
+    }
 
     @PostMapping(value = {"/customer", "/customer/"})
     public CustomerDto createCustomer(

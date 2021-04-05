@@ -144,17 +144,19 @@ export default {
      */
     deleteService: function (name) {
       // Initializing people from backend
-      AXIOS.delete(`/deleteService?name=${name}`)
-        .then(response => {
-          // JSON responses are automatically parsed.
-          this.services = []
-          this.getAllServices()
-          this.newService = ''
-          this.errorService = ''
-        })
-        .catch(e => {
-          this.errorService = e.response.data.message;
-        });
+      if(confirm("Do you really want to delete "+name+"?")) {
+        AXIOS.delete(`/deleteService?name=${name}`)
+          .then(response => {
+            // JSON responses are automatically parsed.
+            this.services = []
+            this.getAllServices()
+            this.newService = ''
+            this.errorService = ''
+          })
+          .catch(e => {
+            this.errorService = e.response.data.message;
+          });
+      }
     },
     /*
     update a service and display error message if exception occurs

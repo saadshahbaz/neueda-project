@@ -45,10 +45,10 @@ public class TechnicianController {
         for(Technician technician: technicianService.getAllTechnicians()){
             technicianDtos.add(convertToDto(technician));
         }
-        return getAllTechnicians();
+        return technicianDtos;
     }
-    @GetMapping(value = {"/findTechnician", "/findTechnician/"})
-    public TechnicianDto findTechnician(
+    @GetMapping(value = {"/findTechnicianBytechID", "/findTechnicianBYtechID/"})
+    public TechnicianDto findTechnicianBytechID(
             @RequestParam("id") int id
     ) {
         for(Technician technician: technicianService.getAllTechnicians()){

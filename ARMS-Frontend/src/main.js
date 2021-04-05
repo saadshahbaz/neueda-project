@@ -19,9 +19,9 @@ import { Button, Form, FormItem, Input, Message, Container, Header,
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import locale from '../node_modules/element-ui/lib/locale/lang/en'
 
-
-Vue.use(ElementUI);
+Vue.use(ElementUI, {locale})
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)

@@ -23,8 +23,8 @@ public class SpaceController {
         return convertToDto(space);
     }
 
-    @GetMapping(value = {"/findSpace", "/findSpace/"})
-    public SpaceDto findSpace(
+    @GetMapping(value = {"/findSpaceBySpaceID", "/findSpaceBySpaceID/"})
+    public SpaceDto findSpaceBySpaceID(
             @RequestParam("id") int id
     ) {
 
