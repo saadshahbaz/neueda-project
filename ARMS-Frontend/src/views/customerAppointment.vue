@@ -268,19 +268,6 @@ export default {
           });
       }
     },
-    // updateAppointment(){
-    //   // Initializing people from backend
-    //   AXIOS.put(`updateAppointment?appointmentID=${this.newAppointmentID}&serviceName=${this.service}&plateNo=${this.car}&businessName=${this.businessName}&startDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&startTime=${dayjs(this.newAppointmentStartTime).format('HH:MM:ss')}&endDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&endTime=${dayjs(this.newAppointmentEndTime).format('HH:MM:ss')}&technicianID=${this.technician}&spaceID=${this.space}`)
-    //     .then(response => {
-    //       // JSON responses are automatically parsed.
-    //       this.appointments.push(response.data)
-    //       this.newAppointment = response.data
-    //       this.errorAppointment =''
-    //     })
-    //     .catch(e => {
-    //       this.errorAppointment = e.response.data.message;
-    //     });
-    // },
     createAppointment() {
       this.newAppointmentID = Math.floor(Math.random()*1000000)+1;
       console.log("ID is : "+this.newAppointmentID);

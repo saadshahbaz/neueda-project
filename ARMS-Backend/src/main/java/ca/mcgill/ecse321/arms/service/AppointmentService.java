@@ -123,6 +123,8 @@ public class AppointmentService {
         }
 
         appointmentRepository.delete(anAppointment);
+        Bill aBill = billRepository.findBillByBillNo(appointmentID);
+        billRepository.delete(aBill);
         return appointmentID;
     }
 

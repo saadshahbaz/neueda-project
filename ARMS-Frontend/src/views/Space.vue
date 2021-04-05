@@ -75,7 +75,7 @@ export default {
 
     deleteSpace: function (id){
       // Initializing people from backend
-      AXIOS.delete(`/deleteSpacee?id=${id}`)
+      AXIOS.delete(`/deleteSpace?id=${id}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.spaces= []
