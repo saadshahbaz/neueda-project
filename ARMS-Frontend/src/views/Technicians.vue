@@ -29,8 +29,6 @@
       <p>New Technician Information</p>
 
 
-        <input type="text" v-model="newTechnicianId" placeholder="Technician ID">
-
         <input type="text" v-model="newTechnicianName" placeholder="Technician Name">
 
         <input type="text" v-model="newTechnicianEmail" placeholder="Technician Email">
@@ -39,9 +37,9 @@
 
     <div class="box">
       <p>  </p>
-      <button v-bind:disabled="!newTechnicianId" @click="createTechnician(newTechnicianId,newTechnicianName,newTechnicianEmail)">Create</button>
-      <button v-bind:disabled="!newTechnicianId" @click="updateTechnician(newTechnicianId, newTechnicianName, newTechnicianEmail)">Update</button>
-      <button v-bind:disabled="!newTechnicianId" @click="deleteTechnician(newTechnicianId)">Delete</button>
+      <button v-bind:disabled="!newTechnicianName" @click="createTechnician(newTechnicianId,newTechnicianName,newTechnicianEmail)">Create</button>
+      <button v-bind:disabled="!newTechnicianName" @click="updateTechnician(newTechnicianId, newTechnicianName, newTechnicianEmail)">Update</button>
+      <button v-bind:disabled="!newTechnicianName" @click="deleteTechnician(newTechnicianId)">Delete</button>
     </div>
   </div>
 </template>
@@ -120,7 +118,8 @@ export default {
 
     createTechnician: function (id,name,email){
       // Initializing people from backend
-      AXIOS.post(`/technician?id=${id}&name=${name}&email=${email}`)
+      this.newTechnicianId = Math.floor(Math.random()*1000000)+1;
+      AXIOS.post(`/technician?id=${this.newTechnicianId}&name=${name}&email=${email}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.Technicians.push(response.data)

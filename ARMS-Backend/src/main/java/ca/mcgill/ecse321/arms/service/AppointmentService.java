@@ -93,7 +93,7 @@ public class AppointmentService {
         anAppointment.setTimeSlot(timeSlot);
         appointmentRepository.save(anAppointment);
         Bill bill = new Bill();
-        bill.setBillNo(anAppointment.hashCode());
+        bill.setBillNo(appointmentID);
         bill.setAmount(service.getPrice());
         bill.setCustomer(car.getCustomer());
         billRepository.save(bill);
