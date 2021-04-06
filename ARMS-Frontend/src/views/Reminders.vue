@@ -8,13 +8,11 @@
       <table class="table">
         <tr>
           <td><h5>username</h5></td>
-          <td><h5>password</h5></td>
           <td><h5>email</h5></td>
           <td><h5>phoneNumber</h5></td>
         </tr>
         <tr v-for="customer in customers" :key="customer.username">
           <td>{{ customer.username }}</td>
-          <td>{{ customer.password }}</td>
           <td>{{ customer.email }}</td>
           <td>{{ customer.phoneNumber }}</td>
         </tr>

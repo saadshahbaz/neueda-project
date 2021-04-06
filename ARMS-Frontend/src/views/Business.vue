@@ -215,8 +215,8 @@ export default {
       // Initializing people from backend
       this.endDate = formatter(this.value1.pop()).format('YYYY-MM-DD');
       this.startDate = formatter(this.value1.pop()).format('YYYY-MM-DD');
-      this.endTime = formatter(this.value2.pop()).format('HH:MM:ss');
-      this.startTime = formatter(this.value2.pop()).format('HH:MM:ss');
+      this.endTime = formatter(this.value2.pop()).format('HH:mm:ss');
+      this.startTime = formatter(this.value2.pop()).format('HH:mm:ss');
 
       AXIOS.post(`/businessHour/${this.startDate}/${this.endDate}/${this.startTime}/${this.endTime}/${businessName}`)
         .then(response => {

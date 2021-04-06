@@ -65,7 +65,7 @@
       <el-time-picker
         v-model="newAppointmentStartTime"
         :picker-options="{
-      selectableRange: '09:00:00 - 23:30:00'
+      selectableRange: '09:00:00 - 21:00:00'
     }"
         placeholder="start time">
       </el-time-picker>
@@ -73,7 +73,7 @@
         arrow-control
         v-model="newAppointmentEndTime"
         :picker-options="{
-      selectableRange: '09:30:00 - 23:30:00'
+      selectableRange: '09:00:00 - 21:00:00'
     }"
         placeholder="end time">
       </el-time-picker>
@@ -271,7 +271,7 @@ export default {
     createAppointment() {
       this.newAppointmentID = Math.floor(Math.random()*1000000)+1;
       console.log("ID is : "+this.newAppointmentID);
-      AXIOS.post(`appointment?appointmentID=${this.newAppointmentID}&serviceName=${this.service}&plateNo=${this.car}&businessName=${this.businessName}&startDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&startTime=${dayjs(this.newAppointmentStartTime).format('HH:MM:ss')}&endDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&endTime=${dayjs(this.newAppointmentEndTime).format('HH:MM:ss')}&technicianID=${this.technician}&spaceID=${this.space}`)
+      AXIOS.post(`appointment?appointmentID=${this.newAppointmentID}&serviceName=${this.service}&plateNo=${this.car}&businessName=${this.businessName}&startDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&startTime=${dayjs(this.newAppointmentStartTime).format('HH:mm:ss')}&endDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&endTime=${dayjs(this.newAppointmentEndTime).format('HH:mm:ss')}&technicianID=${this.technician}&spaceID=${this.space}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.appointments.push(response.data)
