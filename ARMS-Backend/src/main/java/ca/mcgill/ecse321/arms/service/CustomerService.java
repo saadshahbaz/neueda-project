@@ -16,6 +16,10 @@ public class CustomerService {
     private CustomerRepository customerRepository;
     @Autowired
     private BillRepository billRepository;
+    @Autowired
+    private CarRepository carRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     public List<Customer> getALlCustomers(){
         return toList(customerRepository.findAll());
@@ -138,6 +142,19 @@ public class CustomerService {
                 }
             }
         }
+        for(Bill bill: bills){
+            billRepository.deleteByBillNo(bill.getBillNo());
+        }
+        List<Car> cars = carRepository.findCarsByCustomer(customer);
+
+        for(Car car: cars){
+            List<Appointment> appointments = appointmentRepository.findAppointmentsByCar(car);
+            for(Appointment appointment: appointments){
+                appointmentRepository.deleteById(appointment.getAppointmentID());
+            }
+            carRepository.deleteCarByPlateNo(car.getPlateNo());
+        }
+
         if (error.length() > 0) {
             throw new IllegalArgumentException(error.trim());
         }
