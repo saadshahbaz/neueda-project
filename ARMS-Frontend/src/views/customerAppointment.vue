@@ -67,7 +67,7 @@
         :picker-options="{
       selectableRange: '09:00:00 - 23:30:00'
     }"
-        placeholder="任意时间点">
+        placeholder="start time">
       </el-time-picker>
       <el-time-picker
         arrow-control
@@ -75,7 +75,7 @@
         :picker-options="{
       selectableRange: '09:30:00 - 23:30:00'
     }"
-        placeholder="任意时间点">
+        placeholder="end time">
       </el-time-picker>
 
       <el-select v-model="service" placeholder="Service">
@@ -100,8 +100,8 @@
 
     <div class="button">
       <button  @click="createAppointment()">Create</button>
-      <button  @click="updateAppointment()">Update</button>
-      <button  @click="deleteAppointment()">Delete</button>
+<!--      <button  @click="updateAppointment()">Update</button>-->
+<!--      <button  @click="deleteAppointment()">Delete</button>-->
       <button  @click="checkAppointments()">Check</button>
     </div>
 
@@ -167,19 +167,19 @@ export default {
           return time.getTime() > Date.now();
         },
         shortcuts: [{
-          text: '今天',
+          text: 'today',
           onClick(picker) {
             picker.$emit('pick', new Date());
           }
         }, {
-          text: '昨天',
+          text: 'yesterday',
           onClick(picker) {
             const date = new Date();
             date.setTime(date.getTime() - 3600 * 1000 * 24);
             picker.$emit('pick', date);
           }
         }, {
-          text: '一周前',
+          text: 'a week ago',
           onClick(picker) {
             const date = new Date();
             date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
@@ -252,9 +252,6 @@ export default {
     })
   },
   methods: {
-    // incrementAppointmentID(appointmentID){
-    //
-    // },
     deleteAppointment(appointmentID){
       // Initializing people from backend
       if(confirm("Do you really want to delete?")) {
@@ -271,20 +268,6 @@ export default {
           });
       }
     },
-    updateAppointment(){
-      // Initializing people from backend
-      AXIOS.put(`updateAppointment?appointmentID=${this.newAppointmentID}&serviceName=${this.service}&plateNo=${this.car}&businessName=${this.businessName}&startDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&startTime=${dayjs(this.newAppointmentStartTime).format('HH:MM:ss')}&endDate=${dayjs(this.startDate).format('YYYY-MM-DD')}&endTime=${dayjs(this.newAppointmentEndTime).format('HH:MM:ss')}&technicianID=${this.technician}&spaceID=${this.space}`)
-        .then(response => {
-          // JSON responses are automatically parsed.
-          this.appointments = []
-          this.getAppointments()
-          this.newAppointment = ''
-          this.errorAppointment = ''
-        })
-        .catch(e => {
-          this.errorAppointment = e.response.data.message;
-        });
-    },
     createAppointment() {
       this.newAppointmentID = Math.floor(Math.random()*1000000)+1;
       console.log("ID is : "+this.newAppointmentID);
@@ -298,10 +281,6 @@ export default {
         .catch(e => {
           this.errorAppointment = e.response.data.message;
         });
-      if (this.errorAppointment == ''){
-        this.newAppointmentID++
-        console.log(this.newAppointmentID)
-      }
     },
     getAllAppointments() {
       AXIOS.get(`/getAppointments`)
