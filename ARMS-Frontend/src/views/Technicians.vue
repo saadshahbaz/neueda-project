@@ -6,13 +6,13 @@
 
     <p>
       <span v-if="errorTechnician" style="color:#960f0f">{{errorTechnician}}</span>
-    </p>
+    </p >
     <table class="table">
       <tr >
         <td><h5>id</h5></td>
         <td><h5>name</h5></td>
         <td><h5>email</h5></td>
-        </tr>
+      </tr>
       <tr v-for="technician in Technicians" :key="technician.id">
         <td>{{ technician.id}}</td>
         <td>{{ technician.name }}</td>
@@ -26,20 +26,22 @@
       </tr>
     </table>
     <div class="box">
-      <p>New Technician Information</p>
+      <p>New Technician Information</p >
 
 
-        <input type="text" v-model="newTechnicianName" placeholder="Technician Name">
+      <input type="text" v-model="newTechnicianId" placeholder="Technician ID">
 
-        <input type="text" v-model="newTechnicianEmail" placeholder="Technician Email">
+      <input type="text" v-model="newTechnicianName" placeholder="Technician Name">
+
+      <input type="text" v-model="newTechnicianEmail" placeholder="Technician Email">
 
     </div>
 
     <div class="box">
-      <p>  </p>
-      <button v-bind:disabled="!newTechnicianName" @click="createTechnician(newTechnicianId,newTechnicianName,newTechnicianEmail)">Create</button>
-      <button v-bind:disabled="!newTechnicianName" @click="updateTechnician(newTechnicianId, newTechnicianName, newTechnicianEmail)">Update</button>
-      <button v-bind:disabled="!newTechnicianName" @click="deleteTechnician(newTechnicianId)">Delete</button>
+      <p>  </p >
+      <button v-bind:disabled="!newTechnicianId" @click="createTechnician(newTechnicianId,newTechnicianName,newTechnicianEmail)">Create</button>
+      <button v-bind:disabled="!newTechnicianId" @click="updateTechnician(newTechnicianId, newTechnicianName, newTechnicianEmail)">Update</button>
+      <button v-bind:disabled="!newTechnicianId" @click="deleteTechnician(newTechnicianId)">Delete</button>
     </div>
   </div>
 </template>
@@ -67,7 +69,6 @@ export default {
       newTechnicianId: '',
       newTechnicianName: '',
       newTechnicianEmail: '',
-
     }
   },
   created() {
@@ -86,7 +87,6 @@ export default {
           this.errorTechnician = e.response.data.message;
         });
     },
-
     deleteTechnician: function (id){
       // Initializing people from backend
       AXIOS.delete(`/deleteTechnician?id=${id}`)
@@ -115,11 +115,9 @@ export default {
           this.errorTechnician = e.response.data.message;
         });
     },
-
     createTechnician: function (id,name,email){
       // Initializing people from backend
-      this.newTechnicianId = Math.floor(Math.random()*1000000)+1;
-      AXIOS.post(`/technician?id=${this.newTechnicianId}&name=${name}&email=${email}`)
+      AXIOS.post(`/technician?id=${id}&name=${name}&email=${email}`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.Technicians.push(response.data)
