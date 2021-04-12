@@ -57,3 +57,11 @@ Ruixin Su
 
 ### Deliverable 4  
 * [User Documentation](https://github.com/McGill-ECSE321-Winter2021/project-group-10/wiki/User-Documentation)
+
+|   Members | Responsibility  | Hours  |
+| :-------: | :-------------: | :-: |
+| Jianmo Li | Android customer features about appointment | 30 |
+| Grey Yuan | Android customer features about appointment and car | 30 |
+| Zhiwei Li | Android customer features about sign up， login/logout, and delete account | 30 |
+| Cecilia Jiang | Android customer features about service, and pay bills | 30 |
+| Ruixin Su | Android customer features about profile and update information | 30 |  
