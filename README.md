@@ -44,6 +44,7 @@ Ruixin Su
 ### Deliverable 3  
 * [Project Report (Deliverable 3)](https://github.com/McGill-ECSE321-Winter2021/project-group-10/wiki/Deliverable-3)
 * [Architecture Model](https://github.com/McGill-ECSE321-Winter2021/project-group-10/wiki/Architecture-Model)
+* [User Documentation](https://github.com/McGill-ECSE321-Winter2021/project-group-10/wiki/User-Documentation)
 
 |   Members | Responsibility  | Hours  |
 | :-------: | :-------------: | :-: |
@@ -52,3 +53,7 @@ Ruixin Su
 | Zhiwei Li | Frontend regarding sign up, pay bills, login/logout, and delete account | 30 |
 | Cecilia Jiang | Frontend regarding service management, and customer information | 30 |
 | Ruixin Su | Frontend regarding space/technician management, business info, and business hour | 30 |  
+
+
+### Deliverable 4  
+* [User Documentation](https://github.com/McGill-ECSE321-Winter2021/project-group-10/wiki/User-Documentation)
