@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/my_account"
+            android:icon="@drawable/ic_my_account"
+            android:title="My Account"></item>
+        <item android:id="@+id/my_car"
+            android:icon="@drawable/ic_car"
+            android:title="My Cars"></item>
+        <item android:id="@+id/services"
+            android:icon="@drawable/ic_service"
+            android:title="Available Services"></item>
+        <item android:id="@+id/appointment"
+            android:icon="@drawable/ic_booking"
+            android:title="Make an Appointment"></item>
+        <item android:id="@+id/payment"
+            android:icon="@drawable/ic_payment"
+            android:title="Payment"></item>
+        <item android:id="@+id/logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Log out"></item>
+    </group>
+
+
+
+</menu>
