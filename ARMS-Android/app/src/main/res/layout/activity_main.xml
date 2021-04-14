@@ -22,8 +22,6 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-            <item android:name="windowActionBar">false</item>
-            <item android:name="windowNoTitle">true</item>
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout

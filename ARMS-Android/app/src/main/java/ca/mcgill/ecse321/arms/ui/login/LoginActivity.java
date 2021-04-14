@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ca.mcgill.ecse321.arms.R;
+import ca.mcgill.ecse321.arms.navigationdrawer.MainActivity;
 import ca.mcgill.ecse321.arms.ui.login.LoginViewModel;
 import ca.mcgill.ecse321.arms.ui.login.LoginViewModelFactory;
 
@@ -117,6 +119,15 @@ public class LoginActivity extends AppCompatActivity {
                         passwordEditText.getText().toString());
             }
         });
+
+        Button btn = (Button)findViewById(R.id.login);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
+        });
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
@@ -128,4 +139,6 @@ public class LoginActivity extends AppCompatActivity {
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
+
+
 }
