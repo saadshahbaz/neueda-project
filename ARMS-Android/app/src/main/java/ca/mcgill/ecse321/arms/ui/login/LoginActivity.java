@@ -168,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
         String username = tvUsername.getText().toString();
         final TextView tvPassword = (TextView) findViewById(R.id.password);
         String password = tvPassword.getText().toString();
-        HttpUtils.put("loginCustomer/?username=" + username + "&password=" + password, new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.put("loginCustomer/?username=$" + username + "&password=$" + password, new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 refreshErrorMessage();
