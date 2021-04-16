@@ -30,6 +30,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class CarFragment extends Fragment {
 
+    private String currentCustomer = "";
     private String error;
     private static final String TAG = "Cars: ";
     private ArrayList<String> cars = new ArrayList<>();
@@ -39,39 +40,17 @@ public class CarFragment extends Fragment {
     private ArrayList<String> plateNos = new ArrayList<>();
     private ArrayAdapter arrayAdapter;
     private ListView lv;
-    private String customerName;
-    private Button addCarButton;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-
-
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        customerName = getCurrentCustomer();
-        Log.d(TAG, customerName);
-        getAllCars(customerName);
 
-        View v = inflater.inflate(R.layout.fragment_car, container, false);
+        currentCustomer = getCurrentCustomer();
+        getCars(currentCustomer);
+        View v= inflater.inflate(R.layout.fragment_car, container, false);
         lv = (ListView) v.findViewById(R.id.carList);
-        arrayAdapter = new ArrayAdapter(this.getContext(), android.R.layout.simple_list_item_1, cars);
+        arrayAdapter = new ArrayAdapter(this.getContext(),android.R.layout.simple_list_item_1, cars);
         lv.setAdapter(arrayAdapter);
-        addCarButton = (Button) v.findViewById(R.id.btnAddCar);
-
-        addCarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customerName = getCurrentCustomer();
-                createCar(customerName);
-
-
-            }
-        });
         return v;
     }
 
@@ -79,27 +58,28 @@ public class CarFragment extends Fragment {
         return ARMS.getCurrentuser();
     }
 
-
-    //setContentView(R.layout.fragment_car);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.fragment_car);
 
 //        final EditText manufacturerEditText = getView().findViewById(R.id.etManufacturer);
 //        final EditText modelEditText = getView().findViewById(R.id.etModel);
 //        final EditText yearEditText = getView().findViewById(R.id.etYear);
 //        final EditText plateNoEditText = getView().findViewById(R.id.etplateNo);
-//        Button addCarButton = (Button) getView().findViewById(R.id.btnAddCar);
-//
-//        addCarButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                customerName = getCurrentCustomer();
-//                createCar(customerName);
-//
-//
-//            }
-//        });
-    //refreshErrorMessage();
+        final Button addCarButton = getView().findViewById(R.id.btnAddCar);
 
-//   }
+        addCarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentCustomer = getCurrentCustomer();
+                createCar(currentCustomer);
+
+            }
+        });
+        refreshErrorMessage();
+
+    }
 
     //get error message and display it if there is
     private void refreshErrorMessage() {
@@ -114,13 +94,12 @@ public class CarFragment extends Fragment {
         }
     }
 
-    public void getAllCars(String username) {
-        Log.d(TAG, "getAllCars");
-        HttpUtils.get("/getCarsByCustomer?username=" + username, new RequestParams(), new JsonHttpResponseHandler() {
-            //System.out.println("in get");
+    public void getCars(String username) {
+
+        HttpUtils.get("/getCarByCustomer?username="+username, new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Log.d(TAG, "success");
+
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         Log.d(TAG, "Restful GET call successfully (" + i + ").");
@@ -128,8 +107,8 @@ public class CarFragment extends Fragment {
                         manufacturers.add(obj1.getString("manufacturer"));
                         models.add(obj1.getString("model"));
                         years.add(obj1.getString("year"));
-                        plateNos.add(obj1.getString("plateNo"));
-                        cars.add("manufacturer: " + manufacturers.get(i) + "\nmodel: " + models.get(i) + "\nyear: " + years.get(i) + "\nplate number: " + plateNos.get(i));
+                        plateNos.add(obj1.getString("plateN"));
+                        cars.add("manufacturer: " + manufacturers.get(i) + "\nmodel: " + models.get(i) + "\nyear: " + years.get(i)+ "\nplate number: " + plateNos.get(i));
                     } catch (JSONException e) {
                         Log.d(TAG, e.getMessage());
                     }
@@ -151,7 +130,6 @@ public class CarFragment extends Fragment {
             }
         });
     }
-
     public void createCar(String username) {
         error = "";
 
@@ -166,35 +144,35 @@ public class CarFragment extends Fragment {
         String plateNo = tvPlateNo.getText().toString();
 
         //connect to backend via HttpUtils
-        HttpUtils.post("/car?customer=" + username + "&manufactuer=" + manufacturer + "&model=" + model + "&year=" + year + "&plateN=" + plateNo
+        HttpUtils.post("/car?customer="+username+"&manufacturer="+manufacturer+"&model="+model+"&year="+year+"&plateN="+plateNo
                 , new RequestParams(), new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.d(TAG, "Restful GET call successfully");
-                        //refreshErrorMessage();
-                        System.out.println(plateNo + "111111");
-                        tvManufacturer.setText("");
-                        tvModel.setText("");
-                        tvYear.setText("");
-                        tvPlateNo.setText("");
-                    }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(TAG, "Restful GET call successfully");
+                //refreshErrorMessage();
+                System.out.println(plateNo+"111111");
+                tvManufacturer.setText("");
+                tvModel.setText("");
+                tvYear.setText("");
+                tvPlateNo.setText("");
+            }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        try {
-                            System.out.println(errorResponse.get("message").toString());
-                            error += errorResponse.get("message").toString();
-                        } catch (JSONException e) {
-                            error += e.getMessage();
-                        }
-                        refreshErrorMessage();
-                    }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                try {
+                    System.out.println(errorResponse.get("message").toString());
+                    error += errorResponse.get("message").toString();
+                } catch (JSONException e) {
+                    error += e.getMessage();
+                }
+                refreshErrorMessage();
+            }
 //            @Override
 //            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
 //                error += responseString;
 //                //no matter what is done, we will need to refresh the error messages.
 //                refreshErrorMessage();
 //            }
-                });
+        });
     }
 }

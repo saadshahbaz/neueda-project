@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.arms.ui.login;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
