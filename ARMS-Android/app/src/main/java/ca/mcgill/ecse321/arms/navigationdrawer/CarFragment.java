@@ -107,7 +107,7 @@ public class CarFragment extends Fragment {
                         manufacturers.add(obj1.getString("manufacturer"));
                         models.add(obj1.getString("model"));
                         years.add(obj1.getString("year"));
-                        plateNos.add(obj1.getString("plateNo"));
+                        plateNos.add(obj1.getString("plateN"));
                         cars.add("manufacturer: " + manufacturers.get(i) + "\nmodel: " + models.get(i) + "\nyear: " + years.get(i)+ "\nplate number: " + plateNos.get(i));
                     } catch (JSONException e) {
                         Log.d(TAG, e.getMessage());
@@ -144,7 +144,7 @@ public class CarFragment extends Fragment {
         String plateNo = tvPlateNo.getText().toString();
 
         //connect to backend via HttpUtils
-        HttpUtils.post("/car?customer="+username+"&manufacturer="+manufacturer+"&model="+model+"&year="+year+"&plateNo="+plateNo
+        HttpUtils.post("/car?customer="+username+"&manufacturer="+manufacturer+"&model="+model+"&year="+year+"&plateN="+plateNo
                 , new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
