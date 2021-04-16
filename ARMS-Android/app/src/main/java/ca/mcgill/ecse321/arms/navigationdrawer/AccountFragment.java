@@ -61,15 +61,16 @@ public class AccountFragment extends Fragment {
                                      }
                 );
         getInfo();
-        //arrayAdapter = new ArrayAdapter(this.getContext(),android.R.layout.simple_list_item_1, appointments);
-        //lv.setAdapter(arrayAdapter);
         return v;
-        //return inflater.inflate(R.layout.fragment_account, container, false);
-
     }
+
     public String getCurrentCustomer() {
         return ARMS.getCurrentuser();
     }
+
+    /**
+     * get current user's information
+     */
     public void getInfo(){
         RequestParams rp = new RequestParams();
         rp.add("username",name);
@@ -78,12 +79,9 @@ public class AccountFragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 for( int i = 0; i < response.length(); i++){
                     try {
-                        //Log.d(TAG, "Restful GET call succesfull (" + i + ").");
-                        //JSONObject obj1 = response.;
                         email = response.getString("email");
                         phoneNum = response.getString("phoneNumber");
                     }catch (JSONException e) {
-                        //Log.d(TAG, e.getMessage());
                         error += e.getMessage();
                     }}
 
@@ -109,21 +107,6 @@ public class AccountFragment extends Fragment {
     }
 
 
-    public void goUpdate(View v){
-        Intent intent = new Intent(AccountFragment.this.getActivity(), account_update.class);
-        intent.putExtra("USERNAME", name);
-        startActivity(intent);
-    }
-
-
-//    private void updateUiWithUser(LoggedInUserView model) {
-//        String welcome = getString(R.string.welcome) + model.getDisplayName();
-//        // TODO : initiate successful logged in experience
-//        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-//    }
-
-
-
     private void refreshErrorMessage() {
         // set the error message
         TextView tvError = (TextView) getView().findViewById(R.id.error);
@@ -136,29 +119,4 @@ public class AccountFragment extends Fragment {
         }
     }
 
-//    public void updateInfo(View v) {
-//        error = "";
-//        final TextView tvUsername = (TextView) findViewById(R.id.username);
-//        String username = tvUsername.getText().toString();
-//        final TextView tvPassword = (TextView) findViewById(R.id.password);
-//        String password = tvPassword.getText().toString();
-//        HttpUtils.put("loginCustomer/?username=" + username + "&password=" + password, new RequestParams(), new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                refreshErrorMessage();
-//                tvUsername.setText("");
-//                tvPassword.setText("");
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                try {
-//                    error += errorResponse.get("message").toString();
-//                } catch (JSONException e) {
-//                    error += e.getMessage();
-//                }
-//                refreshErrorMessage();
-//            }
-//        });
-//    }
 }
