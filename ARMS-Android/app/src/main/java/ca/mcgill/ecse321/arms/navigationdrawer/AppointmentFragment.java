@@ -81,15 +81,16 @@ public class AppointmentFragment extends Fragment {
                     try {
                         Log.d(TAG, "Restful GET call successfully (" + i + ").");
                         JSONObject obj1 = response.getJSONObject(i);
-                        appointmentIDs.add(obj1.getString("name"));
-                        serviceNames.add(obj1.getString("price"));
-                        plateNos.add(obj1.getString("duration"));
+                        appointmentIDs.add(obj1.getString("appointmentID"));
+                        serviceNames.add(obj1.getString("serviceName"));
+                        plateNos.add(obj1.getString("plateNo"));
                         startDates.add(obj1.getString("startDate"));
                         startTimes.add(obj1.getString("startTime"));
                         endDates.add(obj1.getString("endDate"));
                         endTimes.add(obj1.getString("endTime"));
-                        technicianIDs.add(obj1.getString("technicianID"));
+
                         spaceIDs.add(obj1.getString("spaceID"));
+                        //technicianIDs.add(obj1.getString("technicianID"));
                         appointments.add("appointment ID: " + appointmentIDs.get(i) +
                                 "\nservice name: " + serviceNames.get(i) +
                                 "\nplate number: " + plateNos.get(i) +
@@ -97,8 +98,9 @@ public class AppointmentFragment extends Fragment {
                                 "\nstart time: " + startTimes.get(i) +
                                 "\nend date: " + endDates.get(i) +
                                 "\nend time: " + endTimes.get(i) +
-                                "\ntechnician ID: " + technicianIDs.get(i) +
-                                "\nspace ID: " + spaceIDs.get(i));
+
+                                "\nspace ID: " + spaceIDs.get(i)); //+
+                                //"\ntechnician ID: " + technicianIDs.get(i));
                     }catch (JSONException e) {
                         Log.d(TAG, e.getMessage());
                     }
