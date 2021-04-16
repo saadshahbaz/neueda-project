@@ -90,6 +90,7 @@ public class ServiceFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 try {
+                    super.onFailure(statusCode, headers, errorResponse.getString(""), throwable);
                     error += errorResponse.get("message").toString();
                 } catch (JSONException e) {
                     error += e.getMessage();

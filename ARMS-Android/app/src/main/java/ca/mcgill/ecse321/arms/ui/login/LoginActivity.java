@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private String error;
-
+    private static final String TAG = "Current User: ";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,17 +128,11 @@ public class LoginActivity extends AppCompatActivity {
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
                 loginCustomer(v);
+
             }
         });
         refreshErrorMessage();
-        Button btn = (Button)findViewById(R.id.login);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            }
-        });
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
@@ -168,23 +163,33 @@ public class LoginActivity extends AppCompatActivity {
         String username = tvUsername.getText().toString();
         final TextView tvPassword = (TextView) findViewById(R.id.password);
         String password = tvPassword.getText().toString();
-        HttpUtils.put("loginCustomer/?username=$" + username + "&password=$" + password, new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.put("loginCustomer/?username=" + username + "&password=" + password, new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                refreshErrorMessage();
+                Log.d(TAG, "Restful GET call successfully");
+                //refreshErrorMessage();
+                System.out.println(username+"111111");
                 tvUsername.setText("");
                 tvPassword.setText("");
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 try {
+                    System.out.println(errorResponse.get("message").toString());
                     error += errorResponse.get("message").toString();
                 } catch (JSONException e) {
                     error += e.getMessage();
                 }
                 refreshErrorMessage();
             }
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
+//                error += responseString;
+//                //no matter what is done, we will need to refresh the error messages.
+//                refreshErrorMessage();
+//            }
         });
     }
 }
