@@ -1,37 +1,18 @@
 package ca.mcgill.ecse321.arms;
 
-import android.app.Activity;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-//import android.app.FragmentManager;
-//import android.app.FragmentTransaction;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.FragmentManager;
-//import android.app.FragmentManager;
-//import android.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -39,20 +20,12 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ca.mcgill.ecse321.arms.HttpUtils;
-import ca.mcgill.ecse321.arms.R;
 import ca.mcgill.ecse321.arms.navigationdrawer.AccountFragment;
-import ca.mcgill.ecse321.arms.navigationdrawer.MainActivity;
-import ca.mcgill.ecse321.arms.ui.login.LoginViewModel;
-import ca.mcgill.ecse321.arms.ui.login.LoginViewModelFactory;
 import cz.msebera.android.httpclient.Header;
 
 public class account_update extends AppCompatActivity {
 
     private String name;
-    private String newEmail;
-    private String newPhoneNum;
-    private String newPassword;
     private String oldPassword;
     private String error;
     private static final String TAG = "update: ";
@@ -74,34 +47,24 @@ public class account_update extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //this.finish();
-//                Log.d(TAG, "clicked");
+
                 Fragment fragment = new AccountFragment();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
                 fragmentTransaction.commit();
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new AccountFragment()).commit();
+
             }
         });
 
-//        btn1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                updateInfo(v);
-//            }
-//        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateInfo(v);
+            }
+        });
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if (getFragmentManager().getBackStackEntryCount() == 0) {
-//            this.finish();
-//        } else {
-//            super.onBackPressed(); //replaced
-//        }
-//    }
     public void getInfo(){
         HttpUtils.get("/getCurrentCustomer", new RequestParams(), new JsonHttpResponseHandler() {
             @Override
@@ -128,19 +91,7 @@ public class account_update extends AppCompatActivity {
         });
     }
 
-//
-//    public void goAccount(View v){
-//        Intent intent = new Intent(account_update.this, my_account.class);
-//        intent.putExtra("USERNAME", name);
-//        startActivity(intent);
-//    }
 
-
-//    private void updateUiWithUser(LoggedInUserView model) {
-//        String welcome = getString(R.string.welcome) + model.getDisplayName();
-//        // TODO : initiate successful logged in experience
-//        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-//    }
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
@@ -158,6 +109,10 @@ public class account_update extends AppCompatActivity {
         }
     }
 
+    /**
+     * update customer information according to user input
+     * @param v
+     */
     public void updateInfo(View v) {
         error = "";
         TextView tvOldP = (TextView) findViewById(R.id.oldPassword);
@@ -203,14 +158,7 @@ public class account_update extends AppCompatActivity {
                     AlertDialog alertDialog = new AlertDialog.Builder(account_update.this)
                             .setMessage("Update success!")
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setNegativeButton("go back to profile", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    Intent intent = new Intent(account_update.this, AccountFragment.class);
-                                    //intent.putExtra("USERNAME", user);
-                                    startActivity(intent);
-                                }
-                            })
-                            .setPositiveButton("Update again", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
                                 }

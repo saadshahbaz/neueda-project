@@ -64,6 +64,9 @@ public class ServiceFragment extends Fragment {
 
     }
 
+    /**
+     * method that retrieve all available service and display them to the user
+     */
     public void getAllServices() {
 
         HttpUtils.get("services/", new RequestParams(), new JsonHttpResponseHandler() {
@@ -81,8 +84,6 @@ public class ServiceFragment extends Fragment {
                     }catch (JSONException e) {
                         Log.d(TAG, e.getMessage());
                     }
-
-
                 }
                 arrayAdapter.notifyDataSetChanged();
             }
