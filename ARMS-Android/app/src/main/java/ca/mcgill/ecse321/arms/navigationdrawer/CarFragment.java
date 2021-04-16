@@ -23,12 +23,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ca.mcgill.ecse321.arms.ARMS;
 import ca.mcgill.ecse321.arms.HttpUtils;
 import ca.mcgill.ecse321.arms.R;
 import cz.msebera.android.httpclient.Header;
 
 public class CarFragment extends Fragment {
 
+    private String currentCustomer = "";
     private String error;
     private static final String TAG = "Cars: ";
     private ArrayList<String> cars = new ArrayList<>();
@@ -43,12 +45,17 @@ public class CarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        getAllCars();
+        currentCustomer = getCurrentCustomer();
+        getCars(currentCustomer);
         View v= inflater.inflate(R.layout.fragment_car, container, false);
         lv = (ListView) v.findViewById(R.id.carList);
         arrayAdapter = new ArrayAdapter(this.getContext(),android.R.layout.simple_list_item_1, cars);
         lv.setAdapter(arrayAdapter);
         return v;
+    }
+
+    public String getCurrentCustomer() {
+        return ARMS.getCurrentuser();
     }
 
     @Override
@@ -60,17 +67,17 @@ public class CarFragment extends Fragment {
 //        final EditText modelEditText = getView().findViewById(R.id.etModel);
 //        final EditText yearEditText = getView().findViewById(R.id.etYear);
 //        final EditText plateNoEditText = getView().findViewById(R.id.etplateNo);
-//        final Button addCarButton = getView().findViewById(R.id.btnAddCar);
-//
-//        addCarButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                createCar();
-//
-//            }
-//        });
-//        refreshErrorMessage();
+        final Button addCarButton = getView().findViewById(R.id.btnAddCar);
+
+        addCarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentCustomer = getCurrentCustomer();
+                createCar(currentCustomer);
+
+            }
+        });
+        refreshErrorMessage();
 
     }
 
@@ -87,9 +94,9 @@ public class CarFragment extends Fragment {
         }
     }
 
-    public void getAllCars() {
+    public void getCars(String username) {
 
-        HttpUtils.get("/getCarByCustomer?username=zhiwei", new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.get("/getCarByCustomer?username="+username, new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
@@ -123,7 +130,7 @@ public class CarFragment extends Fragment {
             }
         });
     }
-    public void createCar() {
+    public void createCar(String username) {
         error = "";
 
         //get the text view from xml text inputs
@@ -137,7 +144,7 @@ public class CarFragment extends Fragment {
         String plateNo = tvPlateNo.getText().toString();
 
         //connect to backend via HttpUtils
-        HttpUtils.post("/car?customer=zhiwei&manufacturer="+manufacturer+"&model="+model+"&year="+year+"&plateNo="+plateNo
+        HttpUtils.post("/car?customer="+username+"&manufacturer="+manufacturer+"&model="+model+"&year="+year+"&plateNo="+plateNo
                 , new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
