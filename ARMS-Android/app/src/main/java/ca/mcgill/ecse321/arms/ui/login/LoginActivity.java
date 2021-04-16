@@ -1,5 +1,4 @@
 package ca.mcgill.ecse321.arms.ui.login;
-
 import android.app.Activity;
 
 import androidx.lifecycle.Observer;
@@ -90,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println(username+"111111");
                 tvUsername.setText("");
                 tvPassword.setText("");
+
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
 
