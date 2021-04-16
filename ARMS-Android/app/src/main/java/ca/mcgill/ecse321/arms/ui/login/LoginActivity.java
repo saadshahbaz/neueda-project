@@ -1,28 +1,14 @@
 package ca.mcgill.ecse321.arms.ui.login;
 
-import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -33,8 +19,6 @@ import org.json.JSONObject;
 import ca.mcgill.ecse321.arms.HttpUtils;
 import ca.mcgill.ecse321.arms.R;
 import ca.mcgill.ecse321.arms.navigationdrawer.MainActivity;
-import ca.mcgill.ecse321.arms.ui.login.LoginViewModel;
-import ca.mcgill.ecse321.arms.ui.login.LoginViewModelFactory;
 import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends AppCompatActivity {
