@@ -51,7 +51,7 @@
                 android:textAlignment="center" />
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/updname"
                 android:layout_width="192dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -201,7 +201,6 @@
                 android:layout_weight="1"
                 android:insetLeft="30dp"
                 android:insetRight="30dp"
-                android:onClick="goAccount"
                 android:text="Cancel" />
 
 

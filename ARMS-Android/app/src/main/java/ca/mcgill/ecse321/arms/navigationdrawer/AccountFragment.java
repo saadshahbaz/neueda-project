@@ -8,47 +8,22 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
-import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONArray;
 
 import ca.mcgill.ecse321.arms.ARMS;
 import ca.mcgill.ecse321.arms.HttpUtils;
 import ca.mcgill.ecse321.arms.R;
 import ca.mcgill.ecse321.arms.account_update;
-import ca.mcgill.ecse321.arms.my_account;
-import ca.mcgill.ecse321.arms.navigationdrawer.MainActivity;
-import ca.mcgill.ecse321.arms.ui.login.LoginViewModel;
-import ca.mcgill.ecse321.arms.ui.login.LoginViewModelFactory;
 import cz.msebera.android.httpclient.Header;
 import android.widget.ArrayAdapter;
 
@@ -75,6 +50,16 @@ public class AccountFragment extends Fragment {
         tvName = (TextView) v.findViewById(R.id.name);
         tvEmail = (TextView) v.findViewById(R.id.email);
         tvPhone = (TextView) v.findViewById(R.id.phoneNum);
+        Button btnUpdate = (Button) v.findViewById(R.id.update);
+        btnUpdate.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(AccountFragment.this.getActivity(), account_update.class);
+                intent.putExtra("USERNAME", name);
+                startActivity(intent);
+            }
+                                     }
+                );
         getInfo();
         //arrayAdapter = new ArrayAdapter(this.getContext(),android.R.layout.simple_list_item_1, appointments);
         //lv.setAdapter(arrayAdapter);

@@ -3,9 +3,15 @@ package ca.mcgill.ecse321.arms;
 import android.app.Activity;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
+//import android.app.FragmentManager;
+//import android.app.FragmentTransaction;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
+//import android.app.FragmentManager;
+//import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -34,6 +41,7 @@ import org.json.JSONObject;
 
 import ca.mcgill.ecse321.arms.HttpUtils;
 import ca.mcgill.ecse321.arms.R;
+import ca.mcgill.ecse321.arms.navigationdrawer.AccountFragment;
 import ca.mcgill.ecse321.arms.navigationdrawer.MainActivity;
 import ca.mcgill.ecse321.arms.ui.login.LoginViewModel;
 import ca.mcgill.ecse321.arms.ui.login.LoginViewModelFactory;
@@ -47,72 +55,53 @@ public class account_update extends AppCompatActivity {
     private String newPassword;
     private String oldPassword;
     private String error;
+    private static final String TAG = "update: ";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_account);
+        setContentView(R.layout.update_account);
         refreshErrorMessage();
         name = getIntent().getStringExtra("USERNAME");
-        getInfo();
+        Bundle bundle = getIntent().getExtras();
+        TextView tv2 = (TextView) findViewById(R.id.updname);
+        tv2.setText(name);
 
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
-
-
-
-//        TextWatcher afterTextChangedListener = new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                // ignore
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                // ignore
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-//                        passwordEditText.getText().toString());
-//            }
-//        };
-//        usernameEditText.addTextChangedListener(afterTextChangedListener);
-//        passwordEditText.addTextChangedListener(afterTextChangedListener);
-//        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                    loginViewModel.login(usernameEditText.getText().toString(),
-//                            passwordEditText.getText().toString());
-//                }
-//                return false;
-//            }
-//        });
-
-//        loginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-//                loginViewModel.login(usernameEditText.getText().toString(),
-//                        passwordEditText.getText().toString());
-//                loginCustomer(v);
-//            }
-//        });
         refreshErrorMessage();
-        Button btn = (Button)findViewById(R.id.buttonUpdate);
+        Button btn = (Button)findViewById(R.id.buttonGoAccount);
         Button btn1 = (Button)findViewById(R.id.buttonUpdate);
 
-//        btn.setOnClickListener(new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //this.finish();
+//                Log.d(TAG, "clicked");
+                Fragment fragment = new AccountFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                fragmentTransaction.commit();
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                        new AccountFragment()).commit();
+            }
+        });
+
+//        btn1.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                updateInfo(v);
 //            }
 //        });
     }
 
+//    @Override
+//    public void onBackPressed() {
+//        if (getFragmentManager().getBackStackEntryCount() == 0) {
+//            this.finish();
+//        } else {
+//            super.onBackPressed(); //replaced
+//        }
+//    }
     public void getInfo(){
         HttpUtils.get("/getCurrentCustomer", new RequestParams(), new JsonHttpResponseHandler() {
             @Override
@@ -139,12 +128,12 @@ public class account_update extends AppCompatActivity {
         });
     }
 
-
-    public void goAccount(View v){
-        Intent intent = new Intent(account_update.this, my_account.class);
-        intent.putExtra("USERNAME", name);
-        startActivity(intent);
-    }
+//
+//    public void goAccount(View v){
+//        Intent intent = new Intent(account_update.this, my_account.class);
+//        intent.putExtra("USERNAME", name);
+//        startActivity(intent);
+//    }
 
 
 //    private void updateUiWithUser(LoggedInUserView model) {
@@ -216,7 +205,7 @@ public class account_update extends AppCompatActivity {
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setNegativeButton("go back to profile", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Intent intent = new Intent(account_update.this, my_account.class);
+                                    Intent intent = new Intent(account_update.this, AccountFragment.class);
                                     //intent.putExtra("USERNAME", user);
                                     startActivity(intent);
                                 }

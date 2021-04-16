@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".my_account"
+    tools:context=".navigationdrawer.AccountFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -124,7 +124,7 @@
                     android:layout_centerInParent="true"
                     android:insetLeft="8dp"
                     android:insetRight="2dp"
-                    android:onClick="goUpdate"
+
                     android:text="Update"
                     tools:layout_editor_absoluteX="56dp"
                     tools:layout_editor_absoluteY="593dp" />

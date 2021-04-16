@@ -30,8 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".my_account" />
-        <activity android:name=".account_update" />
+
+        <activity
+            android:name=".account_update" />
     </application>
 
 </manifest>
