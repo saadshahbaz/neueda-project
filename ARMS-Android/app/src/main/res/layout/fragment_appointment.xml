@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".navigationdrawer.AppointmentFragment"
+    tools:showIn="@layout/fragment_service">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Book an Appointment"
-        android:gravity="top|center_horizontal"
-        android:textSize="30dp"
-        android:textColor="@color/black"/>
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/appointmentList"
+            android:layout_width="303dp"
+            android:layout_height="541dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="59dp"
+            android:layout_marginBottom="49dp"
+            android:background="#00B91616" />
+
+    </RelativeLayout>
+
 </RelativeLayout>
