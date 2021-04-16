@@ -32,8 +32,6 @@ import org.json.JSONObject;
 import ca.mcgill.ecse321.arms.HttpUtils;
 import ca.mcgill.ecse321.arms.R;
 import ca.mcgill.ecse321.arms.navigationdrawer.MainActivity;
-import ca.mcgill.ecse321.arms.ui.login.LoginViewModel;
-import ca.mcgill.ecse321.arms.ui.login.LoginViewModelFactory;
 import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends AppCompatActivity {
@@ -50,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.login);
+        final Button loginButton = findViewById(R.id.btnAddCar);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
@@ -130,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         refreshErrorMessage();
-        Button btn = (Button)findViewById(R.id.login);
+        Button btn = (Button)findViewById(R.id.btnAddCar);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +166,15 @@ public class LoginActivity extends AppCompatActivity {
         String username = tvUsername.getText().toString();
         final TextView tvPassword = (TextView) findViewById(R.id.password);
         String password = tvPassword.getText().toString();
-        HttpUtils.put("loginCustomer/?username=$" + username + "&password=$" + password, new RequestParams(), new JsonHttpResponseHandler() {
+
+        //Construct request parameters
+        RequestParams params = new RequestParams();
+        params.put("username",username);
+        params.put("password",password);
+
+        System.out.println(params.toString());
+
+        HttpUtils.put("loginCustomer/", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 refreshErrorMessage();
