@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ca.mcgill.ecse321.arms.ARMS;
 import ca.mcgill.ecse321.arms.HttpUtils;
 import ca.mcgill.ecse321.arms.R;
 import cz.msebera.android.httpclient.Header;
@@ -29,47 +30,64 @@ public class BillFragment extends Fragment {
     private static final String TAG = "Current User: ";
     private String currentCustomer = "";
     private String error = "";
+    private ArrayList<String> amounts = new ArrayList<>();
+    private ArrayList<String> isPaids = new ArrayList<>();
+    private ArrayList<String> billNos = new ArrayList<>();
+    private ArrayList<String> bills = new ArrayList<>();
+    private ArrayAdapter arrayAdapter;
+    private ListView lv;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_payment, container, false);
+        currentCustomer=getCurrentCustomer();
+        getBills(currentCustomer);
+        View v= inflater.inflate(R.layout.fragment_payment, container, false);
+        lv = (ListView) v.findViewById(R.id.billList);
+        arrayAdapter = new ArrayAdapter(this.getContext(),android.R.layout.simple_list_item_1, bills);
+        lv.setAdapter(arrayAdapter);
+        return v;
     }
 
-    public void getCurrentCustomer() {
-        HttpUtils.get("getCurrentCustomer/", new RequestParams(), new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+    public String getCurrentCustomer() {
+        return ARMS.getCurrentuser();
+    }
+    public void getBills(String username){
 
+        HttpUtils.get("/getBillsByCustomer"+"?username="+username, new RequestParams(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                for( int i = 0; i < response.length(); i++){
                     try {
-                        Log.d(TAG, "Restful GET call successful");
-                        currentCustomer = response.getString("username");
+                        Log.d(TAG, "Restful GET call succesfull (" + i + ").");
+                        JSONObject obj1 = response.getJSONObject(i);
+                        billNos.add(obj1.getString("billNo"));
+                        if(obj1.getBoolean("paid")){
+                            isPaids.add("paid");
+                        }else{
+                            isPaids.add("not paid");
+                        }
+                        amounts.add(obj1.getString("amount"));
+                        bills.add("bill No.: " + billNos.get(i) + "\nstatus: " + isPaids.get(i) + "\namount: " + amounts.get(i));
                     }catch (JSONException e) {
                         Log.d(TAG, e.getMessage());
                     }
+
+
+                }
+                arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 try {
+                    super.onFailure(statusCode, headers, errorResponse.getString(""), throwable);
                     error += errorResponse.get("message").toString();
                 } catch (JSONException e) {
                     error += e.getMessage();
                 }
-                refreshErrorMessage();
             }
         });
-
     }
-    private void refreshErrorMessage() {
-        // set the error message
-        TextView tvError = (TextView) getView().findViewById(R.id.error);
-        tvError.setText(error);
 
-        if (error == null || error.length() == 0) {
-            tvError.setVisibility(View.GONE);
-        } else {
-            tvError.setVisibility(View.VISIBLE);
-        }
-
-    }
 }
