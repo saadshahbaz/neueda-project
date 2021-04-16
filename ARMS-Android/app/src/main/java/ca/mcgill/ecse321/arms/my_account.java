@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -29,13 +30,14 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import org.json.JSONArray;
 import ca.mcgill.ecse321.arms.HttpUtils;
 import ca.mcgill.ecse321.arms.R;
 import ca.mcgill.ecse321.arms.navigationdrawer.MainActivity;
 import ca.mcgill.ecse321.arms.ui.login.LoginViewModel;
 import ca.mcgill.ecse321.arms.ui.login.LoginViewModelFactory;
 import cz.msebera.android.httpclient.Header;
+import android.widget.ArrayAdapter;
 
 public class my_account extends AppCompatActivity {
 
@@ -49,6 +51,7 @@ public class my_account extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_account);
+        name = getCurrentCustomer();
 
         getInfo();
         refreshErrorMessage();
@@ -63,19 +66,27 @@ public class my_account extends AppCompatActivity {
 //        });
     }
 
+    public String getCurrentCustomer() {
+        return ARMS.getCurrentuser();
+    }
     public void getInfo(){
-        HttpUtils.get("/getCurrentCustomer", new RequestParams(), new JsonHttpResponseHandler() {
+        RequestParams rp = new RequestParams();
+        rp.add("username",name);
+        HttpUtils.get("/getCustomer", rp, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try{
-                    name = response.get("username").toString();
-                    email= response.get("email").toString();
-                    phoneNum = response.get("phoneNumber").toString();
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                for( int i = 0; i < response.length(); i++){
+                    try {
+                        //Log.d(TAG, "Restful GET call succesfull (" + i + ").");
+                        JSONObject obj1 = response.getJSONObject(i);
+                        email = obj1.getString("email");
+                        phoneNum = obj1.getString("phoneNumber");
+                    }catch (JSONException e) {
+                        //Log.d(TAG, e.getMessage());
+                        error += e.getMessage();
+                    }}
 
-                    //Glide.with(ArtPieceInfo.this).load(description).into(imageView);
-                }catch (Exception e){
-                    error += e.getMessage();
-                }
+
                 refreshErrorMessage();
                 TextView tv2 = (TextView) findViewById(R.id.name);
                 tv2.setText(name);
