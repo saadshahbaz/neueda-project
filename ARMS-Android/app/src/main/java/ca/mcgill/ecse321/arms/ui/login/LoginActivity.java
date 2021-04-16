@@ -1,5 +1,4 @@
 package ca.mcgill.ecse321.arms.ui.login;
-
 import android.app.Activity;
 
 import androidx.lifecycle.Observer;
@@ -30,6 +29,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.mcgill.ecse321.arms.ARMS;
 import ca.mcgill.ecse321.arms.HttpUtils;
 import ca.mcgill.ecse321.arms.R;
 import ca.mcgill.ecse321.arms.navigationdrawer.MainActivity;
@@ -87,7 +87,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d(TAG, "Restful GET call successfully");
                 //refreshErrorMessage();
-                System.out.println(username+"111111");
+                try {
+                    System.out.println(response.get("email").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ARMS.setCurrentuser(username);
                 tvUsername.setText("");
                 tvPassword.setText("");
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
