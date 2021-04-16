@@ -41,11 +41,24 @@ public class AppointmentFragment extends Fragment {
     private ArrayAdapter arrayAdapter;
     private ListView lv;
     private static final String TAG = "Appointments: ";
+
+    /**
+     * initialize the appointment fragment
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
+
+    /**
+     * initialize the view of appointment fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +71,9 @@ public class AppointmentFragment extends Fragment {
         return v;
     }
 
+    /**
+     * get error message and display it if there is
+     */
     private void refreshErrorMessage() {
         // set the error message
         TextView tvError = (TextView) getView().findViewById(R.id.error);
@@ -71,6 +87,9 @@ public class AppointmentFragment extends Fragment {
 
     }
 
+    /**
+     * get all appointments that have been made from the system
+     */
     public void getAllAppointments() {
 
         HttpUtils.get("getAppointments/", new RequestParams(), new JsonHttpResponseHandler() {
@@ -88,9 +107,7 @@ public class AppointmentFragment extends Fragment {
                         startTimes.add(obj1.getString("startTime"));
                         endDates.add(obj1.getString("endDate"));
                         endTimes.add(obj1.getString("endTime"));
-
                         spaceIDs.add(obj1.getString("spaceID"));
-                        //technicianIDs.add(obj1.getString("technicianID"));
                         appointments.add("appointment ID: " + appointmentIDs.get(i) +
                                 "\nservice name: " + serviceNames.get(i) +
                                 "\nplate number: " + plateNos.get(i) +
@@ -98,9 +115,7 @@ public class AppointmentFragment extends Fragment {
                                 "\nstart time: " + startTimes.get(i) +
                                 "\nend date: " + endDates.get(i) +
                                 "\nend time: " + endTimes.get(i) +
-
-                                "\nspace ID: " + spaceIDs.get(i)); //+
-                                //"\ntechnician ID: " + technicianIDs.get(i));
+                                "\nspace ID: " + spaceIDs.get(i));
                     }catch (JSONException e) {
                         Log.d(TAG, e.getMessage());
                     }

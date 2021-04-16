@@ -14,6 +14,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import ca.mcgill.ecse321.arms.R;
 
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout drawer;
     @Override
@@ -36,6 +37,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.my_account);
         }
     }
+
+    /**
+     * link fragments to the navigation bar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

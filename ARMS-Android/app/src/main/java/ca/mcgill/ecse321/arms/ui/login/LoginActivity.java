@@ -49,6 +49,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * display error if there is any
+     */
     private void refreshErrorMessage() {
         // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
@@ -61,6 +64,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * login the customer to the system
+     * @param v
+     */
     public void loginCustomer(View v) {
         error = "";
         final TextView tvUsername = (TextView) findViewById(R.id.username);

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,14 +41,22 @@ public class CarFragment extends Fragment {
     private String customerName;
     private Button addCarButton;
 
+    /**
+     * initialize the Fragment
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
-
     }
 
+    /**
+     * initialize the view of the car fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,40 +75,22 @@ public class CarFragment extends Fragment {
             public void onClick(View v) {
                 customerName = getCurrentCustomer();
                 createCar(customerName);
-
-
             }
         });
         return v;
     }
 
+    /**
+     * get the current user from ARMS
+     * @return
+     */
     public String getCurrentCustomer() {
         return ARMS.getCurrentuser();
     }
 
-
-    //setContentView(R.layout.fragment_car);
-
-//        final EditText manufacturerEditText = getView().findViewById(R.id.etManufacturer);
-//        final EditText modelEditText = getView().findViewById(R.id.etModel);
-//        final EditText yearEditText = getView().findViewById(R.id.etYear);
-//        final EditText plateNoEditText = getView().findViewById(R.id.etplateNo);
-//        Button addCarButton = (Button) getView().findViewById(R.id.btnAddCar);
-//
-//        addCarButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                customerName = getCurrentCustomer();
-//                createCar(customerName);
-//
-//
-//            }
-//        });
-    //refreshErrorMessage();
-
-//   }
-
-    //get error message and display it if there is
+    /**
+     * get error message and display it if there is
+     */
     private void refreshErrorMessage() {
         // set the error message
         TextView tvError = (TextView) getView().findViewById(R.id.tvCarError);
@@ -114,6 +103,10 @@ public class CarFragment extends Fragment {
         }
     }
 
+    /**
+     * get all the cars of the current customer
+     * @param username
+     */
     public void getAllCars(String username) {
         Log.d(TAG, "getAllCars");
         HttpUtils.get("/getCarsByCustomer?username=" + username, new RequestParams(), new JsonHttpResponseHandler() {
@@ -152,6 +145,11 @@ public class CarFragment extends Fragment {
         });
     }
 
+
+    /**
+     * create a car in the system using information provided by the customer
+     * @param username
+     */
     public void createCar(String username) {
         error = "";
 
@@ -189,12 +187,6 @@ public class CarFragment extends Fragment {
                         }
                         refreshErrorMessage();
                     }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
-//                error += responseString;
-//                //no matter what is done, we will need to refresh the error messages.
-//                refreshErrorMessage();
-//            }
                 });
     }
 }
