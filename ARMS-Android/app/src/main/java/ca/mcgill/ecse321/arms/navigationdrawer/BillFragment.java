@@ -5,7 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,8 +24,6 @@ import ca.mcgill.ecse321.arms.ARMS;
 import ca.mcgill.ecse321.arms.HttpUtils;
 import ca.mcgill.ecse321.arms.R;
 import cz.msebera.android.httpclient.Header;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 public class BillFragment extends Fragment {
     private static final String TAG = "Current User: ";
@@ -51,6 +50,11 @@ public class BillFragment extends Fragment {
     public String getCurrentCustomer() {
         return ARMS.getCurrentuser();
     }
+
+    /**
+     * get all bills associated with the given username and display them to the user.
+     * @param username
+     */
     public void getBills(String username){
 
         HttpUtils.get("/getBillsByCustomer"+"?username="+username, new RequestParams(), new JsonHttpResponseHandler() {
@@ -72,8 +76,6 @@ public class BillFragment extends Fragment {
                     }catch (JSONException e) {
                         Log.d(TAG, e.getMessage());
                     }
-
-
                 }
                 arrayAdapter.notifyDataSetChanged();
             }
