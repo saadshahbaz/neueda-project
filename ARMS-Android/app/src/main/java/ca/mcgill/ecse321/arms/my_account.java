@@ -49,63 +49,16 @@ public class my_account extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_account);
-        refreshErrorMessage();
-        //name = getIntent().getStringExtra("USERNAME");
+
         getInfo();
-
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
-
-
-
-//        TextWatcher afterTextChangedListener = new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                // ignore
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                // ignore
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-//                        passwordEditText.getText().toString());
-//            }
-//        };
-//        usernameEditText.addTextChangedListener(afterTextChangedListener);
-//        passwordEditText.addTextChangedListener(afterTextChangedListener);
-//        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                    loginViewModel.login(usernameEditText.getText().toString(),
-//                            passwordEditText.getText().toString());
-//                }
-//                return false;
-//            }
-//        });
-
-//        loginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-//                loginViewModel.login(usernameEditText.getText().toString(),
-//                        passwordEditText.getText().toString());
-//                loginCustomer(v);
-//            }
-//        });
         refreshErrorMessage();
-        Button btn = (Button)findViewById(R.id.update);
-        Button btn1 = (Button)findViewById(R.id.Back);
-
+//        Button btn = (Button)findViewById(R.id.update);
+//        //Button btn1 = (Button)findViewById(R.id.Back);
+//
 //        btn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                startActivity(new Intent(my_account.this, account_update.class));
 //            }
 //        });
     }
@@ -118,7 +71,7 @@ public class my_account extends AppCompatActivity {
                     name = response.get("username").toString();
                     email= response.get("email").toString();
                     phoneNum = response.get("phoneNumber").toString();
-                    ImageView imageView=(ImageView) findViewById(R.id.imageView);
+
                     //Glide.with(ArtPieceInfo.this).load(description).into(imageView);
                 }catch (Exception e){
                     error += e.getMessage();
@@ -143,6 +96,12 @@ public class my_account extends AppCompatActivity {
         });
         }
 
+
+        public void goUpdate(View v){
+            Intent intent = new Intent(my_account.this, account_update.class);
+            intent.putExtra("USERNAME", name);
+            startActivity(intent);
+        }
 
 
 //    private void updateUiWithUser(LoggedInUserView model) {
