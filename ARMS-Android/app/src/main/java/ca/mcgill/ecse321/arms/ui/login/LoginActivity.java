@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ import org.json.JSONObject;
 
 import ca.mcgill.ecse321.arms.HttpUtils;
 import ca.mcgill.ecse321.arms.R;
+import ca.mcgill.ecse321.arms.navigationdrawer.MainActivity;
 import ca.mcgill.ecse321.arms.ui.login.LoginViewModel;
 import ca.mcgill.ecse321.arms.ui.login.LoginViewModelFactory;
 import cz.msebera.android.httpclient.Header;
@@ -128,6 +130,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         refreshErrorMessage();
+        Button btn = (Button)findViewById(R.id.login);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
+        });
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
