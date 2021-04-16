@@ -72,7 +72,7 @@ public class ServiceFragment extends Fragment {
 
                 for( int i = 0; i < response.length(); i++){
                     try {
-                        Log.d(TAG, "Restful GET call succesfull (" + i + ").");
+                        Log.d(TAG, "Restful GET call successfully (" + i + ").");
                         JSONObject obj1 = response.getJSONObject(i);
                         names.add(obj1.getString("name"));
                         prices.add(obj1.getString("price"));
