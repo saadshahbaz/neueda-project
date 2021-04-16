@@ -43,7 +43,7 @@ public class ServiceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        getAllServices(inflater);
+        getAllServices();
         View v= inflater.inflate(R.layout.fragment_service, container, false);
         lv = (ListView) v.findViewById(R.id.serviceList);
         arrayAdapter = new ArrayAdapter(this.getContext(),android.R.layout.simple_list_item_1, services);
@@ -64,7 +64,7 @@ public class ServiceFragment extends Fragment {
 
     }
 
-    public void getAllServices(LayoutInflater inflater) {
+    public void getAllServices() {
 
         HttpUtils.get("services/", new RequestParams(), new JsonHttpResponseHandler() {
             @Override
@@ -90,6 +90,7 @@ public class ServiceFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 try {
+                    super.onFailure(statusCode, headers, errorResponse.getString(""), throwable);
                     error += errorResponse.get("message").toString();
                 } catch (JSONException e) {
                     error += e.getMessage();
