@@ -88,8 +88,9 @@ public class AppointmentFragment extends Fragment {
                         startTimes.add(obj1.getString("startTime"));
                         endDates.add(obj1.getString("endDate"));
                         endTimes.add(obj1.getString("endTime"));
-                        technicianIDs.add(obj1.getString("technicianID"));
+
                         spaceIDs.add(obj1.getString("spaceID"));
+                        //technicianIDs.add(obj1.getString("technicianID"));
                         appointments.add("appointment ID: " + appointmentIDs.get(i) +
                                 "\nservice name: " + serviceNames.get(i) +
                                 "\nplate number: " + plateNos.get(i) +
@@ -97,8 +98,9 @@ public class AppointmentFragment extends Fragment {
                                 "\nstart time: " + startTimes.get(i) +
                                 "\nend date: " + endDates.get(i) +
                                 "\nend time: " + endTimes.get(i) +
-                                "\ntechnician ID: " + technicianIDs.get(i) +
-                                "\nspace ID: " + spaceIDs.get(i));
+
+                                "\nspace ID: " + spaceIDs.get(i)); //+
+                                //"\ntechnician ID: " + technicianIDs.get(i));
                     }catch (JSONException e) {
                         Log.d(TAG, e.getMessage());
                     }
