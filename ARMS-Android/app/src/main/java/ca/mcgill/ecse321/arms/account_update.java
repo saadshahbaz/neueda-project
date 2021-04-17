@@ -41,21 +41,7 @@ public class account_update extends AppCompatActivity {
         tv2.setText(name);
 
         refreshErrorMessage();
-        Button btn = (Button)findViewById(R.id.buttonGoAccount);
         Button btn1 = (Button)findViewById(R.id.buttonUpdate);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Fragment fragment = new AccountFragment();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
-                fragmentTransaction.commit();
-
-            }
-        });
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,17 +109,7 @@ public class account_update extends AppCompatActivity {
         String newP = tvNewP.getText().toString();
         String newEmail = tvEmail.getText().toString();
         String newPhone = tvPhone.getText().toString();
-        if(!oldP.equals(oldPassword)){
-            AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setMessage("Wrong password!")
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    })
-                    .show();
-        }else if(newP.equals("")||newEmail.equals("")||newPhone.equals("")){
+        if(newP.equals("")||newEmail.equals("")||newPhone.equals("")){
             AlertDialog alertDialog = new AlertDialog.Builder(this)
                     .setMessage("Incomplete information.")
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -143,7 +119,6 @@ public class account_update extends AppCompatActivity {
                         }
                     })
                     .show();
-
         }else {
 
             RequestParams rp = new RequestParams();

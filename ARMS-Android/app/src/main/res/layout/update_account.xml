@@ -194,15 +194,6 @@
             android:layout_height="40dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/buttonGoAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:insetLeft="30dp"
-                android:insetRight="30dp"
-                android:text="Cancel" />
-
 
             <Button
                 android:id="@+id/buttonUpdate"
